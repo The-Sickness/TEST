@@ -610,6 +610,11 @@ extern bool fp_lockscreen_mode;
 #else
 static bool fp_lockscreen_mode = false;
 #endif
+static bool is_woken_by_button = false;
+void set_is_woken_by_button(bool val)
+{
+	is_woken_by_button = val;
+}
 
 void __ref enable_nonboot_cpus(void)
 {
@@ -644,6 +649,15 @@ void __ref enable_nonboot_cpus(void)
 	cpumask_clear(frozen_cpus);
 out:
 	cpu_maps_update_done();
+<<<<<<< HEAD
+=======
+
+	if (is_woken_by_button) {
+		is_woken_by_button = false;
+		for_each_possible_cpu(cpu)
+			cpu_up(cpu);
+	}
+>>>>>>> a39e16d... cpu: limit force onlining all CPUs to KEY_HOMEPAGE, KEY_POWER wakeup
 }
 
 static int __init alloc_frozen_cpus(void)
