@@ -2773,6 +2773,7 @@ YAMAHA_DEVICE(0x7010, "UB99"),
 	}
 },
 
+<<<<<<< HEAD
 /* Steinberg devices */
 {
 	/* Steinberg MI2 */
@@ -2841,6 +2842,8 @@ YAMAHA_DEVICE(0x7010, "UB99"),
 	}
 },
 
+=======
+>>>>>>> 512ca3c... stock
 /* TerraTec devices */
 {
 	USB_DEVICE_VENDOR_SPEC(0x0ccd, 0x0012),
@@ -3041,6 +3044,7 @@ YAMAHA_DEVICE(0x7010, "UB99"),
 	.idProduct = 0x1020,
 },
 
+<<<<<<< HEAD
 /* QinHeng devices */
 {
 	USB_DEVICE(0x1a86, 0x752d),
@@ -3052,6 +3056,8 @@ YAMAHA_DEVICE(0x7010, "UB99"),
 	}
 },
 
+=======
+>>>>>>> 512ca3c... stock
 /* KeithMcMillen Stringport */
 {
 	USB_DEVICE(0x1f38, 0x0001),

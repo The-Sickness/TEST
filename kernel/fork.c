@@ -422,7 +422,11 @@ static int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
 				goto fail_nomem;
 			charge = len;
 		}
+<<<<<<< HEAD
 		tmp = kmem_cache_zalloc(vm_area_cachep, GFP_KERNEL);
+=======
+		tmp = kmem_cache_alloc(vm_area_cachep, GFP_KERNEL);
+>>>>>>> 512ca3c... stock
 		if (!tmp)
 			goto fail_nomem;
 		*tmp = *mpnt;
@@ -479,7 +483,11 @@ static int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
 		__vma_link_rb(mm, tmp, rb_link, rb_parent);
 		rb_link = &tmp->vm_rb.rb_right;
 		rb_parent = &tmp->vm_rb;
+<<<<<<< HEAD
 		uksm_vma_add_new(tmp);
+=======
+
+>>>>>>> 512ca3c... stock
 		mm->map_count++;
 		retval = copy_page_range(mm, oldmm, mpnt);
 

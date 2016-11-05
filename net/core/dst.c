@@ -280,11 +280,18 @@ void dst_release(struct dst_entry *dst)
 {
 	if (dst) {
 		int newrefcnt;
+<<<<<<< HEAD
 		unsigned short nocache = dst->flags & DST_NOCACHE;
 
 		newrefcnt = atomic_dec_return(&dst->__refcnt);
 		WARN_ON(newrefcnt < 0);
 		if (!newrefcnt && unlikely(nocache))
+=======
+
+		newrefcnt = atomic_dec_return(&dst->__refcnt);
+		WARN_ON(newrefcnt < 0);
+		if (unlikely(dst->flags & DST_NOCACHE) && !newrefcnt)
+>>>>>>> 512ca3c... stock
 			call_rcu(&dst->rcu_head, dst_destroy_rcu);
 	}
 }

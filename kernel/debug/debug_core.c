@@ -49,7 +49,10 @@
 #include <linux/pid.h>
 #include <linux/smp.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/vmacache.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <linux/rcupdate.h>
 
 #include <asm/cacheflush.h>
@@ -231,6 +234,7 @@ static void kgdb_flush_swbreak_addr(unsigned long addr)
 	if (!CACHE_FLUSH_IS_SAFE)
 		return;
 
+<<<<<<< HEAD
 	if (current->mm) {
 		int i;
 
@@ -242,6 +246,12 @@ static void kgdb_flush_swbreak_addr(unsigned long addr)
 		}
 	}
 
+=======
+	if (current->mm && current->mm->mmap_cache) {
+		flush_cache_range(current->mm->mmap_cache,
+				  addr, addr + BREAK_INSTR_SIZE);
+	}
+>>>>>>> 512ca3c... stock
 	/* Force flush instruction cache if it was outside the mm */
 	flush_icache_range(addr, addr + BREAK_INSTR_SIZE);
 }

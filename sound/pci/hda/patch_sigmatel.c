@@ -85,7 +85,10 @@ enum {
 	STAC_ALIENWARE_M17X,
 	STAC_92HD89XX_HP_FRONT_JACK,
 	STAC_92HD89XX_HP_Z1_G2_RIGHT_MIC_JACK,
+<<<<<<< HEAD
 	STAC_92HD73XX_ASUS_MOBO,
+=======
+>>>>>>> 512ca3c... stock
 	STAC_92HD73XX_MODELS
 };
 
@@ -574,9 +577,15 @@ static void stac_store_hints(struct hda_codec *codec)
 			spec->gpio_mask;
 	}
 	if (get_int_hint(codec, "gpio_dir", &spec->gpio_dir))
+<<<<<<< HEAD
 		spec->gpio_dir &= spec->gpio_mask;
 	if (get_int_hint(codec, "gpio_data", &spec->gpio_data))
 		spec->gpio_data &= spec->gpio_mask;
+=======
+		spec->gpio_mask &= spec->gpio_mask;
+	if (get_int_hint(codec, "gpio_data", &spec->gpio_data))
+		spec->gpio_dir &= spec->gpio_mask;
+>>>>>>> 512ca3c... stock
 	if (get_int_hint(codec, "eapd_mask", &spec->eapd_mask))
 		spec->eapd_mask &= spec->gpio_mask;
 	if (get_int_hint(codec, "gpio_mute", &spec->gpio_mute))
@@ -703,7 +712,10 @@ static bool hp_bnb2011_with_dock(struct hda_codec *codec)
 static bool hp_blike_system(u32 subsystem_id)
 {
 	switch (subsystem_id) {
+<<<<<<< HEAD
 	case 0x103c1473: /* HP ProBook 6550b */
+=======
+>>>>>>> 512ca3c... stock
 	case 0x103c1520:
 	case 0x103c1521:
 	case 0x103c1523:
@@ -1917,6 +1929,7 @@ static const struct hda_fixup stac92hd73xx_fixups[] = {
 	[STAC_92HD89XX_HP_Z1_G2_RIGHT_MIC_JACK] = {
 		.type = HDA_FIXUP_PINS,
 		.v.pins = stac92hd89xx_hp_z1_g2_right_mic_jack_pin_configs,
+<<<<<<< HEAD
 	},
 	[STAC_92HD73XX_ASUS_MOBO] = {
 		.type = HDA_FIXUP_PINS,
@@ -1929,6 +1942,9 @@ static const struct hda_fixup stac92hd73xx_fixups[] = {
 			{ }
 		}
 	},
+=======
+	}
+>>>>>>> 512ca3c... stock
 };
 
 static const struct hda_model_fixup stac92hd73xx_models[] = {
@@ -1940,7 +1956,10 @@ static const struct hda_model_fixup stac92hd73xx_models[] = {
 	{ .id = STAC_DELL_M6_BOTH, .name = "dell-m6" },
 	{ .id = STAC_DELL_EQ, .name = "dell-eq" },
 	{ .id = STAC_ALIENWARE_M17X, .name = "alienware" },
+<<<<<<< HEAD
 	{ .id = STAC_92HD73XX_ASUS_MOBO, .name = "asus-mobo" },
+=======
+>>>>>>> 512ca3c... stock
 	{}
 };
 
@@ -1993,8 +2012,11 @@ static const struct snd_pci_quirk stac92hd73xx_fixup_tbl[] = {
 				"HP Z1 G2", STAC_92HD89XX_HP_Z1_G2_RIGHT_MIC_JACK),
 	SND_PCI_QUIRK(PCI_VENDOR_ID_HP, 0x2b17,
 				"unknown HP", STAC_92HD89XX_HP_FRONT_JACK),
+<<<<<<< HEAD
 	SND_PCI_QUIRK(PCI_VENDOR_ID_ASUSTEK, 0x83f8, "ASUS AT4NM10",
 		      STAC_92HD73XX_ASUS_MOBO),
+=======
+>>>>>>> 512ca3c... stock
 	{} /* terminator */
 };
 

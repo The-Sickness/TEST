@@ -1775,7 +1775,12 @@ module_exit(ux500_cryp_mod_fini);
 module_param(cryp_mode, int, 0);
 
 MODULE_DESCRIPTION("Driver for ST-Ericsson UX500 CRYP crypto engine.");
+<<<<<<< HEAD
 MODULE_ALIAS_CRYPTO("aes-all");
 MODULE_ALIAS_CRYPTO("des-all");
+=======
+MODULE_ALIAS("aes-all");
+MODULE_ALIAS("des-all");
+>>>>>>> 512ca3c... stock
 
 MODULE_LICENSE("GPL");

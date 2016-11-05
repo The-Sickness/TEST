@@ -71,6 +71,7 @@ int get_compat_msghdr(struct msghdr *kmsg, struct compat_msghdr __user *umsg)
 	    __get_user(kmsg->msg_controllen, &umsg->msg_controllen) ||
 	    __get_user(kmsg->msg_flags, &umsg->msg_flags))
 		return -EFAULT;
+<<<<<<< HEAD
 
 	if (!tmp1)
 		kmsg->msg_namelen = 0;
@@ -78,6 +79,8 @@ int get_compat_msghdr(struct msghdr *kmsg, struct compat_msghdr __user *umsg)
 	if (kmsg->msg_namelen < 0)
 		return -EINVAL;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (kmsg->msg_namelen > sizeof(struct sockaddr_storage))
 		kmsg->msg_namelen = sizeof(struct sockaddr_storage);
 	kmsg->msg_name = compat_ptr(tmp1);
@@ -745,18 +748,33 @@ static unsigned char nas[21] = {
 
 asmlinkage long compat_sys_sendmsg(int fd, struct compat_msghdr __user *msg, unsigned int flags)
 {
+<<<<<<< HEAD
+=======
+	if (flags & MSG_CMSG_COMPAT)
+		return -EINVAL;
+>>>>>>> 512ca3c... stock
 	return __sys_sendmsg(fd, (struct msghdr __user *)msg, flags | MSG_CMSG_COMPAT);
 }
 
 asmlinkage long compat_sys_sendmmsg(int fd, struct compat_mmsghdr __user *mmsg,
 				    unsigned int vlen, unsigned int flags)
 {
+<<<<<<< HEAD
+=======
+	if (flags & MSG_CMSG_COMPAT)
+		return -EINVAL;
+>>>>>>> 512ca3c... stock
 	return __sys_sendmmsg(fd, (struct mmsghdr __user *)mmsg, vlen,
 			      flags | MSG_CMSG_COMPAT);
 }
 
 asmlinkage long compat_sys_recvmsg(int fd, struct compat_msghdr __user *msg, unsigned int flags)
 {
+<<<<<<< HEAD
+=======
+	if (flags & MSG_CMSG_COMPAT)
+		return -EINVAL;
+>>>>>>> 512ca3c... stock
 	return __sys_recvmsg(fd, (struct msghdr __user *)msg, flags | MSG_CMSG_COMPAT);
 }
 
@@ -779,6 +797,12 @@ asmlinkage long compat_sys_recvmmsg(int fd, struct compat_mmsghdr __user *mmsg,
 	int datagrams;
 	struct timespec ktspec;
 
+<<<<<<< HEAD
+=======
+	if (flags & MSG_CMSG_COMPAT)
+		return -EINVAL;
+
+>>>>>>> 512ca3c... stock
 	if (timeout == NULL)
 		return __sys_recvmmsg(fd, (struct mmsghdr __user *)mmsg, vlen,
 				      flags | MSG_CMSG_COMPAT, NULL);

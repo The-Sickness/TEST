@@ -231,8 +231,11 @@ static int gpu_validate_attrib_data(struct exynos_context *platform)
 	platform->tmu_lock_clk[THROTTLING3] = data == 0 ? 266 : (u32) data;
 	data = gpu_get_attrib_data(attrib, GPU_TEMP_THROTTLING4);
 	platform->tmu_lock_clk[THROTTLING4] = data == 0 ? 266 : (u32) data;
+<<<<<<< HEAD
 	data = gpu_get_attrib_data(attrib, GPU_TEMP_THROTTLING5);
 	platform->tmu_lock_clk[THROTTLING5] = data == 0 ? 266 : (u32) data;
+=======
+>>>>>>> 512ca3c... stock
 	data = gpu_get_attrib_data(attrib, GPU_TEMP_TRIPPING);
 	platform->tmu_lock_clk[TRIPPING] = data == 0 ? 266 : (u32) data;
 
@@ -270,6 +273,12 @@ static int gpu_validate_attrib_data(struct exynos_context *platform)
 
 	data = gpu_get_attrib_data(attrib, GPU_HWCNT_GPR);
 	platform->hwcnt_gpr_status = data == 0 ? 0 : data;
+<<<<<<< HEAD
+=======
+	
+	data = gpu_get_attrib_data(attrib, GPU_HWCNT_PROFILE);
+	platform->hwcnt_profile = data == 0 ? 0 : data;
+>>>>>>> 512ca3c... stock
 
 	data = gpu_get_attrib_data(attrib, GPU_HWCNT_POLLING_TIME);
 	platform->hwcnt_polling_speed = data == 0 ? 0 : (u32) data;
@@ -308,6 +317,7 @@ static int gpu_validate_attrib_data(struct exynos_context *platform)
 	data = gpu_get_attrib_data(attrib, GPU_UDVFS_ENABLE);
 	platform->udvfs_enable = data == 0 ? 0 : (u32) data;
 #endif
+<<<<<<< HEAD
 	data = gpu_get_attrib_data(attrib, GPU_MO_MIN_CLOCK);
 	platform->mo_min_clock = data == 0 ? 0 : (u32) data;
 
@@ -319,6 +329,8 @@ static int gpu_validate_attrib_data(struct exynos_context *platform)
 
 	data = gpu_get_attrib_data(attrib, GPU_THRESHOLD_MAXLOCK);
 	platform->sustainable.threshold = data == 0 ? 0 : (u32) data;
+=======
+>>>>>>> 512ca3c... stock
 	return 0;
 }
 
@@ -367,7 +379,11 @@ static int kbase_platform_exynos5_init(struct kbase_device *kbdev)
 	if (gpu_context_init(kbdev) < 0)
 		goto init_fail;
 
+<<<<<<< HEAD
 #if defined(CONFIG_SOC_EXYNOS7420) || defined(CONFIG_SOC_EXYNOS7890)
+=======
+#if defined(CONFIG_SOC_EXYNOS7420)
+>>>>>>> 512ca3c... stock
 	if(gpu_device_specific_init(kbdev) < 0)
 		goto init_fail;
 #endif
@@ -375,10 +391,13 @@ static int kbase_platform_exynos5_init(struct kbase_device *kbdev)
 	if (gpu_control_module_init(kbdev) < 0)
 		goto init_fail;
 
+<<<<<<< HEAD
 	/* gpu notifier init */
 	if (gpu_notifier_init(kbdev) < 0)
 		goto init_fail;
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_MALI_DVFS
 	/* gpu utilization moduel init */
 	gpu_dvfs_utilization_init(kbdev);
@@ -390,6 +409,13 @@ static int kbase_platform_exynos5_init(struct kbase_device *kbdev)
 	gpu_dvfs_handler_init(kbdev);
 #endif /* CONFIG_MALI_DVFS */
 
+<<<<<<< HEAD
+=======
+	/* gpu notifier init */
+	if (gpu_notifier_init(kbdev) < 0)
+		goto init_fail;
+
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_MALI_DEBUG_SYS
 	/* gpu sysfs file init */
 	if (gpu_create_sysfs_file(kbdev->dev) < 0)
@@ -441,10 +467,14 @@ static int exynos_secure_mode_enable(struct kbase_device *kbdev)
 	/* enable secure mode : TZPC */
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!kbdev)
 		goto secure_out;
 
 	if (!kbdev->secure_mode_support) {
+=======
+	if (!kbdev && !kbdev->secure_mode_support) {
+>>>>>>> 512ca3c... stock
 		GPU_LOG(DVFS_ERROR, LSI_GPU_SECURE, 0u, 0u, "%s: wrong operation! DDK cannot support Secure Rendering\n", __func__);
 		ret = -EINVAL;
 		goto secure_out;
@@ -480,10 +510,14 @@ static int exynos_secure_mode_disable(struct kbase_device *kbdev)
 	/* Turn off secure mode and reset GPU : TZPC */
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!kbdev)
 		goto secure_out;
 
 	if (!kbdev->secure_mode_support) {
+=======
+	if (!kbdev && !kbdev->secure_mode_support) {
+>>>>>>> 512ca3c... stock
 		GPU_LOG(DVFS_ERROR, LSI_GPU_SECURE, 0u, 0u, "%s: wrong operation! DDK cannot support Secure Rendering\n", __func__);
 		ret = -EINVAL;
 		goto secure_out;
@@ -546,10 +580,14 @@ static int exynos_secure_mem_enable(struct kbase_device *kbdev, int ion_fd, u64 
 	/* enable secure world mode : TZASC */
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!kbdev)
 		goto secure_out;
 
 	if (!kbdev->secure_mode_support) {
+=======
+	if (!kbdev && !kbdev->secure_mode_support) {
+>>>>>>> 512ca3c... stock
 		GPU_LOG(DVFS_ERROR, LSI_GPU_SECURE, 0u, 0u, "%s: wrong operation! DDK cannot support Secure Rendering\n", __func__);
 		ret = -EINVAL;
 		goto secure_out;
@@ -635,10 +673,14 @@ static int exynos_secure_mem_disable(struct kbase_device *kbdev, struct kbase_va
 	/* Turn off secure world mode : TZASC */
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!kbdev)
 		goto secure_out;
 
 	if (!kbdev->secure_mode_support) {
+=======
+	if (!kbdev && !kbdev->secure_mode_support) {
+>>>>>>> 512ca3c... stock
 		GPU_LOG(DVFS_ERROR, LSI_GPU_SECURE, 0u, 0u, "%s: wrong operation! DDK cannot support Secure Rendering\n", __func__);
 		ret = -EINVAL;
 		goto secure_out;

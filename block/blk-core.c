@@ -309,6 +309,7 @@ inline void __blk_run_queue_uncond(struct request_queue *q)
 	 * can wait until all these request_fn calls have finished.
 	 */
 	q->request_fn_active++;
+<<<<<<< HEAD
 	if (!q->notified_urgent &&
 		q->elevator->type->ops.elevator_is_urgent_fn &&
 		q->urgent_request_fn &&
@@ -318,6 +319,9 @@ inline void __blk_run_queue_uncond(struct request_queue *q)
 		q->urgent_request_fn(q);
 	} else
 		q->request_fn(q);
+=======
+	q->request_fn(q);
+>>>>>>> 512ca3c... stock
 	q->request_fn_active--;
 }
 
@@ -328,12 +332,15 @@ inline void __blk_run_queue_uncond(struct request_queue *q)
  * Description:
  *    See @blk_run_queue. This variant must be called with the queue lock
  *    held and interrupts disabled.
+<<<<<<< HEAD
  *    Device driver will be notified of an urgent request
  *    pending under the following conditions:
  *    1. The driver and the current scheduler support urgent reques handling
  *    2. There is an urgent request pending in the scheduler
  *    3. There isn't already an urgent request in flight, meaning previously
  *       notified urgent request completed (!q->notified_urgent)
+=======
+>>>>>>> 512ca3c... stock
  */
 void __blk_run_queue(struct request_queue *q)
 {
@@ -1228,6 +1235,7 @@ void blk_requeue_request(struct request_queue *q, struct request *rq)
 
 	BUG_ON(blk_queued_rq(rq));
 
+<<<<<<< HEAD
 	if (rq->cmd_flags & REQ_URGENT) {
 		/*
 		 * It's not compliant with the design to re-insert
@@ -1238,6 +1246,8 @@ void blk_requeue_request(struct request_queue *q, struct request *rq)
 		WARN_ON(!q->dispatched_urgent);
 		q->dispatched_urgent = false;
 	}
+=======
+>>>>>>> 512ca3c... stock
 	elv_requeue_request(q, rq);
 }
 EXPORT_SYMBOL(blk_requeue_request);
@@ -1870,6 +1880,7 @@ void generic_make_request(struct bio *bio)
 }
 EXPORT_SYMBOL(generic_make_request);
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_DEV_IO_TRACE
 static inline struct task_struct *get_dirty_task(struct bio *bio)
 {
@@ -1891,6 +1902,8 @@ static inline struct task_struct *get_dirty_task(struct bio *bio)
 }
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 /**
  * submit_bio - submit a bio to the block device layer for I/O
  * @rw: whether to %READ or %WRITE, or maybe to %READA (read ahead)
@@ -1926,11 +1939,16 @@ void submit_bio(int rw, struct bio *bio)
 
 		if (unlikely(block_dump)) {
 			char b[BDEVNAME_SIZE];
+<<<<<<< HEAD
 			struct task_struct *tsk;
 
 			tsk = get_dirty_task(bio);
 			printk(KERN_DEBUG "%s(%d): %s block %Lu on %s (%u sectors)\n",
 				tsk->comm, task_pid_nr(tsk),
+=======
+			printk(KERN_DEBUG "%s(%d): %s block %Lu on %s (%u sectors)\n",
+			current->comm, task_pid_nr(current),
+>>>>>>> 512ca3c... stock
 				(rw & WRITE) ? "WRITE" : "READ",
 				(unsigned long long)bio->bi_sector,
 				bdevname(bio->bi_bdev, b),
@@ -2122,7 +2140,12 @@ static void blk_account_io_done(struct request *req)
 static struct request *blk_pm_peek_request(struct request_queue *q,
 					   struct request *rq)
 {
+<<<<<<< HEAD
 	if (q->dev && q->rpm_status != RPM_ACTIVE && !(rq->cmd_flags & REQ_PM))
+=======
+	if (q->dev && (q->rpm_status == RPM_SUSPENDED ||
+	    (q->rpm_status != RPM_ACTIVE && !(rq->cmd_flags & REQ_PM))))
+>>>>>>> 512ca3c... stock
 		return NULL;
 	else
 		return rq;
@@ -2177,10 +2200,13 @@ struct request *blk_peek_request(struct request_queue *q)
 			 * not be passed by new incoming requests
 			 */
 			rq->cmd_flags |= REQ_STARTED;
+<<<<<<< HEAD
 			if (rq->cmd_flags & REQ_URGENT) {
 				WARN_ON(q->dispatched_urgent);
 				q->dispatched_urgent = true;
 			}
+=======
+>>>>>>> 512ca3c... stock
 			trace_block_rq_issue(q, rq);
 		}
 
@@ -3148,9 +3174,12 @@ int blk_pre_runtime_suspend(struct request_queue *q)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!q->dev)
 		return ret;
 
+=======
+>>>>>>> 512ca3c... stock
 	spin_lock_irq(q->queue_lock);
 	if (q->nr_pending) {
 		ret = -EBUSY;
@@ -3178,9 +3207,12 @@ EXPORT_SYMBOL(blk_pre_runtime_suspend);
  */
 void blk_post_runtime_suspend(struct request_queue *q, int err)
 {
+<<<<<<< HEAD
 	if (!q->dev)
 		return;
 
+=======
+>>>>>>> 512ca3c... stock
 	spin_lock_irq(q->queue_lock);
 	if (!err) {
 		q->rpm_status = RPM_SUSPENDED;
@@ -3205,9 +3237,12 @@ EXPORT_SYMBOL(blk_post_runtime_suspend);
  */
 void blk_pre_runtime_resume(struct request_queue *q)
 {
+<<<<<<< HEAD
 	if (!q->dev)
 		return;
 
+=======
+>>>>>>> 512ca3c... stock
 	spin_lock_irq(q->queue_lock);
 	q->rpm_status = RPM_RESUMING;
 	spin_unlock_irq(q->queue_lock);
@@ -3230,9 +3265,12 @@ EXPORT_SYMBOL(blk_pre_runtime_resume);
  */
 void blk_post_runtime_resume(struct request_queue *q, int err)
 {
+<<<<<<< HEAD
 	if (!q->dev)
 		return;
 
+=======
+>>>>>>> 512ca3c... stock
 	spin_lock_irq(q->queue_lock);
 	if (!err) {
 		q->rpm_status = RPM_ACTIVE;

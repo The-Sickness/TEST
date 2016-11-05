@@ -116,7 +116,10 @@ EXPORT_SYMBOL_GPL(ehci_cf_port_reset_rwsem);
 #define HUB_DEBOUNCE_STEP	  25
 #define HUB_DEBOUNCE_STABLE	 100
 
+<<<<<<< HEAD
 static void hub_release(struct kref *kref);
+=======
+>>>>>>> 512ca3c... stock
 static int usb_reset_and_verify_device(struct usb_device *udev);
 
 static inline char *portspeed(struct usb_hub *hub, int portstatus)
@@ -141,10 +144,13 @@ struct usb_hub *usb_hub_to_struct_hub(struct usb_device *hdev)
 
 static int usb_device_supports_lpm(struct usb_device *udev)
 {
+<<<<<<< HEAD
 	/* Some devices have trouble with LPM */
 	if (udev->quirks & USB_QUIRK_NO_LPM)
 		return 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	/* USB 2.1 (and greater) devices indicate LPM support through
 	 * their USB 2.0 Extended Capabilities BOS descriptor.
 	 */
@@ -3330,10 +3336,17 @@ int usb_port_resume(struct usb_device *udev, pm_message_t msg)
 		dev_dbg(hub->intfdev, "can't resume port %d, status %d\n",
 				port1, status);
 	} else {
+<<<<<<< HEAD
 		/* drive resume for USB_RESUME_TIMEOUT msec */
 		dev_dbg(&udev->dev, "usb %sresume\n",
 				(PMSG_IS_AUTO(msg) ? "auto-" : ""));
 		msleep(USB_RESUME_TIMEOUT);
+=======
+		/* drive resume for at least 20 msec */
+		dev_dbg(&udev->dev, "usb %sresume\n",
+				(PMSG_IS_AUTO(msg) ? "auto-" : ""));
+		msleep(25);
+>>>>>>> 512ca3c... stock
 
 		/* Virtual root hubs can trigger on GET_PORT_STATUS to
 		 * stop resume signaling.  Then finish the resume
@@ -4339,8 +4352,11 @@ hub_port_init (struct usb_hub *hub, struct usb_device *udev, int port1,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	usb_detect_quirks(udev);
 
+=======
+>>>>>>> 512ca3c... stock
 	if (udev->wusb == 0 && le16_to_cpu(udev->descriptor.bcdUSB) >= 0x0201) {
 		retval = usb_get_bos_descriptor(udev);
 		if (!retval) {
@@ -4596,6 +4612,10 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
 		if (status < 0)
 			goto loop;
 
+<<<<<<< HEAD
+=======
+		usb_detect_quirks(udev);
+>>>>>>> 512ca3c... stock
 		if (udev->quirks & USB_QUIRK_DELAY_INIT)
 			msleep(1000);
 

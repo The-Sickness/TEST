@@ -230,7 +230,11 @@ again:
 		 * completed. There is no conflict as we hold the lock until
 		 * the timer is enqueued.
 		 */
+<<<<<<< HEAD
 		if (unlikely(hrtimer_callback_running_relaxed(timer)))
+=======
+		if (unlikely(hrtimer_callback_running(timer)))
+>>>>>>> 512ca3c... stock
 			return base;
 
 		/* See the comment in lock_timer_base() */
@@ -333,7 +337,11 @@ EXPORT_SYMBOL_GPL(ktime_sub_ns);
 /*
  * Divide a ktime value by a nanosecond value
  */
+<<<<<<< HEAD
 u64 __ktime_divns(const ktime_t kt, s64 div)
+=======
+u64 ktime_divns(const ktime_t kt, s64 div)
+>>>>>>> 512ca3c... stock
 {
 	u64 dclc;
 	int sft = 0;
@@ -349,7 +357,10 @@ u64 __ktime_divns(const ktime_t kt, s64 div)
 
 	return dclc;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(__ktime_divns);
+=======
+>>>>>>> 512ca3c... stock
 #endif /* BITS_PER_LONG >= 64 */
 
 /*
@@ -633,7 +644,11 @@ static int hrtimer_reprogram(struct hrtimer *timer,
 	 * reprogramming is handled either by the softirq, which called the
 	 * callback or at the end of the hrtimer_interrupt.
 	 */
+<<<<<<< HEAD
 	if (hrtimer_callback_running_relaxed(timer))
+=======
+	if (hrtimer_callback_running(timer))
+>>>>>>> 512ca3c... stock
 		return 0;
 
 	/*
@@ -869,9 +884,12 @@ u64 hrtimer_forward(struct hrtimer *timer, ktime_t now, ktime_t interval)
 	if (delta.tv64 < 0)
 		return 0;
 
+<<<<<<< HEAD
 	if (WARN_ON(timer->state & HRTIMER_STATE_ENQUEUED))
 		return 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (interval.tv64 < timer->base->resolution.tv64)
 		interval.tv64 = timer->base->resolution.tv64;
 
@@ -1110,7 +1128,11 @@ int hrtimer_try_to_cancel(struct hrtimer *timer)
 
 	base = lock_hrtimer_base(timer, &flags);
 
+<<<<<<< HEAD
 	if (!hrtimer_callback_running_relaxed(timer))
+=======
+	if (!hrtimer_callback_running(timer))
+>>>>>>> 512ca3c... stock
 		ret = remove_hrtimer(timer, base);
 
 	unlock_hrtimer_base(timer, &flags);
@@ -1288,6 +1310,7 @@ static void __run_hrtimer(struct hrtimer *timer, ktime_t *now)
 	 * Note: We clear the CALLBACK bit after enqueue_hrtimer and
 	 * we do not reprogramm the event hardware. Happens either in
 	 * hrtimer_start_range_ns() or in hrtimer_interrupt()
+<<<<<<< HEAD
 	 *
 	 * Note: Because we dropped the cpu_base->lock above,
 	 * hrtimer_start_range_ns() can have popped in and enqueued the timer
@@ -1296,6 +1319,13 @@ static void __run_hrtimer(struct hrtimer *timer, ktime_t *now)
 	if (restart != HRTIMER_NORESTART &&
 	    !(timer->state & HRTIMER_STATE_ENQUEUED))
 		enqueue_hrtimer(timer, base);
+=======
+	 */
+	if (restart != HRTIMER_NORESTART) {
+		BUG_ON(timer->state != HRTIMER_STATE_CALLBACK);
+		enqueue_hrtimer(timer, base);
+	}
+>>>>>>> 512ca3c... stock
 
 	WARN_ON_ONCE(!(timer->state & HRTIMER_STATE_CALLBACK));
 
@@ -1711,7 +1741,11 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
 
 	while ((node = timerqueue_getnext(&old_base->active))) {
 		timer = container_of(node, struct hrtimer, node);
+<<<<<<< HEAD
 		BUG_ON(hrtimer_callback_running_relaxed(timer));
+=======
+		BUG_ON(hrtimer_callback_running(timer));
+>>>>>>> 512ca3c... stock
 		debug_deactivate(timer);
 
 		/*

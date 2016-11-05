@@ -1176,6 +1176,7 @@ static struct ctl_table vm_table[] = {
 		.mode		= 0644,
 		.proc_handler	= dirty_writeback_centisecs_handler,
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_PAGE_WRITEBACK
  	{
  		.procname	= "dynamic_dirty_writeback",
@@ -1203,6 +1204,8 @@ static struct ctl_table vm_table[] = {
  		.extra1		= &zero,
  	},
 #endif
+=======
+>>>>>>> 512ca3c... stock
 	{
 		.procname	= "dirty_expire_centisecs",
 		.data		= &dirty_expire_interval,
@@ -1683,6 +1686,7 @@ static struct ctl_table fs_table[] = {
 		.proc_handler	= &pipe_proc_fn,
 		.extra1		= &pipe_min_size,
 	},
+<<<<<<< HEAD
 	{
 		.procname	= "pipe-user-pages-hard",
 		.data		= &pipe_user_pages_hard,
@@ -1697,6 +1701,8 @@ static struct ctl_table fs_table[] = {
 		.mode		= 0644,
 		.proc_handler	= proc_doulongvec_minmax,
 	},
+=======
+>>>>>>> 512ca3c... stock
 	{ }
 };
 

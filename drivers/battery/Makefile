@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 obj-$(CONFIG_BATTERY_SAMSUNG)	+= sec_battery.o sec_control.o
+=======
+obj-$(CONFIG_BATTERY_SAMSUNG)	+= sec_battery.o
+>>>>>>> 512ca3c... stock
 obj-$(CONFIG_OF)		+= sec_adc.o
 obj-$(CONFIG_FUELGAUGE_MAX17042)	+= max17042_fuelgauge.o sec_fuelgauge.o
 obj-$(CONFIG_FUELGAUGE_MAX17048)	+= max17048_fuelgauge.o sec_fuelgauge.o

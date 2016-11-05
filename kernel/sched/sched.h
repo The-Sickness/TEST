@@ -10,9 +10,12 @@
 #include "cpupri.h"
 #include "cpuacct.h"
 
+<<<<<<< HEAD
 /* task_struct::on_rq states: */
 #define TASK_ON_RQ_MIGRATING	2
 
+=======
+>>>>>>> 512ca3c... stock
 extern __read_mostly int scheduler_running;
 
 /*
@@ -276,7 +279,11 @@ struct cfs_rq {
 	 * This allows for the description of both thread and group usage (in
 	 * the FAIR_GROUP_SCHED case).
 	 */
+<<<<<<< HEAD
 	unsigned long runnable_load_avg, blocked_load_avg;
+=======
+	u64 runnable_load_avg, blocked_load_avg;
+>>>>>>> 512ca3c... stock
 	atomic64_t decay_counter, removed_load;
 	u64 last_decay;
 #endif /* CONFIG_FAIR_GROUP_SCHED */
@@ -417,11 +424,14 @@ struct rq {
 	unsigned long last_sched_tick;
 #endif
 	int skip_clock_update;
+<<<<<<< HEAD
 	
 	/* time-based average load */
 	u64 nr_last_stamp;
 	unsigned int ave_nr_running;
 	seqcount_t ave_seqcnt;
+=======
+>>>>>>> 512ca3c... stock
 
 	/* capture load from *all* tasks on this cpu: */
 	struct load_weight load;
@@ -817,11 +827,14 @@ static inline int task_running(struct rq *rq, struct task_struct *p)
 }
 
 
+<<<<<<< HEAD
 static inline int task_on_rq_migrating(struct task_struct *p)
 {
 	return p->on_rq == TASK_ON_RQ_MIGRATING;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 #ifndef prepare_arch_switch
 # define prepare_arch_switch(next)	do { } while (0)
 #endif
@@ -1094,6 +1107,7 @@ static inline u64 steal_ticks(u64 steal)
 }
 #endif
 
+<<<<<<< HEAD
 /* 27 ~= 134217728ns = 134.2ms
  * 26 ~=  67108864ns =  67.1ms
  * 25 ~=  33554432ns =  33.5ms
@@ -1127,6 +1141,11 @@ static inline void inc_nr_running(struct rq *rq)
 	rq->nr_last_stamp = rq->clock_task;
 	rq->nr_running++;
 	write_seqcount_end(&rq->ave_seqcnt);
+=======
+static inline void inc_nr_running(struct rq *rq)
+{
+	rq->nr_running++;
+>>>>>>> 512ca3c... stock
 
 #ifdef CONFIG_NO_HZ_FULL
 	if (rq->nr_running == 2) {
@@ -1141,11 +1160,15 @@ static inline void inc_nr_running(struct rq *rq)
 
 static inline void dec_nr_running(struct rq *rq)
 {
+<<<<<<< HEAD
 	write_seqcount_begin(&rq->ave_seqcnt);
 	rq->ave_nr_running = do_avg_nr_running(rq);
 	rq->nr_last_stamp = rq->clock_task;
 	rq->nr_running--;
 	write_seqcount_end(&rq->ave_seqcnt);
+=======
+	rq->nr_running--;
+>>>>>>> 512ca3c... stock
 }
 
 static inline void rq_last_tick_reset(struct rq *rq)
@@ -1212,6 +1235,7 @@ static inline void sched_avg_update(struct rq *rq) { }
 
 extern void start_bandwidth_timer(struct hrtimer *period_timer, ktime_t period);
 
+<<<<<<< HEAD
 /*
  * __task_rq_lock - lock the rq @p resides on.
  */
@@ -1288,6 +1312,8 @@ task_rq_unlock(struct rq *rq, struct task_struct *p, unsigned long *flags)
 	raw_spin_unlock_irqrestore(&p->pi_lock, *flags);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_SMP
 #ifdef CONFIG_PREEMPT
 

@@ -646,7 +646,11 @@ static int persistent_prepare_exception(struct dm_exception_store *store,
 }
 
 static void persistent_commit_exception(struct dm_exception_store *store,
+<<<<<<< HEAD
 					struct dm_exception *e, int valid,
+=======
+					struct dm_exception *e,
+>>>>>>> 512ca3c... stock
 					void (*callback) (void *, int success),
 					void *callback_context)
 {
@@ -655,9 +659,12 @@ static void persistent_commit_exception(struct dm_exception_store *store,
 	struct core_exception ce;
 	struct commit_callback *cb;
 
+<<<<<<< HEAD
 	if (!valid)
 		ps->valid = 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	ce.old_chunk = e->old_chunk;
 	ce.new_chunk = e->new_chunk;
 	write_exception(ps, ps->current_committed++, &ce);

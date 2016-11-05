@@ -674,6 +674,10 @@ static int do_dentry_open(struct file *f,
 	}
 
 	f->f_mapping = inode->i_mapping;
+<<<<<<< HEAD
+=======
+	file_sb_list_add(f, inode->i_sb);
+>>>>>>> 512ca3c... stock
 
 	if (unlikely(f->f_mode & FMODE_PATH)) {
 		f->f_op = &empty_fops;
@@ -708,6 +712,10 @@ static int do_dentry_open(struct file *f,
 
 cleanup_all:
 	fops_put(f->f_op);
+<<<<<<< HEAD
+=======
+	file_sb_list_del(f);
+>>>>>>> 512ca3c... stock
 	if (f->f_mode & FMODE_WRITE) {
 		if (!special_file(inode->i_mode)) {
 			/*

@@ -291,7 +291,10 @@ retry:
 			 * starvation.
 			 */
 			mm_flags &= ~FAULT_FLAG_ALLOW_RETRY;
+<<<<<<< HEAD
 			mm_flags |= FAULT_FLAG_TRIED;
+=======
+>>>>>>> 512ca3c... stock
 			goto retry;
 		}
 	}

@@ -26,7 +26,10 @@
 #include <linux/syscalls.h>
 #include <linux/uaccess.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/arm-smccc.h>
+=======
+>>>>>>> 512ca3c... stock
 
 #include <asm/checksum.h>
 
@@ -66,7 +69,10 @@ EXPORT_SYMBOL(test_and_change_bit);
 #ifdef CONFIG_FUNCTION_TRACER
 EXPORT_SYMBOL(_mcount);
 #endif
+<<<<<<< HEAD
 
 	/* arm-smccc */
 EXPORT_SYMBOL(arm_smccc_smc);
 EXPORT_SYMBOL(arm_smccc_hvc);
+=======
+>>>>>>> 512ca3c... stock

@@ -592,11 +592,23 @@ static int pci_pm_prepare(struct device *dev)
 	int error = 0;
 
 	/*
+<<<<<<< HEAD
 	 * Devices having power.ignore_children set may still be necessary for
 	 * suspending their children in the next phase of device suspend.
 	 */
 	if (dev->power.ignore_children)
 		pm_runtime_resume(dev);
+=======
+	 * PCI devices suspended at run time need to be resumed at this
+	 * point, because in general it is necessary to reconfigure them for
+	 * system suspend.  Namely, if the device is supposed to wake up the
+	 * system from the sleep state, we may need to reconfigure it for this
+	 * purpose.  In turn, if the device is not supposed to wake up the
+	 * system from the sleep state, we'll have to prevent it from signaling
+	 * wake-up.
+	 */
+	pm_runtime_resume(dev);
+>>>>>>> 512ca3c... stock
 
 	if (drv && drv->pm && drv->pm->prepare)
 		error = drv->pm->prepare(dev);
@@ -634,6 +646,7 @@ static int pci_pm_suspend(struct device *dev)
 		goto Fixup;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * PCI devices suspended at run time need to be resumed at this point,
 	 * because in general it is necessary to reconfigure them for system
@@ -644,6 +657,8 @@ static int pci_pm_suspend(struct device *dev)
 	 */
 	pm_runtime_resume(dev);
 
+=======
+>>>>>>> 512ca3c... stock
 	pci_dev->state_saved = false;
 	if (pm->suspend) {
 		pci_power_t prev = pci_dev->current_state;
@@ -791,6 +806,7 @@ static int pci_pm_freeze(struct device *dev)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * This used to be done in pci_pm_prepare() for all devices and some
 	 * drivers may depend on it, so do it here.  Ideally, runtime-suspended
@@ -799,6 +815,8 @@ static int pci_pm_freeze(struct device *dev)
 	 */
 	pm_runtime_resume(dev);
 
+=======
+>>>>>>> 512ca3c... stock
 	pci_dev->state_saved = false;
 	if (pm->freeze) {
 		int error;
@@ -888,9 +906,12 @@ static int pci_pm_poweroff(struct device *dev)
 		goto Fixup;
 	}
 
+<<<<<<< HEAD
 	/* The reason to do that is the same as in pci_pm_suspend(). */
 	pm_runtime_resume(dev);
 
+=======
+>>>>>>> 512ca3c... stock
 	pci_dev->state_saved = false;
 	if (pm->poweroff) {
 		int error;
@@ -1287,7 +1308,11 @@ static int pci_uevent(struct device *dev, struct kobj_uevent_env *env)
 	if (add_uevent_var(env, "PCI_SLOT_NAME=%s", pci_name(pdev)))
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	if (add_uevent_var(env, "MODALIAS=pci:v%08Xd%08Xsv%08Xsd%08Xbc%02Xsc%02Xi%02X",
+=======
+	if (add_uevent_var(env, "MODALIAS=pci:v%08Xd%08Xsv%08Xsd%08Xbc%02Xsc%02Xi%02x",
+>>>>>>> 512ca3c... stock
 			   pdev->vendor, pdev->device,
 			   pdev->subsystem_vendor, pdev->subsystem_device,
 			   (u8)(pdev->class >> 16), (u8)(pdev->class >> 8),

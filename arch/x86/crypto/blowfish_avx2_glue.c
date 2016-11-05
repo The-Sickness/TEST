@@ -581,5 +581,10 @@ module_exit(fini);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Blowfish Cipher Algorithm, AVX2 optimized");
+<<<<<<< HEAD
 MODULE_ALIAS_CRYPTO("blowfish");
 MODULE_ALIAS_CRYPTO("blowfish-asm");
+=======
+MODULE_ALIAS("blowfish");
+MODULE_ALIAS("blowfish-asm");
+>>>>>>> 512ca3c... stock

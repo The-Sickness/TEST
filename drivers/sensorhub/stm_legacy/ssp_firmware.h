@@ -26,7 +26,11 @@
 #elif defined (CONFIG_SENSORS_SSP_ROYCELTE) /* Royce */
 #define SSP_FIRMWARE_REVISION_STM	15070900
 #else /* Zero */
+<<<<<<< HEAD
 #define SSP_FIRMWARE_REVISION_STM	16021800
+=======
+#define SSP_FIRMWARE_REVISION_STM	16050600
+>>>>>>> 512ca3c... stock
 #endif
 
 #define SSP_INVALID_REVISION            99999

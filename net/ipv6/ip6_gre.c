@@ -359,7 +359,10 @@ static void ip6gre_tunnel_uninit(struct net_device *dev)
 	struct ip6gre_net *ign = net_generic(net, ip6gre_net_id);
 
 	ip6gre_tunnel_unlink(ign, netdev_priv(dev));
+<<<<<<< HEAD
 	ip6_tnl_dst_reset(netdev_priv(dev));
+=======
+>>>>>>> 512ca3c... stock
 	dev_put(dev);
 }
 
@@ -513,11 +516,19 @@ static int ip6gre_rcv(struct sk_buff *skb)
 
 		skb->protocol = gre_proto;
 		/* WCCP version 1 and 2 protocol decoding.
+<<<<<<< HEAD
 		 * - Change protocol to IPv6
 		 * - When dealing with WCCPv2, Skip extra 4 bytes in GRE header
 		 */
 		if (flags == 0 && gre_proto == htons(ETH_P_WCCP)) {
 			skb->protocol = htons(ETH_P_IPV6);
+=======
+		 * - Change protocol to IP
+		 * - When dealing with WCCPv2, Skip extra 4 bytes in GRE header
+		 */
+		if (flags == 0 && gre_proto == htons(ETH_P_WCCP)) {
+			skb->protocol = htons(ETH_P_IP);
+>>>>>>> 512ca3c... stock
 			if ((*(h + offset) & 0xF0) != 0x40)
 				offset += 4;
 		}
@@ -1541,11 +1552,21 @@ static int ip6gre_changelink(struct net_device *dev, struct nlattr *tb[],
 			return -EEXIST;
 	} else {
 		t = nt;
+<<<<<<< HEAD
 	}
 
 	ip6gre_tunnel_unlink(ign, t);
 	ip6gre_tnl_change(t, &p, !tb[IFLA_MTU]);
 	ip6gre_tunnel_link(ign, t);
+=======
+
+		ip6gre_tunnel_unlink(ign, t);
+		ip6gre_tnl_change(t, &p, !tb[IFLA_MTU]);
+		ip6gre_tunnel_link(ign, t);
+		netdev_state_change(dev);
+	}
+
+>>>>>>> 512ca3c... stock
 	return 0;
 }
 

@@ -203,6 +203,7 @@ static inline int phy_find_valid(int idx, u32 features)
 }
 
 /**
+<<<<<<< HEAD
  * phy_check_valid - check if there is a valid PHY setting which matches
  *		     speed, duplex, and feature mask
  * @speed: speed to match
@@ -222,6 +223,8 @@ static inline bool phy_check_valid(int speed, int duplex, u32 features)
 }
 
 /**
+=======
+>>>>>>> 512ca3c... stock
  * phy_sanitize_settings - make sure the PHY is set to supported speed and duplex
  * @phydev: the target phy_device struct
  *
@@ -1023,17 +1026,28 @@ int phy_init_eee(struct phy_device *phydev, bool clk_stop_enable)
 
 	/* According to 802.3az,the EEE is supported only in full duplex-mode.
 	 * Also EEE feature is active when core is operating with MII, GMII
+<<<<<<< HEAD
 	 * or RGMII (all kinds). Internal PHYs are also allowed to proceed and
 	 * should return an error if they do not support EEE.
+=======
+	 * or RGMII.
+>>>>>>> 512ca3c... stock
 	 */
 	if ((phydev->duplex == DUPLEX_FULL) &&
 	    ((phydev->interface == PHY_INTERFACE_MODE_MII) ||
 	    (phydev->interface == PHY_INTERFACE_MODE_GMII) ||
+<<<<<<< HEAD
 	     (phydev->interface >= PHY_INTERFACE_MODE_RGMII &&
 	      phydev->interface <= PHY_INTERFACE_MODE_RGMII_TXID))) {
 		int eee_lp, eee_cap, eee_adv;
 		u32 lp, cap, adv;
 		int status;
+=======
+	    (phydev->interface == PHY_INTERFACE_MODE_RGMII))) {
+		int eee_lp, eee_cap, eee_adv;
+		u32 lp, cap, adv;
+		int idx, status;
+>>>>>>> 512ca3c... stock
 
 		/* Read phy status to properly get the right settings */
 		status = phy_read_status(phydev);
@@ -1065,7 +1079,12 @@ int phy_init_eee(struct phy_device *phydev, bool clk_stop_enable)
 
 		adv = mmd_eee_adv_to_ethtool_adv_t(eee_adv);
 		lp = mmd_eee_adv_to_ethtool_adv_t(eee_lp);
+<<<<<<< HEAD
 		if (!phy_check_valid(phydev->speed, phydev->duplex, lp & adv))
+=======
+		idx = phy_find_setting(phydev->speed, phydev->duplex);
+		if (!(lp & adv & settings[idx].setting))
+>>>>>>> 512ca3c... stock
 			goto eee_exit;
 
 		if (clk_stop_enable) {

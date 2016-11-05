@@ -993,7 +993,10 @@ static ssize_t fuse_fill_write_pages(struct fuse_req *req,
 
 		mark_page_accessed(page);
 
+<<<<<<< HEAD
 		iov_iter_advance(ii, tmp);
+=======
+>>>>>>> 512ca3c... stock
 		if (!tmp) {
 			unlock_page(page);
 			page_cache_release(page);
@@ -1006,6 +1009,10 @@ static ssize_t fuse_fill_write_pages(struct fuse_req *req,
 		req->page_descs[req->num_pages].length = tmp;
 		req->num_pages++;
 
+<<<<<<< HEAD
+=======
+		iov_iter_advance(ii, tmp);
+>>>>>>> 512ca3c... stock
 		count += tmp;
 		pos += tmp;
 		offset += tmp;

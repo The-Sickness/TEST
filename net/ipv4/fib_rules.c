@@ -62,10 +62,13 @@ int __fib_lookup(struct net *net, struct flowi4 *flp, struct fib_result *res)
 	else
 		res->tclassid = 0;
 #endif
+<<<<<<< HEAD
 
 	if (err == -ESRCH)
 		err = -ENETUNREACH;
 
+=======
+>>>>>>> 512ca3c... stock
 	return err;
 }
 EXPORT_SYMBOL_GPL(__fib_lookup);

@@ -589,4 +589,8 @@ module_exit(twofish_exit);
 
 MODULE_DESCRIPTION("Twofish Cipher Algorithm, AVX optimized");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
 MODULE_ALIAS_CRYPTO("twofish");
+=======
+MODULE_ALIAS("twofish");
+>>>>>>> 512ca3c... stock

@@ -151,7 +151,12 @@ int copy_siginfo_to_user32(compat_siginfo_t __user *to, siginfo_t *from)
 	case __SI_TIMER:
 		 err |= __put_user(from->si_tid, &to->si_tid);
 		 err |= __put_user(from->si_overrun, &to->si_overrun);
+<<<<<<< HEAD
 		 err |= __put_user(from->si_int, &to->si_int);
+=======
+		 err |= __put_user((compat_uptr_t)(unsigned long)from->si_ptr,
+				   &to->si_ptr);
+>>>>>>> 512ca3c... stock
 		break;
 	case __SI_POLL:
 		err |= __put_user(from->si_band, &to->si_band);
@@ -165,8 +170,12 @@ int copy_siginfo_to_user32(compat_siginfo_t __user *to, siginfo_t *from)
 		 * Other callers might not initialize the si_lsb field,
 		 * so check explicitely for the right codes here.
 		 */
+<<<<<<< HEAD
 		if (from->si_signo == SIGBUS &&
 		    (from->si_code == BUS_MCEERR_AR || from->si_code == BUS_MCEERR_AO))
+=======
+		if (from->si_code == BUS_MCEERR_AR || from->si_code == BUS_MCEERR_AO)
+>>>>>>> 512ca3c... stock
 			err |= __put_user(from->si_addr_lsb, &to->si_addr_lsb);
 #endif
 		break;
@@ -181,7 +190,11 @@ int copy_siginfo_to_user32(compat_siginfo_t __user *to, siginfo_t *from)
 	case __SI_MESGQ: /* But this is */
 		err |= __put_user(from->si_pid, &to->si_pid);
 		err |= __put_user(from->si_uid, &to->si_uid);
+<<<<<<< HEAD
 		err |= __put_user(from->si_int, &to->si_int);
+=======
+		err |= __put_user((compat_uptr_t)(unsigned long)from->si_ptr, &to->si_ptr);
+>>>>>>> 512ca3c... stock
 		break;
 #ifdef __ARCH_SIGSYS
 	case __SI_SYS:
@@ -201,6 +214,11 @@ int copy_siginfo_to_user32(compat_siginfo_t __user *to, siginfo_t *from)
 
 int copy_siginfo_from_user32(siginfo_t *to, compat_siginfo_t __user *from)
 {
+<<<<<<< HEAD
+=======
+	memset(to, 0, sizeof *to);
+
+>>>>>>> 512ca3c... stock
 	if (copy_from_user(to, from, __ARCH_SI_PREAMBLE_SIZE) ||
 	    copy_from_user(to->_sifields._pad,
 			   from->_sifields._pad, SI_PAD_SIZE))
@@ -211,6 +229,7 @@ int copy_siginfo_from_user32(siginfo_t *to, compat_siginfo_t __user *from)
 
 /*
  * VFP save/restore code.
+<<<<<<< HEAD
  *
  * We have to be careful with endianness, since the fpsimd context-switch
  * code operates on 128-bit (Q) register values whereas the compat ABI
@@ -230,13 +249,20 @@ union __fpsimd_vreg {
 	};
 };
 
+=======
+ */
+>>>>>>> 512ca3c... stock
 static int compat_preserve_vfp_context(struct compat_vfp_sigframe __user *frame)
 {
 	struct fpsimd_state *fpsimd = &current->thread.fpsimd_state;
 	compat_ulong_t magic = VFP_MAGIC;
 	compat_ulong_t size = VFP_STORAGE_SIZE;
 	compat_ulong_t fpscr, fpexc;
+<<<<<<< HEAD
 	int i, err = 0;
+=======
+	int err = 0;
+>>>>>>> 512ca3c... stock
 
 	/*
 	 * Save the hardware registers to the fpsimd_state structure.
@@ -252,6 +278,7 @@ static int compat_preserve_vfp_context(struct compat_vfp_sigframe __user *frame)
 	/*
 	 * Now copy the FP registers. Since the registers are packed,
 	 * we can copy the prefix we want (V0-V15) as it is.
+<<<<<<< HEAD
 	 */
 	for (i = 0; i < ARRAY_SIZE(frame->ufp.fpregs); i += 2) {
 		union __fpsimd_vreg vreg = {
@@ -261,6 +288,12 @@ static int compat_preserve_vfp_context(struct compat_vfp_sigframe __user *frame)
 		__put_user_error(vreg.lo, &frame->ufp.fpregs[i], err);
 		__put_user_error(vreg.hi, &frame->ufp.fpregs[i + 1], err);
 	}
+=======
+	 * FIXME: Won't work if big endian.
+	 */
+	err |= __copy_to_user(&frame->ufp.fpregs, fpsimd->vregs,
+			      sizeof(frame->ufp.fpregs));
+>>>>>>> 512ca3c... stock
 
 	/* Create an AArch32 fpscr from the fpsr and the fpcr. */
 	fpscr = (fpsimd->fpsr & VFP_FPSCR_STAT_MASK) |
@@ -285,7 +318,11 @@ static int compat_restore_vfp_context(struct compat_vfp_sigframe __user *frame)
 	compat_ulong_t magic = VFP_MAGIC;
 	compat_ulong_t size = VFP_STORAGE_SIZE;
 	compat_ulong_t fpscr;
+<<<<<<< HEAD
 	int i, err = 0;
+=======
+	int err = 0;
+>>>>>>> 512ca3c... stock
 
 	__get_user_error(magic, &frame->magic, err);
 	__get_user_error(size, &frame->size, err);
@@ -295,6 +332,7 @@ static int compat_restore_vfp_context(struct compat_vfp_sigframe __user *frame)
 	if (magic != VFP_MAGIC || size != VFP_STORAGE_SIZE)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* Copy the FP registers into the start of the fpsimd_state. */
 	for (i = 0; i < ARRAY_SIZE(frame->ufp.fpregs); i += 2) {
 		union __fpsimd_vreg vreg;
@@ -303,6 +341,14 @@ static int compat_restore_vfp_context(struct compat_vfp_sigframe __user *frame)
 		__get_user_error(vreg.hi, &frame->ufp.fpregs[i + 1], err);
 		fpsimd.vregs[i >> 1] = vreg.raw;
 	}
+=======
+	/*
+	 * Copy the FP registers into the start of the fpsimd_state.
+	 * FIXME: Won't work if big endian.
+	 */
+	err |= __copy_from_user(fpsimd.vregs, frame->ufp.fpregs,
+				sizeof(frame->ufp.fpregs));
+>>>>>>> 512ca3c... stock
 
 	/* Extract the fpsr and the fpcr from the fpscr */
 	__get_user_error(fpscr, &frame->ufp.fpscr, err);

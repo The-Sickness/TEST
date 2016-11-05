@@ -1086,6 +1086,7 @@ int device_add(struct device *dev)
 	error = dpm_sysfs_add(dev);
 	if (error)
 		goto DPMError;
+<<<<<<< HEAD
 	if ((dev->pm_domain) || (dev->type && dev->type->pm)
 		|| (dev->class && (dev->class->pm || dev->class->resume))
 		|| (dev->bus && (dev->bus->pm || dev->bus->resume)) ||
@@ -1093,6 +1094,9 @@ int device_add(struct device *dev)
 		device_pm_add(dev);
 	}
 
+=======
+	device_pm_add(dev);
+>>>>>>> 512ca3c... stock
 
 	/* Notify clients of device addition.  This call must come
 	 * after dpm_sysfs_add() and before kobject_uevent().

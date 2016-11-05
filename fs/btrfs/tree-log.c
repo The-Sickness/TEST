@@ -943,7 +943,11 @@ again:
 		base = btrfs_item_ptr_offset(leaf, path->slots[0]);
 
 		while (cur_offset < item_size) {
+<<<<<<< HEAD
 			extref = (struct btrfs_inode_extref *)(base + cur_offset);
+=======
+			extref = (struct btrfs_inode_extref *)base + cur_offset;
+>>>>>>> 512ca3c... stock
 
 			victim_name_len = btrfs_inode_extref_name_len(leaf, extref);
 

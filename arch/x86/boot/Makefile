@@ -168,9 +168,12 @@ isoimage: $(obj)/bzImage
 	for i in lib lib64 share end ; do \
 		if [ -f /usr/$$i/syslinux/isolinux.bin ] ; then \
 			cp /usr/$$i/syslinux/isolinux.bin $(obj)/isoimage ; \
+<<<<<<< HEAD
 			if [ -f /usr/$$i/syslinux/ldlinux.c32 ]; then \
 				cp /usr/$$i/syslinux/ldlinux.c32 $(obj)/isoimage ; \
 			fi ; \
+=======
+>>>>>>> 512ca3c... stock
 			break ; \
 		fi ; \
 		if [ $$i = end ] ; then exit 1 ; fi ; \

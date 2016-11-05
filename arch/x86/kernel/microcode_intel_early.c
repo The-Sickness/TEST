@@ -321,7 +321,11 @@ get_matching_model_microcode(int cpu, unsigned long start,
 	unsigned int mc_saved_count = mc_saved_data->mc_saved_count;
 	int i;
 
+<<<<<<< HEAD
 	while (leftover && mc_saved_count < ARRAY_SIZE(mc_saved_tmp)) {
+=======
+	while (leftover) {
+>>>>>>> 512ca3c... stock
 		mc_header = (struct microcode_header_intel *)ucode_ptr;
 
 		mc_size = get_totalsize(mc_header);

@@ -541,7 +541,11 @@ struct kvm_arch {
 	struct kvm_pic *vpic;
 	struct kvm_ioapic *vioapic;
 	struct kvm_pit *vpit;
+<<<<<<< HEAD
 	atomic_t vapics_in_nmi_mode;
+=======
+	int vapics_in_nmi_mode;
+>>>>>>> 512ca3c... stock
 	struct mutex apic_map_lock;
 	struct kvm_apic_map *apic_map;
 

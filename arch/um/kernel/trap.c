@@ -80,8 +80,11 @@ good_area:
 		if (unlikely(fault & VM_FAULT_ERROR)) {
 			if (fault & VM_FAULT_OOM) {
 				goto out_of_memory;
+<<<<<<< HEAD
 			} else if (fault & VM_FAULT_SIGSEGV) {
 				goto out;
+=======
+>>>>>>> 512ca3c... stock
 			} else if (fault & VM_FAULT_SIGBUS) {
 				err = -EACCES;
 				goto out;

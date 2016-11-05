@@ -1701,8 +1701,12 @@ static int resize_stripes(struct r5conf *conf, int newsize)
 
 	conf->slab_cache = sc;
 	conf->active_name = 1-conf->active_name;
+<<<<<<< HEAD
 	if (!err)
 		conf->pool_size = newsize;
+=======
+	conf->pool_size = newsize;
+>>>>>>> 512ca3c... stock
 	return err;
 }
 
@@ -2679,8 +2683,12 @@ static int fetch_block(struct stripe_head *sh, struct stripe_head_state *s,
 	     (s->failed >= 2 && fdev[1]->toread) ||
 	     (sh->raid_conf->level <= 5 && s->failed && fdev[0]->towrite &&
 	      !test_bit(R5_OVERWRITE, &fdev[0]->flags)) ||
+<<<<<<< HEAD
 	     ((sh->raid_conf->level == 6 || sh->sector >= sh->raid_conf->mddev->recovery_cp)
 	      && s->failed && s->to_write))) {
+=======
+	     (sh->raid_conf->level == 6 && s->failed && s->to_write))) {
+>>>>>>> 512ca3c... stock
 		/* we would like to get this block, possibly by computing it,
 		 * otherwise read it if the backing disk is insync
 		 */
@@ -2854,8 +2862,12 @@ static void handle_stripe_dirtying(struct r5conf *conf,
 	 * generate correct data from the parity.
 	 */
 	if (conf->max_degraded == 2 ||
+<<<<<<< HEAD
 	    (recovery_cp < MaxSector && sh->sector >= recovery_cp &&
 	     s->failed == 0)) {
+=======
+	    (recovery_cp < MaxSector && sh->sector >= recovery_cp)) {
+>>>>>>> 512ca3c... stock
 		/* Calculate the real rcw later - for now make it
 		 * look like rcw is cheaper
 		 */

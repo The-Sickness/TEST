@@ -47,8 +47,11 @@
 #define SMC_DRM_SECMEM_REGION_PROT	0x8100000B
 #define MC_FC_SET_CFW_PROT	0xC20018A0
 #define MC_FC_DRM_SET_CFW_PROT	0x10000000
+<<<<<<< HEAD
 #define SMC_DRM_SECBUF_CFW_PROT		(0x82002030)
 #define SMC_DRM_SECBUF_CFW_UNPROT	(0x82002031)
+=======
+>>>>>>> 512ca3c... stock
 
 /* SiP & OEM fastcall ID base */
 #define SMC_SIP_BASE		0x81000000
@@ -140,6 +143,7 @@
 
 #ifndef __ASSEMBLY__
 extern int _exynos_smc(unsigned long cmd, unsigned long arg1, unsigned long arg2, unsigned long arg3);
+<<<<<<< HEAD
 
 /* Return value from DRM LDFW */
 enum drmdrv_result_t {
@@ -214,6 +218,8 @@ enum drmdrv_result_t {
 };
 
 extern int __exynos_smc(unsigned long cmd, unsigned long arg1, unsigned long arg2, unsigned long arg3);
+=======
+>>>>>>> 512ca3c... stock
 extern int exynos_smc(unsigned long cmd, unsigned long arg1, unsigned long arg2, unsigned long arg3);
 extern int exynos_smc_readsfr(unsigned long addr, unsigned long* val);
 #endif

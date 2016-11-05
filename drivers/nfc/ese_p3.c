@@ -129,9 +129,12 @@ struct p3_dev {
 	unsigned char enable_poll_mode; /* enable the poll mode */
 	spinlock_t irq_enabled_lock; /*spin lock for read irq */
 
+<<<<<<< HEAD
 	unsigned char *null_buffer;
 	unsigned char *buffer;
 
+=======
+>>>>>>> 512ca3c... stock
 	bool tz_mode;
 	spinlock_t ese_spi_lock;
 
@@ -501,6 +504,11 @@ static int p3_xfer(struct p3_dev *p3_device,
 	int status = 0;
 	struct spi_message m;
 	struct spi_transfer t;
+<<<<<<< HEAD
+=======
+	unsigned char tx_buffer[MAX_BUFFER_SIZE] = {0x0, };
+	unsigned char rx_buffer[MAX_BUFFER_SIZE] = {0x0, };
+>>>>>>> 512ca3c... stock
 
 	pr_debug("%s\n", __func__);
 
@@ -511,7 +519,11 @@ static int p3_xfer(struct p3_dev *p3_device,
 		return -EMSGSIZE;
 
 	if (tr->tx_buffer != NULL) {
+<<<<<<< HEAD
 		if (copy_from_user(p3_device->null_buffer,
+=======
+		if (copy_from_user(tx_buffer,
+>>>>>>> 512ca3c... stock
 				tr->tx_buffer, tr->len) != 0)
 			return -EFAULT;
 	}
@@ -519,8 +531,13 @@ static int p3_xfer(struct p3_dev *p3_device,
 	spi_message_init(&m);
 	memset(&t, 0, sizeof(t));
 
+<<<<<<< HEAD
 	t.tx_buf = p3_device->null_buffer;
 	t.rx_buf = p3_device->buffer;
+=======
+	t.tx_buf = tx_buffer;
+	t.rx_buf = rx_buffer;
+>>>>>>> 512ca3c... stock
 	t.len = tr->len;
 
 	spi_message_add_tail(&t, &m);
@@ -532,7 +549,11 @@ static int p3_xfer(struct p3_dev *p3_device,
 			unsigned int missing = 0;
 
 			missing = (unsigned int)copy_to_user(tr->rx_buffer,
+<<<<<<< HEAD
 					       p3_device->buffer, tr->len);
+=======
+					       rx_buffer, tr->len);
+>>>>>>> 512ca3c... stock
 
 			if (missing != 0)
 				tr->len = tr->len - missing;
@@ -705,6 +726,7 @@ static int p3_dev_open(struct inode *inode, struct file *filp)
 	P3_DBG_MSG("%s : Major No: %d, Minor No: %d\n", __func__,
 		imajor(inode), iminor(inode));
 
+<<<<<<< HEAD
 #ifndef CONFIG_ESE_SECURE_ENABLE
 	p3_dev->null_buffer =
 		kmalloc(DEFAULT_BUFFER_SIZE, GFP_KERNEL);
@@ -722,6 +744,8 @@ static int p3_dev_open(struct inode *inode, struct file *filp)
 		return -ENOMEM;
 	}
 #endif
+=======
+>>>>>>> 512ca3c... stock
 	return 0;
 }
 

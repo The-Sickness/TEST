@@ -34,6 +34,7 @@
 
 #include <trace/events/power.h>
 
+<<<<<<< HEAD
 unsigned int GLOBALKT_MIN_FREQ_LIMIT[] = { 200000, 200000, 200000, 200000, 500000, 500000, 500000, 500000 };
 unsigned int GLOBALKT_MAX_FREQ_LIMIT[] = { 1600000, 1600000, 1600000, 1600000, 2400000, 2400000, 2400000, 2400000 };
 unsigned int CPUINFO_MIN_FREQ_LIMIT[] = { 200000, 200000, 200000, 200000, 500000, 500000, 500000, 500000 };
@@ -42,6 +43,8 @@ unsigned int main_cpufreq_control[8];
 unsigned int vfreq_lock = 0;
 static bool vfreq_lock_tempOFF = false;
 
+=======
+>>>>>>> 512ca3c... stock
 /**
  * The "cpufreq driver" - the arch- or hardware-dependent low
  * level driver of CPUFreq support, and its spinlock. This lock
@@ -52,8 +55,11 @@ static DEFINE_PER_CPU(struct cpufreq_policy *, cpufreq_cpu_data);
 #ifdef CONFIG_HOTPLUG_CPU
 /* This one keeps track of the previously set governor of a removed CPU */
 static DEFINE_PER_CPU(char[CPUFREQ_NAME_LEN], cpufreq_cpu_governor);
+<<<<<<< HEAD
 static int last_min = -1;
 static int last_max = -1;
+=======
+>>>>>>> 512ca3c... stock
 #endif
 static DEFINE_RWLOCK(cpufreq_driver_lock);
 static DEFINE_MUTEX(cpufreq_governor_lock);
@@ -117,7 +123,10 @@ static void handle_update(struct work_struct *work);
  */
 static BLOCKING_NOTIFIER_HEAD(cpufreq_policy_notifier_list);
 static struct srcu_notifier_head cpufreq_transition_notifier_list;
+<<<<<<< HEAD
 struct atomic_notifier_head cpufreq_govinfo_notifier_list;
+=======
+>>>>>>> 512ca3c... stock
 
 static bool init_cpufreq_transition_notifier_list_called;
 static int __init init_cpufreq_transition_notifier_list(void)
@@ -128,6 +137,7 @@ static int __init init_cpufreq_transition_notifier_list(void)
 }
 pure_initcall(init_cpufreq_transition_notifier_list);
 
+<<<<<<< HEAD
 static bool init_cpufreq_govinfo_notifier_list_called;
 static int __init init_cpufreq_govinfo_notifier_list(void)
 {
@@ -137,6 +147,8 @@ static int __init init_cpufreq_govinfo_notifier_list(void)
 }
 pure_initcall(init_cpufreq_govinfo_notifier_list);
 
+=======
+>>>>>>> 512ca3c... stock
 static int off __read_mostly;
 static int cpufreq_disabled(void)
 {
@@ -969,6 +981,7 @@ static int cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
 	 * managing offline cpus here.
 	 */
 	cpumask_and(policy->cpus, policy->cpus, cpu_online_mask);
+<<<<<<< HEAD
 	
 	if (last_min > -1)
 		policy->min = last_min;
@@ -981,6 +994,8 @@ static int cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
 
 	if (last_max > -1)
 		policy->max = last_max;
+=======
+>>>>>>> 512ca3c... stock
 
 	policy->user_policy.min = policy->min;
 	policy->user_policy.max = policy->max;
@@ -1130,8 +1145,11 @@ static int __cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif
 			__cpufreq_governor(data, CPUFREQ_GOV_POLICY_EXIT);
 
 		lock_policy_rwsem_read(cpu);
+<<<<<<< HEAD
 		last_min = data->min;
 		last_max = data->max;
+=======
+>>>>>>> 512ca3c... stock
 		kobj = &data->kobj;
 		cmp = &data->kobj_unregister;
 		unlock_policy_rwsem_read(cpu);
@@ -1441,8 +1459,12 @@ int cpufreq_register_notifier(struct notifier_block *nb, unsigned int list)
 	if (cpufreq_disabled())
 		return -EINVAL;
 
+<<<<<<< HEAD
 	WARN_ON(!init_cpufreq_transition_notifier_list_called ||
 		!init_cpufreq_govinfo_notifier_list_called);
+=======
+	WARN_ON(!init_cpufreq_transition_notifier_list_called);
+>>>>>>> 512ca3c... stock
 
 	switch (list) {
 	case CPUFREQ_TRANSITION_NOTIFIER:
@@ -1453,10 +1475,13 @@ int cpufreq_register_notifier(struct notifier_block *nb, unsigned int list)
 		ret = blocking_notifier_chain_register(
 				&cpufreq_policy_notifier_list, nb);
 		break;
+<<<<<<< HEAD
 	case CPUFREQ_GOVINFO_NOTIFIER:
 		ret = atomic_notifier_chain_register(
 				&cpufreq_govinfo_notifier_list, nb);
 		break;
+=======
+>>>>>>> 512ca3c... stock
 	default:
 		ret = -EINVAL;
 	}
@@ -1492,10 +1517,13 @@ int cpufreq_unregister_notifier(struct notifier_block *nb, unsigned int list)
 		ret = blocking_notifier_chain_unregister(
 				&cpufreq_policy_notifier_list, nb);
 		break;
+<<<<<<< HEAD
 	case CPUFREQ_GOVINFO_NOTIFIER:
 		ret = atomic_notifier_chain_unregister(
 				&cpufreq_govinfo_notifier_list, nb);
 		break;
+=======
+>>>>>>> 512ca3c... stock
 	default:
 		ret = -EINVAL;
 	}
@@ -1519,7 +1547,11 @@ int __cpufreq_driver_target(struct cpufreq_policy *policy,
 
 	if (cpufreq_disabled())
 		return -ENODEV;
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 512ca3c... stock
 	/* Make sure that target_freq is within supported range */
 	if (target_freq > policy->max)
 		target_freq = policy->max;

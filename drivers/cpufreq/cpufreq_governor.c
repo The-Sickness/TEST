@@ -79,11 +79,15 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 	struct od_dbs_tuners *od_tuners = dbs_data->tuners;
 	struct cs_dbs_tuners *cs_tuners = dbs_data->tuners;
 	struct cpufreq_policy *policy;
+<<<<<<< HEAD
 	unsigned int sampling_rate;
+=======
+>>>>>>> 512ca3c... stock
 	unsigned int max_load = 0;
 	unsigned int ignore_nice;
 	unsigned int j;
 
+<<<<<<< HEAD
 	if (dbs_data->cdata->governor == GOV_ONDEMAND) {
 		struct od_cpu_dbs_info_s *od_dbs_info =
 				dbs_data->cdata->get_cpu_dbs_info_s(cpu);
@@ -102,6 +106,12 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 		sampling_rate = cs_tuners->sampling_rate;
 		ignore_nice = cs_tuners->ignore_nice_load;
 	}
+=======
+	if (dbs_data->cdata->governor == GOV_ONDEMAND)
+		ignore_nice = od_tuners->ignore_nice_load;
+	else
+		ignore_nice = cs_tuners->ignore_nice_load;
+>>>>>>> 512ca3c... stock
 
 	policy = cdbs->cur_policy;
 
@@ -154,6 +164,7 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 		if (unlikely(!wall_time || wall_time < idle_time))
 			continue;
 
+<<<<<<< HEAD
 		/*
 		 * If the CPU had gone completely idle, and a task just woke up
 		 * on this CPU now, it would be unfair to calculate 'load' the
@@ -184,6 +195,9 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 			j_cdbs->prev_load = load;
 			j_cdbs->copy_prev_load = true;
 		}
+=======
+		load = 100 * (wall_time - idle_time) / wall_time;
+>>>>>>> 512ca3c... stock
 
 		if (load > max_load)
 			max_load = load;
@@ -390,12 +404,16 @@ int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 		for_each_cpu(j, policy->cpus) {
 			struct cpu_dbs_common_info *j_cdbs =
 				dbs_data->cdata->get_cpu_cdbs(j);
+<<<<<<< HEAD
 			unsigned int prev_load;
+=======
+>>>>>>> 512ca3c... stock
 
 			j_cdbs->cpu = j;
 			j_cdbs->cur_policy = policy;
 			j_cdbs->prev_cpu_idle = get_cpu_idle_time(j,
 					       &j_cdbs->prev_cpu_wall, io_busy);
+<<<<<<< HEAD
 
 			prev_load = (unsigned int)
 				(j_cdbs->prev_cpu_wall - j_cdbs->prev_cpu_idle);
@@ -403,6 +421,8 @@ int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 					(unsigned int) j_cdbs->prev_cpu_wall;
 			j_cdbs->copy_prev_load = true;
 
+=======
+>>>>>>> 512ca3c... stock
 			if (ignore_nice)
 				j_cdbs->prev_cpu_nice =
 					kcpustat_cpu(j).cpustat[CPUTIME_NICE];
@@ -450,11 +470,14 @@ int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 		break;
 
 	case CPUFREQ_GOV_LIMITS:
+<<<<<<< HEAD
 		mutex_lock(&dbs_data->mutex);
 		if (!cpu_cdbs->cur_policy) {
 			mutex_unlock(&dbs_data->mutex);
 			break;
 		}
+=======
+>>>>>>> 512ca3c... stock
 		mutex_lock(&cpu_cdbs->timer_mutex);
 		if (policy->max < cpu_cdbs->cur_policy->cur)
 			__cpufreq_driver_target(cpu_cdbs->cur_policy,
@@ -464,7 +487,10 @@ int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 					policy->min, CPUFREQ_RELATION_L);
 		dbs_check_cpu(dbs_data, cpu);
 		mutex_unlock(&cpu_cdbs->timer_mutex);
+<<<<<<< HEAD
 		mutex_unlock(&dbs_data->mutex);
+=======
+>>>>>>> 512ca3c... stock
 		break;
 	}
 	return 0;

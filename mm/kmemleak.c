@@ -218,8 +218,12 @@ static int kmemleak_stack_scan = 1;
 static DEFINE_MUTEX(scan_mutex);
 /* setting kmemleak=on, will set this var, skipping the disable */
 static int kmemleak_skip_disable;
+<<<<<<< HEAD
 /* If there are leaks that can be reported */
 static bool kmemleak_found_leaks;
+=======
+
+>>>>>>> 512ca3c... stock
 
 /*
  * Early object allocation/freeing logging. Kmemleak is initialized after the
@@ -1381,12 +1385,18 @@ static void kmemleak_scan(void)
 	}
 	rcu_read_unlock();
 
+<<<<<<< HEAD
 	if (new_leaks) {
 		kmemleak_found_leaks = true;
 
 		pr_info("%d new suspected memory leaks (see "
 			"/sys/kernel/debug/kmemleak)\n", new_leaks);
 	}
+=======
+	if (new_leaks)
+		pr_info("%d new suspected memory leaks (see "
+			"/sys/kernel/debug/kmemleak)\n", new_leaks);
+>>>>>>> 512ca3c... stock
 
 }
 
@@ -1594,12 +1604,17 @@ static void kmemleak_clear(void)
 		spin_unlock_irqrestore(&object->lock, flags);
 	}
 	rcu_read_unlock();
+<<<<<<< HEAD
 
 	kmemleak_found_leaks = false;
 }
 
 static void __kmemleak_do_cleanup(void);
 
+=======
+}
+
+>>>>>>> 512ca3c... stock
 /*
  * File write operation to configure kmemleak at run-time. The following
  * commands can be written to the /sys/kernel/debug/kmemleak file:
@@ -1612,8 +1627,12 @@ static void __kmemleak_do_cleanup(void);
  *		  disable it)
  *   scan	- trigger a memory scan
  *   clear	- mark all current reported unreferenced kmemleak objects as
+<<<<<<< HEAD
  *		  grey to ignore printing them, or free all kmemleak objects
  *		  if kmemleak has been disabled.
+=======
+ *		  grey to ignore printing them
+>>>>>>> 512ca3c... stock
  *   dump=...	- dump information about the object found at the given address
  */
 static ssize_t kmemleak_write(struct file *file, const char __user *user_buf,
@@ -1623,6 +1642,12 @@ static ssize_t kmemleak_write(struct file *file, const char __user *user_buf,
 	int buf_size;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (!atomic_read(&kmemleak_enabled))
+		return -EBUSY;
+
+>>>>>>> 512ca3c... stock
 	buf_size = min(size, (sizeof(buf) - 1));
 	if (strncpy_from_user(buf, user_buf, buf_size) < 0)
 		return -EFAULT;
@@ -1632,6 +1657,7 @@ static ssize_t kmemleak_write(struct file *file, const char __user *user_buf,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (strncmp(buf, "clear", 5) == 0) {
 		if (atomic_read(&kmemleak_enabled))
 			kmemleak_clear();
@@ -1645,6 +1671,8 @@ static ssize_t kmemleak_write(struct file *file, const char __user *user_buf,
 		goto out;
 	}
 
+=======
+>>>>>>> 512ca3c... stock
 	if (strncmp(buf, "off", 3) == 0)
 		kmemleak_disable();
 	else if (strncmp(buf, "stack=on", 8) == 0)
@@ -1668,6 +1696,11 @@ static ssize_t kmemleak_write(struct file *file, const char __user *user_buf,
 		}
 	} else if (strncmp(buf, "scan", 4) == 0)
 		kmemleak_scan();
+<<<<<<< HEAD
+=======
+	else if (strncmp(buf, "clear", 5) == 0)
+		kmemleak_clear();
+>>>>>>> 512ca3c... stock
 	else if (strncmp(buf, "dump=", 5) == 0)
 		ret = dump_str_object_info(buf + 5);
 	else
@@ -1692,6 +1725,7 @@ static const struct file_operations kmemleak_fops = {
 	.release	= kmemleak_release,
 };
 
+<<<<<<< HEAD
 static void __kmemleak_do_cleanup(void)
 {
 	struct kmemleak_object *object;
@@ -1702,6 +1736,8 @@ static void __kmemleak_do_cleanup(void)
 	rcu_read_unlock();
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * Stop the memory scanning thread and free the kmemleak internal objects if
  * no previous scan thread (otherwise, kmemleak may still have some useful
@@ -1709,6 +1745,7 @@ static void __kmemleak_do_cleanup(void)
  */
 static void kmemleak_do_cleanup(struct work_struct *work)
 {
+<<<<<<< HEAD
 	mutex_lock(&scan_mutex);
 	stop_scan_thread();
 
@@ -1717,6 +1754,20 @@ static void kmemleak_do_cleanup(struct work_struct *work)
 	else
 		pr_info("Kmemleak disabled without freeing internal data. "
 			"Reclaim the memory with \"echo clear > /sys/kernel/debug/kmemleak\"\n");
+=======
+	struct kmemleak_object *object;
+	bool cleanup = scan_thread == NULL;
+
+	mutex_lock(&scan_mutex);
+	stop_scan_thread();
+
+	if (cleanup) {
+		rcu_read_lock();
+		list_for_each_entry_rcu(object, &object_list, object_list)
+			delete_object_full(object->pointer);
+		rcu_read_unlock();
+	}
+>>>>>>> 512ca3c... stock
 	mutex_unlock(&scan_mutex);
 }
 

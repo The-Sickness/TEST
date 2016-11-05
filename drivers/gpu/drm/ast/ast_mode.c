@@ -509,8 +509,11 @@ static int ast_crtc_do_set_base(struct drm_crtc *crtc,
 		ret = ttm_bo_kmap(&bo->bo, 0, bo->bo.num_pages, &bo->kmap);
 		if (ret)
 			DRM_ERROR("failed to kmap fbcon\n");
+<<<<<<< HEAD
 		else
 			ast_fbdev_set_base(ast, gpu_addr);
+=======
+>>>>>>> 512ca3c... stock
 	}
 	ast_bo_unreserve(bo);
 

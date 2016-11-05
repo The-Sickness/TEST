@@ -369,7 +369,11 @@ static void crypto_wait_for_test(struct crypto_larval *larval)
 		crypto_alg_tested(larval->alg.cra_driver_name, 0);
 	}
 
+<<<<<<< HEAD
 	err = wait_for_completion_killable(&larval->completion);
+=======
+	err = wait_for_completion_interruptible(&larval->completion);
+>>>>>>> 512ca3c... stock
 	WARN_ON(err);
 
 out:

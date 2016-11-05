@@ -105,11 +105,14 @@
 #include <asm/io.h>
 #include <asm/irq.h>
 
+<<<<<<< HEAD
 #include <linux/moduleparam.h>
 
 static int wl_divide_gps = 2;
 module_param(wl_divide_gps, int, 0644);
 
+=======
+>>>>>>> 512ca3c... stock
 #define xCONFIG_SPI_BCM4773_DMA       0
 #define CONFIG_SPI_DMA_BITS_PER_WORD  32
 #define xCONFIG_SPI_NO_FULL_DUPLEX    0
@@ -1833,7 +1836,11 @@ static int bcm4773_resume( struct spi_device *spi )
 	}
 	spin_unlock_irqrestore( &bport->irq_lock, flags);
 
+<<<<<<< HEAD
 	wake_lock_timeout(&g_bport->bcm4773_wake_lock, HZ/wl_divide_gps);
+=======
+	wake_lock_timeout(&g_bport->bcm4773_wake_lock, HZ/2);
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }

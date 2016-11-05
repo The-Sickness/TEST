@@ -20,6 +20,7 @@
 #include <linux/iio/buffer.h>
 #include <linux/iio/types.h>
 
+<<<<<<< HEAD
 #include <linux/moduleparam.h>
 
 static int wl_motion = 3;
@@ -33,6 +34,8 @@ module_param(wl_grip, int, 0644);
 static int wl_pickup = 3;
 module_param(wl_pickup, int, 0644);
 
+=======
+>>>>>>> 512ca3c... stock
 /*************************************************************************/
 /* SSP Kernel -> HAL input evnet function                                */
 /*************************************************************************/
@@ -337,7 +340,11 @@ void report_sig_motion_data(struct ssp_data *data,
 		data->buf[SIG_MOTION_SENSOR].sig_motion);
 	input_sync(data->sig_motion_input_dev);
 
+<<<<<<< HEAD
 	wake_lock_timeout(&data->ssp_wake_lock, wl_motion * HZ);
+=======
+	wake_lock_timeout(&data->ssp_wake_lock, 3 * HZ);
+>>>>>>> 512ca3c... stock
 }
 
 void report_rot_data(struct ssp_data *data, struct sensor_value *rotdata)
@@ -533,7 +540,11 @@ void report_prox_data(struct ssp_data *data, struct sensor_value *proxdata)
 		((!proxdata->prox[0]))+1);
 	input_sync(data->prox_input_dev);
 
+<<<<<<< HEAD
 	wake_lock_timeout(&data->ssp_wake_lock, wl_prox * HZ);
+=======
+	wake_lock_timeout(&data->ssp_wake_lock, 3 * HZ);
+>>>>>>> 512ca3c... stock
 }
 
 void report_prox_raw_data(struct ssp_data *data,
@@ -592,7 +603,11 @@ void report_grip_data(struct ssp_data *data, struct sensor_value *gripdata)
 			data->buf[GRIP_SENSOR].irq_stat + 1);
 	input_sync(data->grip_input_dev);
 
+<<<<<<< HEAD
 	wake_lock_timeout(&data->ssp_wake_lock, wl_grip * HZ);
+=======
+	wake_lock_timeout(&data->ssp_wake_lock, 3 * HZ);
+>>>>>>> 512ca3c... stock
 }
 #endif
 
@@ -631,7 +646,11 @@ void report_temp_humidity_data(struct ssp_data *data,
 		data->buf[TEMPERATURE_HUMIDITY_SENSOR].y);
 	input_sync(data->temp_humi_input_dev);
 	if (data->buf[TEMPERATURE_HUMIDITY_SENSOR].z)
+<<<<<<< HEAD
 		wake_lock_timeout(&data->ssp_wake_lock, 1 * HZ);
+=======
+		wake_lock_timeout(&data->ssp_wake_lock, 2 * HZ);
+>>>>>>> 512ca3c... stock
 }
 
 #ifdef CONFIG_SENSORS_SSP_SHTC1
@@ -649,7 +668,11 @@ void report_tilt_data(struct ssp_data *data,
 	data->buf[TILT_DETECTOR].tilt_detector = tilt_data->tilt_detector;
 	ssp_push_1bytes_buffer(data->tilt_indio_dev, tilt_data->timestamp,
 			&tilt_data->tilt_detector);
+<<<<<<< HEAD
 	wake_lock_timeout(&data->ssp_wake_lock, wl_tilt * HZ);
+=======
+	wake_lock_timeout(&data->ssp_wake_lock, 3 * HZ);
+>>>>>>> 512ca3c... stock
 	pr_err("[SSP]: %s: %d", __func__,  tilt_data->tilt_detector);
 }
 
@@ -659,7 +682,11 @@ void report_pickup_data(struct ssp_data *data,
 	data->buf[PICKUP_GESTURE].pickup_gesture = pickup_data->pickup_gesture;
 	ssp_push_1bytes_buffer(data->pickup_indio_dev, pickup_data->timestamp,
 			&pickup_data->pickup_gesture);
+<<<<<<< HEAD
 	wake_lock_timeout(&data->ssp_wake_lock, wl_pickup * HZ);
+=======
+	wake_lock_timeout(&data->ssp_wake_lock, 3 * HZ);
+>>>>>>> 512ca3c... stock
 	pr_err("[SSP]: %s: %d", __func__,  pickup_data->pickup_gesture);
 }
 

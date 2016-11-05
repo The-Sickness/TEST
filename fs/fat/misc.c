@@ -289,7 +289,11 @@ int fat_sync_bhs(struct buffer_head **bhs, int nr_bhs)
 	int i, err = 0;
 
 	for (i = 0; i < nr_bhs; i++)
+<<<<<<< HEAD
 		write_dirty_buffer(bhs[i], WRITE_SYNC);
+=======
+		write_dirty_buffer(bhs[i], WRITE);
+>>>>>>> 512ca3c... stock
 
 	for (i = 0; i < nr_bhs; i++) {
 		wait_on_buffer(bhs[i]);

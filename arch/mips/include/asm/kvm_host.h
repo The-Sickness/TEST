@@ -349,7 +349,10 @@ struct kvm_mips_tlb {
 #define KVM_MIPS_GUEST_TLB_SIZE     64
 struct kvm_vcpu_arch {
 	void *host_ebase, *guest_ebase;
+<<<<<<< HEAD
 	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
+=======
+>>>>>>> 512ca3c... stock
 	unsigned long host_stack;
 	unsigned long host_gp;
 

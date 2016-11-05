@@ -1156,6 +1156,7 @@ void __init setup_arch(char **cmdline_p)
 	clone_pgd_range(initial_page_table + KERNEL_PGD_BOUNDARY,
 			swapper_pg_dir     + KERNEL_PGD_BOUNDARY,
 			KERNEL_PGD_PTRS);
+<<<<<<< HEAD
 
 	/*
 	 * sync back low identity map too.  It is used for example
@@ -1164,6 +1165,8 @@ void __init setup_arch(char **cmdline_p)
 	clone_pgd_range(initial_page_table,
 			swapper_pg_dir     + KERNEL_PGD_BOUNDARY,
 			min(KERNEL_PGD_PTRS, KERNEL_PGD_BOUNDARY));
+=======
+>>>>>>> 512ca3c... stock
 #endif
 
 	tboot_probe();

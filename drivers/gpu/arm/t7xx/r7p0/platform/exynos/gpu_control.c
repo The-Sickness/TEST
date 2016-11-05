@@ -17,6 +17,7 @@
 
 #include <mali_kbase.h>
 
+<<<<<<< HEAD
 #include <linux/of_device.h>
 #include <linux/pm_qos.h>
 #include <linux/cpufreq_kt.h>
@@ -34,11 +35,16 @@
 #include <soc/samsung/pm_domains-cal.h>
 #endif /* LINUX_VERSION */
 #endif /* CONFIG_SOC_EXYNOS8890 && CONFIG_PWRCAL */
+=======
+#include <linux/pm_qos.h>
+#include <mach/pm_domains.h>
+>>>>>>> 512ca3c... stock
 
 #include "mali_kbase_platform.h"
 #include "gpu_dvfs_handler.h"
 #include "gpu_control.h"
 
+<<<<<<< HEAD
 static struct kbase_device *GBLkbdev;
 static struct gpu_control_ops *ctr_ops;
 
@@ -48,6 +54,10 @@ unsigned int gpu_max_override_screen_off = 0;
 unsigned int cur_gpu_step = 0;
 int boost_level = -1;
 
+=======
+static struct gpu_control_ops *ctr_ops;
+
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_MALI_RT_PM
 static struct exynos_pm_domain *gpu_get_pm_domain(void)
 {
@@ -72,6 +82,21 @@ static struct exynos_pm_domain *gpu_get_pm_domain(void)
 }
 #endif /* CONFIG_MALI_RT_PM */
 
+<<<<<<< HEAD
+=======
+int get_cpu_clock_speed(u32 *cpu_clock)
+{
+	struct clk *cpu_clk;
+	u32 freq = 0;
+	cpu_clk = clk_get(NULL, "armclk");
+	if (IS_ERR(cpu_clk))
+		return -1;
+	freq = clk_get_rate(cpu_clk);
+	*cpu_clock = (freq/MHZ);
+	return 0;
+}
+
+>>>>>>> 512ca3c... stock
 int gpu_control_set_voltage(struct kbase_device *kbdev, int voltage)
 {
 	int ret = 0;
@@ -110,6 +135,7 @@ int gpu_control_set_voltage(struct kbase_device *kbdev, int voltage)
 	return ret;
 }
 
+<<<<<<< HEAD
 void boost_the_gpu(int freq, bool getfreq)
 {
 	if (getfreq)
@@ -121,6 +147,8 @@ void boost_the_gpu(int freq, bool getfreq)
 		boost_level = -1;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 int gpu_control_set_clock(struct kbase_device *kbdev, int clock)
 {
 	int ret = 0;
@@ -144,6 +172,7 @@ int gpu_control_set_clock(struct kbase_device *kbdev, int clock)
 	}
 #endif
 
+<<<<<<< HEAD
 	// Check for Min/Max override
 	if (clock < gpu_min_override)
 		clock = gpu_min_override;
@@ -164,6 +193,8 @@ int gpu_control_set_clock(struct kbase_device *kbdev, int clock)
 
 	cur_gpu_step = clock;
 
+=======
+>>>>>>> 512ca3c... stock
 	is_up = prev_clock < clock;
 
 	if (is_up)
@@ -271,8 +302,13 @@ int gpu_control_enable_customization(struct kbase_device *kbdev)
 	if (ctr_ops->set_clock_to_osc)
 		ctr_ops->set_clock_to_osc(platform);
 
+<<<<<<< HEAD
 	ret = gpu_enable_dvs(platform);
 	platform->dvs_is_enabled = true;
+=======
+	platform->dvs_is_enabled = true;
+	ret = gpu_enable_dvs(platform);
+>>>>>>> 512ca3c... stock
 
 	mutex_unlock(&platform->gpu_clock_lock);
 #endif /* CONFIG_REGULATOR */
@@ -333,8 +369,12 @@ int gpu_control_module_init(struct kbase_device *kbdev)
 		GPU_LOG(DVFS_ERROR, DUMMY, 0u, 0u, "%s: failed to initialize clock\n", __func__);
 		goto out;
 	}
+<<<<<<< HEAD
 	GBLkbdev = kbdev;
 	
+=======
+
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_REGULATOR
 	if (gpu_regulator_init(platform) < 0) {
 		GPU_LOG(DVFS_ERROR, DUMMY, 0u, 0u, "%s: failed to initialize regulator\n", __func__);
@@ -342,6 +382,7 @@ int gpu_control_module_init(struct kbase_device *kbdev)
 	}
 #endif /* CONFIG_REGULATOR */
 
+<<<<<<< HEAD
 #ifdef CONFIG_SOC_EXYNOS8890
 	if (platform->gpu_max_clock == 0) {
 		platform->gpu_max_clock = (u32)cal_dfs_get_max_freq(dvfs_g3d) / 1000;
@@ -349,6 +390,8 @@ int gpu_control_module_init(struct kbase_device *kbdev)
 	}
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 	return 0;
 out:
 	return -EPERM;

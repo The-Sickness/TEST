@@ -327,7 +327,11 @@ static void raid1_end_read_request(struct bio *bio, int error)
 		spin_lock_irqsave(&conf->device_lock, flags);
 		if (r1_bio->mddev->degraded == conf->raid_disks ||
 		    (r1_bio->mddev->degraded == conf->raid_disks-1 &&
+<<<<<<< HEAD
 		     test_bit(In_sync, &conf->mirrors[mirror].rdev->flags)))
+=======
+		     !test_bit(Faulty, &conf->mirrors[mirror].rdev->flags)))
+>>>>>>> 512ca3c... stock
 			uptodate = 1;
 		spin_unlock_irqrestore(&conf->device_lock, flags);
 	}
@@ -557,7 +561,11 @@ static int read_balance(struct r1conf *conf, struct r1bio *r1_bio, int *max_sect
 		if (test_bit(WriteMostly, &rdev->flags)) {
 			/* Don't balance among write-mostly, just
 			 * use the first as a last resort */
+<<<<<<< HEAD
 			if (best_dist_disk < 0) {
+=======
+			if (best_disk < 0) {
+>>>>>>> 512ca3c... stock
 				if (is_badblock(rdev, this_sector, sectors,
 						&first_bad, &bad_sectors)) {
 					if (first_bad < this_sector)
@@ -566,8 +574,12 @@ static int read_balance(struct r1conf *conf, struct r1bio *r1_bio, int *max_sect
 					best_good_sectors = first_bad - this_sector;
 				} else
 					best_good_sectors = sectors;
+<<<<<<< HEAD
 				best_dist_disk = disk;
 				best_pending_disk = disk;
+=======
+				best_disk = disk;
+>>>>>>> 512ca3c... stock
 			}
 			continue;
 		}
@@ -1382,7 +1394,10 @@ static void error(struct mddev *mddev, struct md_rdev *rdev)
 {
 	char b[BDEVNAME_SIZE];
 	struct r1conf *conf = mddev->private;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> 512ca3c... stock
 
 	/*
 	 * If it is not operational, then we have already marked it as dead
@@ -1402,6 +1417,7 @@ static void error(struct mddev *mddev, struct md_rdev *rdev)
 		return;
 	}
 	set_bit(Blocked, &rdev->flags);
+<<<<<<< HEAD
 	spin_lock_irqsave(&conf->device_lock, flags);
 	if (test_and_clear_bit(In_sync, &rdev->flags)) {
 		mddev->degraded++;
@@ -1409,6 +1425,16 @@ static void error(struct mddev *mddev, struct md_rdev *rdev)
 	} else
 		set_bit(Faulty, &rdev->flags);
 	spin_unlock_irqrestore(&conf->device_lock, flags);
+=======
+	if (test_and_clear_bit(In_sync, &rdev->flags)) {
+		unsigned long flags;
+		spin_lock_irqsave(&conf->device_lock, flags);
+		mddev->degraded++;
+		set_bit(Faulty, &rdev->flags);
+		spin_unlock_irqrestore(&conf->device_lock, flags);
+	} else
+		set_bit(Faulty, &rdev->flags);
+>>>>>>> 512ca3c... stock
 	/*
 	 * if recovery is running, make sure it aborts.
 	 */
@@ -1466,10 +1492,14 @@ static int raid1_spare_active(struct mddev *mddev)
 	 * Find all failed disks within the RAID1 configuration 
 	 * and mark them readable.
 	 * Called under mddev lock, so rcu protection not needed.
+<<<<<<< HEAD
 	 * device_lock used to avoid races with raid1_end_read_request
 	 * which expects 'In_sync' flags and ->degraded to be consistent.
 	 */
 	spin_lock_irqsave(&conf->device_lock, flags);
+=======
+	 */
+>>>>>>> 512ca3c... stock
 	for (i = 0; i < conf->raid_disks; i++) {
 		struct md_rdev *rdev = conf->mirrors[i].rdev;
 		struct md_rdev *repl = conf->mirrors[conf->raid_disks + i].rdev;
@@ -1499,6 +1529,10 @@ static int raid1_spare_active(struct mddev *mddev)
 			sysfs_notify_dirent_safe(rdev->sysfs_state);
 		}
 	}
+<<<<<<< HEAD
+=======
+	spin_lock_irqsave(&conf->device_lock, flags);
+>>>>>>> 512ca3c... stock
 	mddev->degraded -= count;
 	spin_unlock_irqrestore(&conf->device_lock, flags);
 
@@ -2147,7 +2181,11 @@ static int narrow_write_error(struct r1bio *r1_bio, int i)
 		md_trim_bio(wbio, sector - r1_bio->sector, sectors);
 		wbio->bi_sector += rdev->data_offset;
 		wbio->bi_bdev = rdev->bdev;
+<<<<<<< HEAD
 		if (submit_bio_wait(WRITE, wbio) < 0)
+=======
+		if (submit_bio_wait(WRITE, wbio) == 0)
+>>>>>>> 512ca3c... stock
 			/* failure! */
 			ok = rdev_set_badblocks(rdev, sector,
 						sectors, 0)

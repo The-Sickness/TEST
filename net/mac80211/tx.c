@@ -281,6 +281,12 @@ ieee80211_tx_h_check_assoc(struct ieee80211_tx_data *tx)
 	if (tx->sdata->vif.type == NL80211_IFTYPE_WDS)
 		return TX_CONTINUE;
 
+<<<<<<< HEAD
+=======
+	if (tx->sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
+		return TX_CONTINUE;
+
+>>>>>>> 512ca3c... stock
 	if (tx->flags & IEEE80211_TX_PS_BUFFERED)
 		return TX_CONTINUE;
 
@@ -759,6 +765,7 @@ ieee80211_tx_h_sequence(struct ieee80211_tx_data *tx)
 
 	/*
 	 * Packet injection may want to control the sequence
+<<<<<<< HEAD
 	 * number, so if an injected packet is found, skip
 	 * renumbering it. Also make the packet NO_ACK to avoid
 	 * excessive retries (ACKing and retrying should be
@@ -772,6 +779,13 @@ ieee80211_tx_h_sequence(struct ieee80211_tx_data *tx)
 			info->flags |= IEEE80211_TX_CTL_NO_ACK;
 		return TX_CONTINUE;
 	}
+=======
+	 * number, if we have no matching interface then we
+	 * neither assign one ourselves nor ask the driver to.
+	 */
+	if (unlikely(info->control.vif->type == NL80211_IFTYPE_MONITOR))
+		return TX_CONTINUE;
+>>>>>>> 512ca3c... stock
 
 	if (unlikely(ieee80211_is_ctl(hdr->frame_control)))
 		return TX_CONTINUE;

@@ -95,8 +95,11 @@ static int start_ptraced_child(void)
 {
 	int pid, n, status;
 
+<<<<<<< HEAD
 	fflush(stdout);
 
+=======
+>>>>>>> 512ca3c... stock
 	pid = fork();
 	if (pid == 0)
 		ptrace_child();

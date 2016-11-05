@@ -71,6 +71,7 @@ static inline void inet_diag_unlock_handler(
 	mutex_unlock(&inet_diag_table_mutex);
 }
 
+<<<<<<< HEAD
 static size_t inet_sk_attr_size(void)
 {
 	return	  nla_total_size(sizeof(struct tcp_info))
@@ -85,6 +86,8 @@ static size_t inet_sk_attr_size(void)
 		+ 64;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 int inet_sk_diag_fill(struct sock *sk, struct inet_connection_sock *icsk,
 			      struct sk_buff *skb, struct inet_diag_req_v2 *req,
 			      struct user_namespace *user_ns,		      	
@@ -340,7 +343,13 @@ int inet_diag_dump_one_icsk(struct inet_hashinfo *hashinfo, struct sk_buff *in_s
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
 	rep = nlmsg_new(inet_sk_attr_size(), GFP_KERNEL);
+=======
+	rep = nlmsg_new(sizeof(struct inet_diag_msg) +
+			sizeof(struct inet_diag_meminfo) +
+			sizeof(struct tcp_info) + 64, GFP_KERNEL);
+>>>>>>> 512ca3c... stock
 	if (!rep) {
 		err = -ENOMEM;
 		goto out;

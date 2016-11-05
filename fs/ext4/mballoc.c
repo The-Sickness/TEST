@@ -1242,7 +1242,10 @@ static void ext4_mb_unload_buddy(struct ext4_buddy *e4b)
 static int mb_find_order_for_block(struct ext4_buddy *e4b, int block)
 {
 	int order = 1;
+<<<<<<< HEAD
 	int bb_incr = 1 << (e4b->bd_blkbits - 1);
+=======
+>>>>>>> 512ca3c... stock
 	void *bb;
 
 	BUG_ON(e4b->bd_bitmap == e4b->bd_buddy);
@@ -1255,8 +1258,12 @@ static int mb_find_order_for_block(struct ext4_buddy *e4b, int block)
 			/* this block is part of buddy of order 'order' */
 			return order;
 		}
+<<<<<<< HEAD
 		bb += bb_incr;
 		bb_incr >>= 1;
+=======
+		bb += 1 << (e4b->bd_blkbits - order);
+>>>>>>> 512ca3c... stock
 		order++;
 	}
 	return 0;
@@ -2535,7 +2542,11 @@ int ext4_mb_init(struct super_block *sb)
 {
 	struct ext4_sb_info *sbi = EXT4_SB(sb);
 	unsigned i, j;
+<<<<<<< HEAD
 	unsigned offset, offset_incr;
+=======
+	unsigned offset;
+>>>>>>> 512ca3c... stock
 	unsigned max;
 	int ret;
 
@@ -2564,13 +2575,20 @@ int ext4_mb_init(struct super_block *sb)
 
 	i = 1;
 	offset = 0;
+<<<<<<< HEAD
 	offset_incr = 1 << (sb->s_blocksize_bits - 1);
+=======
+>>>>>>> 512ca3c... stock
 	max = sb->s_blocksize << 2;
 	do {
 		sbi->s_mb_offsets[i] = offset;
 		sbi->s_mb_maxs[i] = max;
+<<<<<<< HEAD
 		offset += offset_incr;
 		offset_incr = offset_incr >> 1;
+=======
+		offset += 1 << (sb->s_blocksize_bits - i);
+>>>>>>> 512ca3c... stock
 		max = max >> 1;
 		i++;
 	} while (i <= sb->s_blocksize_bits + 1);
@@ -2896,7 +2914,11 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
 		ext4_error(sb, "Allocating blocks %llu-%llu which overlap "
 			   "fs metadata", block, block+len);
 		/* File system mounted not to panic on error
+<<<<<<< HEAD
 		 * Fix the bitmap and return EUCLEAN
+=======
+		 * Fix the bitmap and repeat the block allocation
+>>>>>>> 512ca3c... stock
 		 * We leak some of the blocks here.
 		 */
 		ext4_lock_group(sb, ac->ac_b_ex.fe_group);
@@ -2905,7 +2927,11 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
 		ext4_unlock_group(sb, ac->ac_b_ex.fe_group);
 		err = ext4_handle_dirty_metadata(handle, NULL, bitmap_bh);
 		if (!err)
+<<<<<<< HEAD
 			err = -EUCLEAN;
+=======
+			err = -EAGAIN;
+>>>>>>> 512ca3c... stock
 		goto out_err;
 	}
 
@@ -4472,7 +4498,22 @@ repeat:
 	}
 	if (likely(ac->ac_status == AC_STATUS_FOUND)) {
 		*errp = ext4_mb_mark_diskspace_used(ac, handle, reserv_clstrs);
+<<<<<<< HEAD
 		if (*errp) {
+=======
+		if (*errp == -EAGAIN) {
+			/*
+			 * drop the reference that we took
+			 * in ext4_mb_use_best_found
+			 */
+			ext4_mb_release_context(ac);
+			ac->ac_b_ex.fe_group = 0;
+			ac->ac_b_ex.fe_start = 0;
+			ac->ac_b_ex.fe_len = 0;
+			ac->ac_status = AC_STATUS_CONTINUE;
+			goto repeat;
+		} else if (*errp) {
+>>>>>>> 512ca3c... stock
 			ext4_discard_allocated_blocks(ac);
 			goto errout;
 		} else {
@@ -4623,7 +4664,10 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
 	struct buffer_head *gd_bh;
 	ext4_group_t block_group;
 	struct ext4_sb_info *sbi;
+<<<<<<< HEAD
 	struct ext4_inode_info *ei = EXT4_I(inode);
+=======
+>>>>>>> 512ca3c... stock
 	struct ext4_buddy e4b;
 	unsigned int count_clusters;
 	int err = 0;
@@ -4772,6 +4816,7 @@ do_more:
 	    ((flags & EXT4_FREE_BLOCKS_METADATA) ||
 	     !ext4_should_writeback_data(inode))) {
 		struct ext4_free_data *new_entry;
+<<<<<<< HEAD
 		/*
 		 * blocks being freed are metadata. these blocks shouldn't
 		 * be used until this transaction is committed
@@ -4781,6 +4826,19 @@ do_more:
 		 */
 		new_entry = kmem_cache_alloc(ext4_free_data_cachep,
 				GFP_NOFS|__GFP_NOFAIL);
+=======
+	retry:
+		new_entry = kmem_cache_alloc(ext4_free_data_cachep, GFP_NOFS);
+		if (!new_entry) {
+			/*
+			 * We use a retry loop because
+			 * ext4_free_blocks() is not allowed to fail.
+			 */
+			cond_resched();
+			congestion_wait(BLK_RW_ASYNC, HZ/50);
+			goto retry;
+		}
+>>>>>>> 512ca3c... stock
 		new_entry->efd_start_cluster = bit;
 		new_entry->efd_group = block_group;
 		new_entry->efd_count = count_clusters;
@@ -4815,6 +4873,10 @@ do_more:
 	ext4_block_bitmap_csum_set(sb, block_group, gdp, bitmap_bh);
 	ext4_group_desc_csum_set(sb, block_group, gdp);
 	ext4_unlock_group(sb, block_group);
+<<<<<<< HEAD
+=======
+	percpu_counter_add(&sbi->s_freeclusters_counter, count_clusters);
+>>>>>>> 512ca3c... stock
 
 	if (sbi->s_log_groups_per_flex) {
 		ext4_group_t flex_group = ext4_flex_group(sbi, block_group);
@@ -4822,6 +4884,7 @@ do_more:
 			     &sbi->s_flex_groups[flex_group].free_clusters);
 	}
 
+<<<<<<< HEAD
 	if (flags & EXT4_FREE_BLOCKS_RESERVE && ei->i_reserved_data_blocks) {
 		percpu_counter_add(&sbi->s_dirtyclusters_counter,
 				   count_clusters);
@@ -4840,6 +4903,13 @@ do_more:
 
 	ext4_mb_unload_buddy(&e4b);
 
+=======
+	ext4_mb_unload_buddy(&e4b);
+
+	if (!(flags & EXT4_FREE_BLOCKS_NO_QUOT_UPDATE))
+		dquot_free_block(inode, EXT4_C2B(sbi, count_clusters));
+
+>>>>>>> 512ca3c... stock
 	/* We dirtied the bitmap block */
 	BUFFER_TRACE(bitmap_bh, "dirtied bitmap block");
 	err = ext4_handle_dirty_metadata(handle, NULL, bitmap_bh);

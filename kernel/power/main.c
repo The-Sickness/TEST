@@ -282,8 +282,13 @@ struct kobject *power_kobj;
  *	state - control system power state.
  *
  *	show() returns what states are supported, which is hard-coded to
+<<<<<<< HEAD
  *	'freeze' (Low-Power Idle), 'standby' (Power-On Suspend),
  *	'mem' (Suspend-to-RAM), and 'disk' (Suspend-to-Disk).
+=======
+ *	'standby' (Power-On Suspend), 'mem' (Suspend-to-RAM), and
+ *	'disk' (Suspend-to-Disk).
+>>>>>>> 512ca3c... stock
  *
  *	store() accepts one of those strings, translates it into the
  *	proper enumerated value, and initiates a suspend transition.

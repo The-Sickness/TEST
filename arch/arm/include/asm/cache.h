@@ -8,6 +8,7 @@
 #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
 
 /*
+<<<<<<< HEAD
  * Set the prefetch distance in units of L1_CACHE_BYTES based on the
  * cache line size. The prefetch distance is used by the memcpy,
  * copy_from_user, copy_to_user versions that are optimized
@@ -32,6 +33,8 @@
 
 
 /*
+=======
+>>>>>>> 512ca3c... stock
  * Memory returned by kmalloc() may be used for DMA, so we must make
  * sure that all such allocations are cache aligned. Otherwise,
  * unrelated code may cause parts of the buffer to be read into the

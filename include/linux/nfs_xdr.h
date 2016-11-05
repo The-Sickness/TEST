@@ -1094,7 +1094,11 @@ struct pnfs_ds_commit_info {
 	struct pnfs_commit_bucket *buckets;
 };
 
+<<<<<<< HEAD
 #define NFS4_EXCHANGE_ID_LEN	(127)
+=======
+#define NFS4_EXCHANGE_ID_LEN	(48)
+>>>>>>> 512ca3c... stock
 struct nfs41_exchange_id_args {
 	struct nfs_client		*client;
 	nfs4_verifier			*verifier;

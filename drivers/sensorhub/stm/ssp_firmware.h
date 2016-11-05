@@ -20,7 +20,11 @@
 
 #if defined (CONFIG_SENSORS_SSP_NOBLELTE) \
 	|| defined (CONFIG_SENSORS_SSP_ZENLTE) /* Noble or Zen */
+<<<<<<< HEAD
 #define SSP_FIRMWARE_REVISION_STM	16021600
+=======
+#define SSP_FIRMWARE_REVISION_STM	16050600
+>>>>>>> 512ca3c... stock
 #elif defined (CONFIG_SENSORS_SSP_VLTE) /* V */
 #define SSP_FIRMWARE_REVISION_STM	15071700
 #elif defined (CONFIG_SENSORS_SSP_ROYCELTE) /* Royce */

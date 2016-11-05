@@ -487,7 +487,10 @@ struct ip6_create_arg {
 	u32 user;
 	const struct in6_addr *src;
 	const struct in6_addr *dst;
+<<<<<<< HEAD
 	int iif;
+=======
+>>>>>>> 512ca3c... stock
 	u8 ecn;
 };
 

@@ -5,7 +5,10 @@
  *
  *   Copyright(C) 2005, Thomas Gleixner <tglx@linutronix.de>
  *   Copyright(C) 2005, Red Hat, Inc., Ingo Molnar
+<<<<<<< HEAD
  *   Copyright (C) 2014, NVIDIA CORPORATION.  All rights reserved.
+=======
+>>>>>>> 512ca3c... stock
  *
  *  data type definitions, declarations, prototypes
  *
@@ -24,7 +27,10 @@
 #include <linux/percpu.h>
 #include <linux/timer.h>
 #include <linux/timerqueue.h>
+<<<<<<< HEAD
 #include <asm/relaxed.h>
+=======
+>>>>>>> 512ca3c... stock
 
 struct hrtimer_clock_base;
 struct hrtimer_cpu_base;
@@ -118,7 +124,10 @@ struct hrtimer {
 	void				*start_site;
 	char				start_comm[16];
 #endif
+<<<<<<< HEAD
 	bool				bounded_to_boot_cluster;
+=======
+>>>>>>> 512ca3c... stock
 };
 
 /**
@@ -421,11 +430,14 @@ static inline int hrtimer_callback_running(struct hrtimer *timer)
 	return timer->state & HRTIMER_STATE_CALLBACK;
 }
 
+<<<<<<< HEAD
 static inline int hrtimer_callback_running_relaxed(struct hrtimer *timer)
 {
 	return cpu_relaxed_read_long(&timer->state) & HRTIMER_STATE_CALLBACK;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /* Forward a hrtimer so it expires after now: */
 extern u64
 hrtimer_forward(struct hrtimer *timer, ktime_t now, ktime_t interval);
@@ -460,6 +472,15 @@ extern void hrtimer_run_pending(void);
 /* Bootup initialization: */
 extern void __init hrtimers_init(void);
 
+<<<<<<< HEAD
+=======
+#if BITS_PER_LONG < 64
+extern u64 ktime_divns(const ktime_t kt, s64 div);
+#else /* BITS_PER_LONG < 64 */
+# define ktime_divns(kt, div)		(u64)((kt).tv64 / (div))
+#endif
+
+>>>>>>> 512ca3c... stock
 /* Show pending timers: */
 extern void sysrq_timer_list_show(void);
 

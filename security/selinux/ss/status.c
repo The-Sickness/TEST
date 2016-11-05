@@ -70,7 +70,11 @@ struct page *selinux_kernel_status_page(void)
 			 * So, application can know it was updated.
 			 */
 			status->policyload = 0;
+<<<<<<< HEAD
 			status->deny_unknown = 0;
+=======
+			status->deny_unknown = !security_get_allow_unknown();
+>>>>>>> 512ca3c... stock
 		}
 	}
 	result = selinux_status_page;

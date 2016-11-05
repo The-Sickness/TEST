@@ -46,5 +46,9 @@ const char linux_banner[] =
 
 const char linux_proc_banner[] =
 	"%s version %s"
+<<<<<<< HEAD
 	" (The-Sickness)"
+=======
+	" (" LINUX_COMPILE_BY "@" LINUX_COMPILE_HOST ")"
+>>>>>>> 512ca3c... stock
 	" (" LINUX_COMPILER ") %s\n";

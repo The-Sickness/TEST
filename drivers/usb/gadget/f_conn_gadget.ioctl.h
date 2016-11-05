@@ -25,6 +25,11 @@ enum {
 	CONN_GADGET_IOCTL_BIND_STATUS_UNBIND = 2
 };
 
+<<<<<<< HEAD
+=======
+#if defined(__ANDROID__)||defined(__TIZEN__)
+
+>>>>>>> 512ca3c... stock
 enum { 
 	CONN_GADGET_IOCTL_NR_0 = 0,
 	CONN_GADGET_IOCTL_NR_1,
@@ -40,5 +45,9 @@ enum {
 #define CONN_GADGET_IOCTL_BIND_WAIT_NOTIFY	_IOR(CONN_GADGET_IOCTL_MAGIC_SIG, CONN_GADGET_IOCTL_NR_1, int)
 #define CONN_GADGET_IOCTL_BIND_GET_STATUS	_IOR(CONN_GADGET_IOCTL_MAGIC_SIG, CONN_GADGET_IOCTL_NR_2, int)
 #define CONN_GADGET_IOCTL_MAX_NR			CONN_GADGET_IOCTL_NR_MAX
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 512ca3c... stock
 
 #endif

@@ -20,8 +20,11 @@
 #include <linux/seq_file.h>
 #include <linux/memblock.h>
 
+<<<<<<< HEAD
 #include <asm-generic/sections.h>
 
+=======
+>>>>>>> 512ca3c... stock
 static struct memblock_region memblock_memory_init_regions[INIT_MEMBLOCK_REGIONS] __initdata_memblock;
 static struct memblock_region memblock_reserved_init_regions[INIT_MEMBLOCK_REGIONS] __initdata_memblock;
 
@@ -34,7 +37,10 @@ struct memblock memblock __initdata_memblock = {
 	.reserved.cnt		= 1,	/* empty dummy entry */
 	.reserved.max		= INIT_MEMBLOCK_REGIONS,
 
+<<<<<<< HEAD
 	.bottom_up		= false,
+=======
+>>>>>>> 512ca3c... stock
 	.current_limit		= MEMBLOCK_ALLOC_ANYWHERE,
 };
 
@@ -85,14 +91,20 @@ static long __init_memblock memblock_overlaps_region(struct memblock_type *type,
 	return (i < type->cnt) ? i : -1;
 }
 
+<<<<<<< HEAD
 /*
  * __memblock_find_range_bottom_up - find free area utility in bottom-up
+=======
+/**
+ * memblock_find_in_range_node - find free area in given range and node
+>>>>>>> 512ca3c... stock
  * @start: start of candidate range
  * @end: end of candidate range, can be %MEMBLOCK_ALLOC_{ANYWHERE|ACCESSIBLE}
  * @size: size of free area to find
  * @align: alignment of free area to find
  * @nid: nid of the free area to find, %MAX_NUMNODES for any node
  *
+<<<<<<< HEAD
  * Utility called from memblock_find_in_range_node(), find free area bottom-up.
  *
  * RETURNS:
@@ -101,10 +113,21 @@ static long __init_memblock memblock_overlaps_region(struct memblock_type *type,
 static phys_addr_t __init_memblock
 __memblock_find_range_bottom_up(phys_addr_t start, phys_addr_t end,
 				phys_addr_t size, phys_addr_t align, int nid)
+=======
+ * Find @size free area aligned to @align in the specified range and node.
+ *
+ * RETURNS:
+ * Found address on success, %0 on failure.
+ */
+phys_addr_t __init_memblock memblock_find_in_range_node(phys_addr_t start,
+					phys_addr_t end, phys_addr_t size,
+					phys_addr_t align, int nid)
+>>>>>>> 512ca3c... stock
 {
 	phys_addr_t this_start, this_end, cand;
 	u64 i;
 
+<<<<<<< HEAD
 	for_each_free_mem_range(i, nid, &this_start, &this_end, NULL) {
 		this_start = clamp(this_start, start, end);
 		this_end = clamp(this_end, start, end);
@@ -136,6 +159,15 @@ __memblock_find_range_top_down(phys_addr_t start, phys_addr_t end,
 {
 	phys_addr_t this_start, this_end, cand;
 	u64 i;
+=======
+	/* pump up @end */
+	if (end == MEMBLOCK_ALLOC_ACCESSIBLE)
+		end = memblock.current_limit;
+
+	/* avoid allocating the first page */
+	start = max_t(phys_addr_t, start, PAGE_SIZE);
+	end = max(start, end);
+>>>>>>> 512ca3c... stock
 
 	for_each_free_mem_range_reverse(i, nid, &this_start, &this_end, NULL) {
 		this_start = clamp(this_start, start, end);
@@ -148,11 +180,15 @@ __memblock_find_range_top_down(phys_addr_t start, phys_addr_t end,
 		if (cand >= this_start)
 			return cand;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 512ca3c... stock
 	return 0;
 }
 
 /**
+<<<<<<< HEAD
  *  memblock_find_in_range_node - find free area in given range and node
  * @start: start of candidate range
  * @end: end of candidate range, can be %MEMBLOCK_ALLOC_{ANYWHERE|ACCESSIBLE}
@@ -258,6 +294,8 @@ phys_addr_t __init_memblock memblock_find_in_range_node(phys_addr_t start,
 }
 
 /**
+=======
+>>>>>>> 512ca3c... stock
  * memblock_find_in_range - find free area in given range
  * @start: start of candidate range
  * @end: end of candidate range, can be %MEMBLOCK_ALLOC_{ANYWHERE|ACCESSIBLE}
@@ -267,7 +305,11 @@ phys_addr_t __init_memblock memblock_find_in_range_node(phys_addr_t start,
  * Find @size free area aligned to @align in the specified range.
  *
  * RETURNS:
+<<<<<<< HEAD
  * Found address on success, 0 on failure.
+=======
+ * Found address on success, %0 on failure.
+>>>>>>> 512ca3c... stock
  */
 phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start,
 					phys_addr_t end, phys_addr_t size,
@@ -1047,6 +1089,7 @@ int __init_memblock memblock_is_memory(phys_addr_t addr)
 	return memblock_search(&memblock.memory, addr) != -1;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
 int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
 			 unsigned long *start_pfn, unsigned long *end_pfn)
@@ -1065,6 +1108,8 @@ int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
 }
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 /**
  * memblock_is_region_memory - check if a region is a subset of memory
  * @base: base of region to check

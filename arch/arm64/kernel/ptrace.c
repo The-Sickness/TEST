@@ -58,12 +58,15 @@
  */
 void ptrace_disable(struct task_struct *child)
 {
+<<<<<<< HEAD
 	/*
 	 * This would be better off in core code, but PTRACE_DETACH has
 	 * grown its fair share of arch-specific worts and changing it
 	 * is likely to cause regressions on obscure architectures.
 	 */
 	user_disable_single_step(child);
+=======
+>>>>>>> 512ca3c... stock
 }
 
 #ifdef CONFIG_HAVE_HW_BREAKPOINT
@@ -1124,7 +1127,11 @@ asmlinkage int syscall_trace_enter(struct pt_regs *regs)
 	if (secure_computing(regs->syscallno) == -1)
 		return RET_SKIP_SYSCALL_TRACE;
 
+<<<<<<< HEAD
 	if (test_thread_flag_relaxed(TIF_SYSCALL_TRACE))
+=======
+	if (test_thread_flag(TIF_SYSCALL_TRACE))
+>>>>>>> 512ca3c... stock
 		tracehook_report_syscall(regs, PTRACE_SYSCALL_ENTER);
 
 	if (IS_SKIP_SYSCALL(regs->syscallno)) {
@@ -1140,7 +1147,11 @@ asmlinkage int syscall_trace_enter(struct pt_regs *regs)
 		 * a value set to x0 here is not used in this case, we may
 		 * neglect the case.
 		 */
+<<<<<<< HEAD
 		if (!test_thread_flag_relaxed(TIF_SYSCALL_TRACE) ||
+=======
+		if (!test_thread_flag(TIF_SYSCALL_TRACE) ||
+>>>>>>> 512ca3c... stock
 				(IS_SKIP_SYSCALL(saved_syscallno)))
 			regs->regs[0] = -ENOSYS;
 	}
@@ -1155,6 +1166,10 @@ asmlinkage void syscall_trace_exit(struct pt_regs *regs)
 {
 	audit_syscall_exit(regs);
 
+<<<<<<< HEAD
 	if (test_thread_flag_relaxed(TIF_SYSCALL_TRACE))
+=======
+	if (test_thread_flag(TIF_SYSCALL_TRACE))
+>>>>>>> 512ca3c... stock
 		tracehook_report_syscall(regs, PTRACE_SYSCALL_EXIT);
 }

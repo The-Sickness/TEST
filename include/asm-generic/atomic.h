@@ -6,7 +6,10 @@
  *
  * Copyright (C) 2007 Red Hat, Inc. All Rights Reserved.
  * Written by David Howells (dhowells@redhat.com)
+<<<<<<< HEAD
  * Copyright (c) 2014, NVIDIA CORPORATION.  All rights reserved.
+=======
+>>>>>>> 512ca3c... stock
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public Licence
@@ -45,10 +48,13 @@
 #define atomic_read(v)	(*(volatile int *)&(v)->counter)
 #endif
 
+<<<<<<< HEAD
 #ifndef cpu_relaxed_read_atomic
 #define cpu_relaxed_read_atomic(v) atomic_read(v)
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 /**
  * atomic_set - set atomic variable
  * @v: pointer of type atomic_t

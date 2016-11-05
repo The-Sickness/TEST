@@ -482,8 +482,11 @@ static void cpufreq_stats_update_policy_cpu(struct cpufreq_policy *policy)
 	struct cpufreq_stats *stat = per_cpu(cpufreq_stats_table,
 			policy->last_cpu);
 
+<<<<<<< HEAD
 	if (!stat)
 		return;
+=======
+>>>>>>> 512ca3c... stock
 	pr_debug("Updating stats_table for new_cpu %u from last_cpu %u\n",
 			policy->cpu, policy->last_cpu);
 	per_cpu(cpufreq_stats_table, policy->cpu) = per_cpu(cpufreq_stats_table,

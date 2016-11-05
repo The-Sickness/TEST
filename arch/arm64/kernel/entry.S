@@ -30,6 +30,7 @@
 #include <asm/unistd.h>
 
 /*
+<<<<<<< HEAD
  * Context tracking subsystem.  Used to instrument transitions
  * between user and kernel mode.
  */
@@ -56,6 +57,8 @@
 	.endm
 
 /*
+=======
+>>>>>>> 512ca3c... stock
  * Bad Abort numbers
  *-----------------
  */
@@ -118,6 +121,7 @@
 	.macro	kernel_exit, el, ret = 0
 	ldp	x21, x22, [sp, #S_PC]		// load ELR, SPSR
 	.if	\el == 0
+<<<<<<< HEAD
 	ct_user_enter
 	ldr	x23, [sp, #S_SP]		// load return stack pointer
 #ifdef CONFIG_ARM64_ERRATUM_845719
@@ -131,6 +135,9 @@
 1:
 #endif
 #endif
+=======
+	ldr	x23, [sp, #S_SP]		// load return stack pointer
+>>>>>>> 512ca3c... stock
 	.endif
 	.if	\ret
 	ldr	x1, [sp, #S_X1]			// preserve x0 (syscall return)
@@ -465,7 +472,10 @@ el0_da:
 	mrs	x26, far_el1
 	// enable interrupts before calling the main handler
 	enable_dbg_and_irq
+<<<<<<< HEAD
 	ct_user_exit
+=======
+>>>>>>> 512ca3c... stock
 	bic	x0, x26, #(0xff << 56)
 	mov	x1, x25
 	mov	x2, sp
@@ -478,7 +488,10 @@ el0_ia:
 	mrs	x26, far_el1
 	// enable interrupts before calling the main handler
 	enable_dbg_and_irq
+<<<<<<< HEAD
 	ct_user_exit
+=======
+>>>>>>> 512ca3c... stock
 	mov	x0, x26
 	orr	x1, x25, #1 << 24		// use reserved ISS bit for instruction aborts
 	mov	x2, sp
@@ -489,7 +502,10 @@ el0_fpsimd_acc:
 	 * Floating Point or Advanced SIMD access
 	 */
 	enable_dbg
+<<<<<<< HEAD
 	ct_user_exit
+=======
+>>>>>>> 512ca3c... stock
 	mov	x0, x25
 	mov	x1, sp
 	adr	lr, ret_to_user
@@ -499,7 +515,10 @@ el0_fpsimd_exc:
 	 * Floating Point or Advanced SIMD exception
 	 */
 	enable_dbg
+<<<<<<< HEAD
 	ct_user_exit
+=======
+>>>>>>> 512ca3c... stock
 	mov	x0, x25
 	mov	x1, sp
 	adr	lr, ret_to_user
@@ -522,7 +541,10 @@ el0_undef:
 	 */
 	// enable interrupts before calling the main handler
 	enable_dbg_and_irq
+<<<<<<< HEAD
 	ct_user_exit
+=======
+>>>>>>> 512ca3c... stock
 	mov	x0, sp
 	adr	lr, ret_to_user
 	b	do_undefinstr
@@ -536,11 +558,17 @@ el0_dbg:
 	mov	x2, sp
 	bl	do_debug_exception
 	enable_dbg
+<<<<<<< HEAD
 	ct_user_exit
 	b	ret_to_user
 el0_inv:
 	enable_dbg
 	ct_user_exit
+=======
+	b	ret_to_user
+el0_inv:
+	enable_dbg
+>>>>>>> 512ca3c... stock
 	mov	x0, sp
 	mov	x1, #BAD_SYNC
 	mrs	x2, esr_el1
@@ -557,7 +585,10 @@ el0_irq_naked:
 	bl	trace_hardirqs_off
 #endif
 
+<<<<<<< HEAD
 	ct_user_exit
+=======
+>>>>>>> 512ca3c... stock
 	irq_handler
 
 #ifdef CONFIG_TRACE_IRQFLAGS
@@ -662,7 +693,10 @@ el0_svc:
 el0_svc_naked:					// compat entry point
 	stp	x0, scno, [sp, #S_ORIG_X0]	// save the original x0 and syscall number
 	enable_dbg_and_irq
+<<<<<<< HEAD
 	ct_user_exit 1
+=======
+>>>>>>> 512ca3c... stock
 
 	get_thread_info tsk
 	ldr	x16, [tsk, #TI_FLAGS]		// check for syscall hooks

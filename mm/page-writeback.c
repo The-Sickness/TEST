@@ -37,6 +37,7 @@
 #include <linux/timer.h>
 #include <linux/sched/rt.h>
 #include <trace/events/writeback.h>
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_PAGE_WRITEBACK
 #include <linux/powersuspend.h>
 #endif
@@ -46,6 +47,8 @@
 #ifdef CONFIG_ADAPTIVE_VM_DIRTY_RATIO
 #include <linux/powersuspend.h>
 #endif
+=======
+>>>>>>> 512ca3c... stock
 
 /*
  * Sleep at most 200ms at a time in balance_dirty_pages().
@@ -76,6 +79,7 @@ static long ratelimit_pages = 32;
 /*
  * Start background writeback (via writeback threads) at this percentage
  */
+<<<<<<< HEAD
 #ifdef CONFIG_ADAPTIVE_DIRTY_BACKGROUND_RATIO
 #define DEFAULT_DIRTY_BACKGROUND_RATIO 20
 int dirty_background_ratio, resume_dirty_background_ratio;
@@ -84,6 +88,9 @@ int dirty_suspend_background_ratio, suspend_dirty_background_ratio;
 #else
 int dirty_background_ratio = 20;
 #endif
+=======
+int dirty_background_ratio = 10;
+>>>>>>> 512ca3c... stock
 
 /*
  * dirty_background_bytes starts at 0 (disabled) so that it is a function of
@@ -100,6 +107,7 @@ int vm_highmem_is_dirtyable;
 /*
  * The generator of dirty data starts writeback at this percentage
  */
+<<<<<<< HEAD
 #ifdef CONFIG_ADAPTIVE_VM_DIRTY_RATIO
 #define DEFAULT_VM_DIRTY_RATIO 40
 int vm_dirty_ratio, resume_vm_dirty_ratio;
@@ -108,6 +116,9 @@ int vm_suspend_dirty_ratio, suspend_vm_dirty_ratio;
 #else
 int vm_dirty_ratio = 40;
 #endif
+=======
+int vm_dirty_ratio = 20;
+>>>>>>> 512ca3c... stock
 
 /*
  * vm_dirty_bytes starts at 0 (disabled) so that it is a function of
@@ -116,6 +127,7 @@ int vm_dirty_ratio = 40;
 unsigned long vm_dirty_bytes;
 
 /*
+<<<<<<< HEAD
  * The default intervals between `kupdate'-style writebacks
  */
 #ifdef CONFIG_DYNAMIC_PAGE_WRITEBACK
@@ -150,10 +162,18 @@ EXPORT_SYMBOL_GPL(dirty_writeback_active_interval);
 unsigned int dirty_writeback_suspend_interval = DEFAULT_DIRTY_WRITEBACK_INTERVAL; /* centiseconds */
 EXPORT_SYMBOL_GPL(dirty_writeback_suspend_interval);
 #endif
+=======
+ * The interval between `kupdate'-style writebacks
+ */
+unsigned int dirty_writeback_interval = 5 * 100; /* centiseconds */
+
+EXPORT_SYMBOL_GPL(dirty_writeback_interval);
+>>>>>>> 512ca3c... stock
 
 /*
  * The longest time for which data is allowed to remain dirty
  */
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_PAGE_WRITEBACK
 #define DEFAULT_DIRTY_EXPIRE_INTERVAL 2000 /* centiseconds */
 #define DEFAULT_SUSPEND_DIRTY_EXPIRE_INTERVAL 12000 /* centiseconds */
@@ -164,6 +184,9 @@ unsigned int sleep_dirty_expire_interval,
 #else
 unsigned int dirty_expire_interval = 30 * 100; /* centiseconds */
 #endif
+=======
+unsigned int dirty_expire_interval = 30 * 100; /* centiseconds */
+>>>>>>> 512ca3c... stock
 
 /*
  * Flag that makes the machine dump writes/reads and block dirtyings.
@@ -276,6 +299,7 @@ static unsigned long highmem_dirtyable_memory(unsigned long total)
 	unsigned long x = 0;
 
 	for_each_node_state(node, N_HIGH_MEMORY) {
+<<<<<<< HEAD
 		unsigned long nr_pages;
 		struct zone *z =
 			&NODE_DATA(node)->node_zones[ZONE_HIGHMEM];
@@ -288,6 +312,11 @@ static unsigned long highmem_dirtyable_memory(unsigned long total)
 		 */
 		nr_pages -= min(nr_pages, z->dirty_balance_reserve);
 		x += nr_pages;
+=======
+		struct zone *z = &NODE_DATA(node)->node_zones[ZONE_HIGHMEM];
+
+		x += zone_dirtyable_memory(z);
+>>>>>>> 512ca3c... stock
 	}
 	/*
 	 * Unreclaimable memory (kernel memory or anonymous memory
@@ -330,7 +359,11 @@ static unsigned long global_dirtyable_memory(void)
 	x += global_page_state(NR_ACTIVE_FILE);
 
 	if (!vm_highmem_is_dirtyable)
+<<<<<<< HEAD
 		x -= min(x, highmem_dirtyable_memory(x));
+=======
+		x -= highmem_dirtyable_memory(x);
+>>>>>>> 512ca3c... stock
 
 	/* Subtract min_free_kbytes */
 	x -= min_t(unsigned long, x, min_free_kbytes >> (PAGE_SHIFT - 10));
@@ -871,11 +904,16 @@ static void bdi_update_write_bandwidth(struct backing_dev_info *bdi,
 	 *                   bw * elapsed + write_bandwidth * (period - elapsed)
 	 * write_bandwidth = ---------------------------------------------------
 	 *                                          period
+<<<<<<< HEAD
 	 *
 	 * @written may have decreased due to account_page_redirty().
 	 * Avoid underflowing @bw calculation.
 	 */
 	bw = written - min(written, bdi->written_stamp);
+=======
+	 */
+	bw = written - bdi->written_stamp;
+>>>>>>> 512ca3c... stock
 	bw *= HZ;
 	if (unlikely(elapsed > period)) {
 		do_div(bw, elapsed);
@@ -939,7 +977,11 @@ static void global_update_bandwidth(unsigned long thresh,
 				    unsigned long now)
 {
 	static DEFINE_SPINLOCK(dirty_lock);
+<<<<<<< HEAD
 	static unsigned long update_time = INITIAL_JIFFIES;
+=======
+	static unsigned long update_time;
+>>>>>>> 512ca3c... stock
 
 	/*
 	 * check locklessly first to optimize away locking for the most time
@@ -1629,6 +1671,7 @@ int dirty_writeback_centisecs_handler(ctl_table *table, int write,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_PAGE_WRITEBACK
 /*
  * Manages the dirty page writebacks activation status
@@ -1688,6 +1731,8 @@ int dirty_writeback_suspend_centisecs_handler(ctl_table *table, int write,
 }
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_BLOCK
 void laptop_mode_timer_fn(unsigned long data)
 {
@@ -1774,6 +1819,7 @@ static struct notifier_block __cpuinitdata ratelimit_nb = {
 	.next		= NULL,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_ADAPTIVE_DIRTY_BACKGROUND_RATIO
 static void dbackground_power_suspend(struct power_suspend *handler)
 {
@@ -1869,6 +1915,8 @@ static struct power_suspend dirty_suspend = {
 };
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * Called early on to tune the page writeback dirty limits.
  *
@@ -1889,6 +1937,7 @@ static struct power_suspend dirty_suspend = {
  */
 void __init page_writeback_init(void)
 {
+<<<<<<< HEAD
 
 #ifdef CONFIG_ADAPTIVE_DIRTY_BACKGROUND_RATIO
 	dirty_background_ratio = resume_dirty_background_ratio =
@@ -1920,6 +1969,8 @@ void __init page_writeback_init(void)
 	register_power_suspend(&dirty_writeback_suspend);
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 	writeback_set_ratelimit();
 	register_cpu_notifier(&ratelimit_nb);
 

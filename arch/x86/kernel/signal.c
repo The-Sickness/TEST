@@ -686,6 +686,7 @@ handle_signal(struct ksignal *ksig, struct pt_regs *regs)
 	signal_setup_done(failed, ksig, test_thread_flag(TIF_SINGLESTEP));
 }
 
+<<<<<<< HEAD
 static inline unsigned long get_nr_restart_syscall(const struct pt_regs *regs)
 {
 #if defined(CONFIG_X86_32) || !defined(CONFIG_X86_64)
@@ -695,6 +696,14 @@ static inline unsigned long get_nr_restart_syscall(const struct pt_regs *regs)
 		__NR_restart_syscall | (regs->orig_ax & __X32_SYSCALL_BIT);
 #endif /* CONFIG_X86_32 || !CONFIG_X86_64 */
 }
+=======
+#ifdef CONFIG_X86_32
+#define NR_restart_syscall	__NR_restart_syscall
+#else /* !CONFIG_X86_32 */
+#define NR_restart_syscall	\
+	test_thread_flag(TIF_IA32) ? __NR_ia32_restart_syscall : __NR_restart_syscall
+#endif /* CONFIG_X86_32 */
+>>>>>>> 512ca3c... stock
 
 /*
  * Note that 'init' is a special process: it doesn't get signals it doesn't
@@ -723,7 +732,11 @@ static void do_signal(struct pt_regs *regs)
 			break;
 
 		case -ERESTART_RESTARTBLOCK:
+<<<<<<< HEAD
 			regs->ax = get_nr_restart_syscall(regs);
+=======
+			regs->ax = NR_restart_syscall;
+>>>>>>> 512ca3c... stock
 			regs->ip -= 2;
 			break;
 		}

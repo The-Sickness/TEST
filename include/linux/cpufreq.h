@@ -33,7 +33,10 @@
 
 #define CPUFREQ_TRANSITION_NOTIFIER	(0)
 #define CPUFREQ_POLICY_NOTIFIER		(1)
+<<<<<<< HEAD
 #define CPUFREQ_GOVINFO_NOTIFIER	(2)
+=======
+>>>>>>> 512ca3c... stock
 
 #ifdef CONFIG_CPU_FREQ
 int cpufreq_register_notifier(struct notifier_block *nb, unsigned int list);
@@ -53,6 +56,7 @@ static inline int cpufreq_unregister_notifier(struct notifier_block *nb,
 static inline void disable_cpufreq(void) { }
 #endif		/* CONFIG_CPU_FREQ */
 
+<<<<<<< HEAD
 /* Govinfo Notifiers */
 #define CPUFREQ_LOAD_CHANGE		(0)
 
@@ -67,6 +71,8 @@ struct cpufreq_govinfo {
 };
 extern struct atomic_notifier_head cpufreq_govinfo_notifier_list;
 
+=======
+>>>>>>> 512ca3c... stock
 /* if (cpufreq_driver->target) exists, the ->governor decides what frequency
  * within the limits is used. If (cpufreq_driver->setpolicy> exists, these
  * two generic policies are available:
@@ -241,7 +247,10 @@ void cpufreq_unregister_governor(struct cpufreq_governor *governor);
 
 #define CPUFREQ_RELATION_L 0  /* lowest frequency at or above target */
 #define CPUFREQ_RELATION_H 1  /* highest frequency below or at target */
+<<<<<<< HEAD
 #define CPUFREQ_RELATION_C 2  /* closest frequency to target */
+=======
+>>>>>>> 512ca3c... stock
 
 struct freq_attr;
 
@@ -400,10 +409,13 @@ extern struct cpufreq_governor cpufreq_gov_performance;
 #ifdef CONFIG_CPU_FREQ_GOV_INTERACTIVE
 extern unsigned int cpufreq_interactive_get_hispeed_freq(int cpu);
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_CPU_FREQ_GOV_CAFACTIVE
 extern unsigned int cpufreq_cafactive_get_hispeed_freq(int cpu);
 extern void cafactive_boost_ondemand(int cpu, s64 miliseconds, bool static_switch);
 #endif
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_performance)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_POWERSAVE)
@@ -421,6 +433,7 @@ extern struct cpufreq_governor cpufreq_gov_conservative;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE)
 extern struct cpufreq_governor cpufreq_gov_interactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_interactive)
+<<<<<<< HEAD
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTEREXTREM)
 extern struct cpufreq_governor cpufreq_gov_interextrem;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_interextrem)
@@ -430,6 +443,8 @@ extern struct cpufreq_governor cpufreq_gov_cafactive;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_IMPULSE)
 extern struct cpufreq_governor cpufreq_gov_impulse;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_impulse)
+=======
+>>>>>>> 512ca3c... stock
 #endif
 
 

@@ -1066,7 +1066,11 @@ static int ethtool_get_strings(struct net_device *dev, void __user *useraddr)
 
 	gstrings.len = ret;
 
+<<<<<<< HEAD
 	data = kcalloc(gstrings.len, ETH_GSTRING_LEN, GFP_USER);
+=======
+	data = kmalloc(gstrings.len * ETH_GSTRING_LEN, GFP_USER);
+>>>>>>> 512ca3c... stock
 	if (!data)
 		return -ENOMEM;
 

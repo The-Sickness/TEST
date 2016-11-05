@@ -449,6 +449,7 @@ handle_signal(unsigned long sig, siginfo_t *info, struct k_sigaction *ka,
 		regs->gr[28]);
 }
 
+<<<<<<< HEAD
 /*
  * Check how the syscall number gets loaded into %r20 within
  * the delay branch in userspace and adjust as needed.
@@ -498,6 +499,8 @@ static void check_syscallno_in_delay_branch(struct pt_regs *regs)
 		current->comm, task_pid_nr(current), opcode);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static inline void
 syscall_restart(struct pt_regs *regs, struct k_sigaction *ka)
 {
@@ -520,7 +523,14 @@ syscall_restart(struct pt_regs *regs, struct k_sigaction *ka)
 		}
 		/* fallthrough */
 	case -ERESTARTNOINTR:
+<<<<<<< HEAD
 		check_syscallno_in_delay_branch(regs);
+=======
+		/* A syscall is just a branch, so all
+		 * we have to do is fiddle the return pointer.
+		 */
+		regs->gr[31] -= 8; /* delayed branching */
+>>>>>>> 512ca3c... stock
 		break;
 	}
 }
@@ -569,9 +579,21 @@ insert_restart_trampoline(struct pt_regs *regs)
 	}
 	case -ERESTARTNOHAND:
 	case -ERESTARTSYS:
+<<<<<<< HEAD
 	case -ERESTARTNOINTR:
 		check_syscallno_in_delay_branch(regs);
 		return;
+=======
+	case -ERESTARTNOINTR: {
+		/* Hooray for delayed branching.  We don't
+		 * have to restore %r20 (the system call
+		 * number) because it gets loaded in the delay
+		 * slot of the branch external instruction.
+		 */
+		regs->gr[31] -= 8;
+		return;
+	}
+>>>>>>> 512ca3c... stock
 	default:
 		break;
 	}

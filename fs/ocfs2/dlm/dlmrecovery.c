@@ -2326,8 +2326,11 @@ static void dlm_do_local_recovery_cleanup(struct dlm_ctxt *dlm, u8 dead_node)
 						break;
 					}
 				}
+<<<<<<< HEAD
 				dlm_lockres_clear_refmap_bit(dlm, res,
 						dead_node);
+=======
+>>>>>>> 512ca3c... stock
 				spin_unlock(&res->spinlock);
 				continue;
 			}

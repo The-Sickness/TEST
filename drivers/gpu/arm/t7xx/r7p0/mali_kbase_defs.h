@@ -802,6 +802,7 @@ typedef struct sec_sr_resources {
 	phys_addr_t     secure_crc_phys;
 	size_t          secure_crc_sizes;
 } sec_sr_resources;
+<<<<<<< HEAD
 #ifdef MALI_SEC_HWCNT
 typedef struct hwc_resources {
 	u64 arith_words;
@@ -814,6 +815,15 @@ typedef struct hwc_resources {
 	u64 tiler_active;
 	u64 external_read_bits;
 #endif
+=======
+
+#ifdef MALI_SEC_HWCNT
+typedef struct hwc_resources {
+	u32 arith_words;
+	u32 ls_issues;
+	u32 tex_issues;
+	u32 tripipe_active;
+>>>>>>> 512ca3c... stock
 } hwc_resources;
 #endif
 
@@ -1117,6 +1127,15 @@ struct kbase_device {
 	 */
 	bool secure_mode_support;
 
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_MALI_DEBUG
+	wait_queue_head_t driver_inactive_wait;
+	bool driver_inactive;
+#endif /* CONFIG_MALI_DEBUG */
+
+>>>>>>> 512ca3c... stock
 	/*
 	 * MALI_SEC_SECURE_RENDERING
 	 *
@@ -1125,11 +1144,14 @@ struct kbase_device {
 	 */
 	sec_sr_resources sec_sr_info;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MALI_DEBUG
 	wait_queue_head_t driver_inactive_wait;
 	bool driver_inactive;
 #endif /* CONFIG_MALI_DEBUG */
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_MALI_FPGA_BUS_LOGGER
 	/*
 	 * Bus logger integration.
@@ -1312,6 +1334,11 @@ struct kbase_context {
 
 	/* MALI_SEC_INTEGRATION */
 	bool destroying_context;
+<<<<<<< HEAD
+=======
+	atomic_t mem_profile_showing_state;
+	wait_queue_head_t mem_profile_wait;
+>>>>>>> 512ca3c... stock
 };
 
 enum kbase_reg_access_type {

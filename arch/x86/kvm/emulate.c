@@ -2450,7 +2450,11 @@ static int em_sysenter(struct x86_emulate_ctxt *ctxt)
 	 * Not recognized on AMD in compat mode (but is recognized in legacy
 	 * mode).
 	 */
+<<<<<<< HEAD
 	if ((ctxt->mode != X86EMUL_MODE_PROT64) && (efer & EFER_LMA)
+=======
+	if ((ctxt->mode == X86EMUL_MODE_PROT32) && (efer & EFER_LMA)
+>>>>>>> 512ca3c... stock
 	    && !vendor_intel(ctxt))
 		return emulate_ud(ctxt);
 
@@ -2463,6 +2467,7 @@ static int em_sysenter(struct x86_emulate_ctxt *ctxt)
 	setup_syscalls_segments(ctxt, &cs, &ss);
 
 	ops->get_msr(ctxt, MSR_IA32_SYSENTER_CS, &msr_data);
+<<<<<<< HEAD
 	if ((msr_data & 0xfffc) == 0x0)
 		return emulate_gp(ctxt, 0);
 
@@ -2470,6 +2475,27 @@ static int em_sysenter(struct x86_emulate_ctxt *ctxt)
 	cs_sel = (u16)msr_data & ~SELECTOR_RPL_MASK;
 	ss_sel = cs_sel + 8;
 	if (efer & EFER_LMA) {
+=======
+	switch (ctxt->mode) {
+	case X86EMUL_MODE_PROT32:
+		if ((msr_data & 0xfffc) == 0x0)
+			return emulate_gp(ctxt, 0);
+		break;
+	case X86EMUL_MODE_PROT64:
+		if (msr_data == 0x0)
+			return emulate_gp(ctxt, 0);
+		break;
+	default:
+		break;
+	}
+
+	ctxt->eflags &= ~(EFLG_VM | EFLG_IF | EFLG_RF);
+	cs_sel = (u16)msr_data;
+	cs_sel &= ~SELECTOR_RPL_MASK;
+	ss_sel = cs_sel + 8;
+	ss_sel &= ~SELECTOR_RPL_MASK;
+	if (ctxt->mode == X86EMUL_MODE_PROT64 || (efer & EFER_LMA)) {
+>>>>>>> 512ca3c... stock
 		cs.d = 0;
 		cs.l = 1;
 	}
@@ -2478,11 +2504,18 @@ static int em_sysenter(struct x86_emulate_ctxt *ctxt)
 	ops->set_segment(ctxt, ss_sel, &ss, 0, VCPU_SREG_SS);
 
 	ops->get_msr(ctxt, MSR_IA32_SYSENTER_EIP, &msr_data);
+<<<<<<< HEAD
 	ctxt->_eip = (efer & EFER_LMA) ? msr_data : (u32)msr_data;
 
 	ops->get_msr(ctxt, MSR_IA32_SYSENTER_ESP, &msr_data);
 	*reg_write(ctxt, VCPU_REGS_RSP) = (efer & EFER_LMA) ? msr_data :
 							      (u32)msr_data;
+=======
+	ctxt->_eip = msr_data;
+
+	ops->get_msr(ctxt, MSR_IA32_SYSENTER_ESP, &msr_data);
+	*reg_write(ctxt, VCPU_REGS_RSP) = msr_data;
+>>>>>>> 512ca3c... stock
 
 	return X86EMUL_CONTINUE;
 }
@@ -4721,8 +4754,12 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt)
 		if (rc != X86EMUL_CONTINUE)
 			goto done;
 	}
+<<<<<<< HEAD
 	/* Copy full 64-bit value for CMPXCHG8B.  */
 	ctxt->dst.orig_val64 = ctxt->dst.val64;
+=======
+	ctxt->dst.orig_val = ctxt->dst.val;
+>>>>>>> 512ca3c... stock
 
 special_insn:
 

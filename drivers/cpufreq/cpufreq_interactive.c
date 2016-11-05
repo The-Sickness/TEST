@@ -33,7 +33,10 @@
 #include <linux/slab.h>
 #include <linux/kernel_stat.h>
 #include <linux/pm_qos.h>
+<<<<<<< HEAD
 #include <linux/powersuspend.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <asm/cputime.h>
 
 #ifdef CONFIG_ARM_EXYNOS_MP_CPUFREQ
@@ -63,7 +66,10 @@ struct cpufreq_interactive_cpuinfo {
 	unsigned int max_freq;
 	u64 floor_validate_time;
 	u64 hispeed_validate_time;
+<<<<<<< HEAD
 	u64 max_freq_hyst_start_time;
+=======
+>>>>>>> 512ca3c... stock
 	struct rw_semaphore enable_sem;
 	int governor_enabled;
 #ifdef CONFIG_PMU_COREMEM_RATIO
@@ -82,9 +88,12 @@ static cpumask_t regionchange_cpumask;
 static spinlock_t regionchange_cpumask_lock;
 #endif
 
+<<<<<<< HEAD
 /* boolean for determining screen on/off state */
 static bool suspended = false;
 
+=======
+>>>>>>> 512ca3c... stock
 /* Target load.  Lower values result in higher CPU speeds. */
 #define DEFAULT_TARGET_LOAD 90
 static unsigned int default_target_loads[] = {DEFAULT_TARGET_LOAD};
@@ -232,12 +241,15 @@ struct cpufreq_interactive_tunables {
 
 	unsigned int sampling_down_factor;
 #endif
+<<<<<<< HEAD
 
 	/*
 	 * Stay at max freq for at least max_freq_hysteresis before dropping
 	 * frequency.
 	 */
 	unsigned int max_freq_hysteresis;
+=======
+>>>>>>> 512ca3c... stock
 };
 
 /* For cases where we have single governor instance for system */
@@ -306,12 +318,20 @@ static void cpufreq_interactive_timer_resched(
 				  tunables->io_is_busy);
 	pcpu->cputime_speedadj = 0;
 	pcpu->cputime_speedadj_timestamp = pcpu->time_in_idle_timestamp;
+<<<<<<< HEAD
 	expires = jiffies + tunables->timer_rate;
+=======
+	expires = jiffies + usecs_to_jiffies(tunables->timer_rate);
+>>>>>>> 512ca3c... stock
 	mod_timer_pinned(&pcpu->cpu_timer, expires);
 
 	if (tunables->timer_slack_val >= 0 &&
 	    pcpu->target_freq > pcpu->policy->min) {
+<<<<<<< HEAD
 		expires += tunables->timer_slack_val;
+=======
+		expires += usecs_to_jiffies(tunables->timer_slack_val);
+>>>>>>> 512ca3c... stock
 		mod_timer_pinned(&pcpu->cpu_slack_timer, expires);
 	}
 
@@ -326,7 +346,12 @@ static void cpufreq_interactive_timer_start(
 	struct cpufreq_interactive_tunables *tunables, int cpu)
 {
 	struct cpufreq_interactive_cpuinfo *pcpu = &per_cpu(cpuinfo, cpu);
+<<<<<<< HEAD
 	unsigned long expires = jiffies + tunables->timer_rate;
+=======
+	unsigned long expires = jiffies +
+		usecs_to_jiffies(tunables->timer_rate);
+>>>>>>> 512ca3c... stock
 	unsigned long flags;
 
 #ifdef CONFIG_PMU_COREMEM_RATIO
@@ -340,7 +365,11 @@ static void cpufreq_interactive_timer_start(
 	add_timer_on(&pcpu->cpu_timer, cpu);
 	if (tunables->timer_slack_val >= 0 &&
 	    pcpu->target_freq > pcpu->policy->min) {
+<<<<<<< HEAD
 		expires += tunables->timer_slack_val;
+=======
+		expires += usecs_to_jiffies(tunables->timer_slack_val);
+>>>>>>> 512ca3c... stock
 		pcpu->cpu_slack_timer.expires = expires;
 		add_timer_on(&pcpu->cpu_slack_timer, cpu);
 	}
@@ -532,16 +561,28 @@ static unsigned int check_mode(int cpu, unsigned int cur_mode, u64 now)
 	struct cpufreq_interactive_tunables *tunables =
 		pcpu->policy->governor_data;
 
+<<<<<<< HEAD
 	if (now - tunables->mode_check_timestamp < jiffies_to_usecs(tunables->timer_rate) - USEC_PER_MSEC)
 		return ret;
 
 	if (now - tunables->mode_check_timestamp > jiffies_to_usecs(tunables->timer_rate) + USEC_PER_MSEC)
 		tunables->mode_check_timestamp = now - jiffies_to_usecs(tunables->timer_rate);
+=======
+	if (now - tunables->mode_check_timestamp < tunables->timer_rate - USEC_PER_MSEC)
+		return ret;
+
+	if (now - tunables->mode_check_timestamp > tunables->timer_rate + USEC_PER_MSEC)
+		tunables->mode_check_timestamp = now - tunables->timer_rate;
+>>>>>>> 512ca3c... stock
 
 	if(cpumask_test_cpu(cpu, &hmp_fast_cpu_mask)) {
 		for_each_cpu_mask(i, hmp_fast_cpu_mask) {
 			cur_loadinfo = &per_cpu(loadinfo, i);
+<<<<<<< HEAD
 			if (now - cur_loadinfo->timestamp <= jiffies_to_usecs(tunables->timer_rate) + USEC_PER_MSEC) {
+=======
+			if (now - cur_loadinfo->timestamp <= tunables->timer_rate + USEC_PER_MSEC) {
+>>>>>>> 512ca3c... stock
 				total_load += cur_loadinfo->load;
 				if (cur_loadinfo->load > max_single_load)
 					max_single_load = cur_loadinfo->load;
@@ -700,6 +741,7 @@ static void cpufreq_interactive_timer(unsigned long data)
 	if (WARN_ON_ONCE(!delta_time))
 		goto rearm;
 #ifdef CONFIG_MODE_AUTO_CHANGE
+<<<<<<< HEAD
 	if (!suspended) {
 		spin_lock_irqsave(&tunables->mode_lock, flags);
 		if (tunables->enforced_mode)
@@ -716,11 +758,31 @@ static void cpufreq_interactive_timer(unsigned long data)
 		}
 		spin_unlock_irqrestore(&tunables->mode_lock, flags);
 	}
+=======
+	spin_lock_irqsave(&tunables->mode_lock, flags);
+	if (tunables->enforced_mode)
+		new_mode = tunables->enforced_mode;
+	else
+		new_mode = check_mode(data, tunables->mode, now);
+
+	if (new_mode != tunables->mode) {
+		tunables->mode = new_mode;
+		if (new_mode & MULTI_MODE || new_mode & SINGLE_MODE)
+			enter_mode(tunables);
+		else
+			exit_mode(tunables);
+	}
+	spin_unlock_irqrestore(&tunables->mode_lock, flags);
+>>>>>>> 512ca3c... stock
 #endif
 	spin_lock_irqsave(&pcpu->target_freq_lock, flags);
 	do_div(cputime_speedadj, delta_time);
 	loadadjfreq = (unsigned int)cputime_speedadj * 100;
+<<<<<<< HEAD
 	cpu_load = loadadjfreq / pcpu->policy->cur;
+=======
+	cpu_load = loadadjfreq / pcpu->target_freq;
+>>>>>>> 512ca3c... stock
 	boosted = tunables->boost_val || now < tunables->boostpulse_endtime;
 
 #ifdef CONFIG_PMU_COREMEM_RATIO
@@ -741,8 +803,13 @@ static void cpufreq_interactive_timer(unsigned long data)
 	}
 #endif
 
+<<<<<<< HEAD
 	if ((cpu_load >= tunables->go_hispeed_load && !suspended) || boosted) {
 		if (pcpu->policy->cur < tunables->hispeed_freq) {
+=======
+	if (cpu_load >= tunables->go_hispeed_load || boosted) {
+		if (pcpu->target_freq < tunables->hispeed_freq) {
+>>>>>>> 512ca3c... stock
 			new_freq = tunables->hispeed_freq;
 		} else {
 			new_freq = choose_freq(pcpu, loadadjfreq);
@@ -757,10 +824,17 @@ static void cpufreq_interactive_timer(unsigned long data)
 			new_freq = tunables->hispeed_freq;
 	}
 
+<<<<<<< HEAD
 	if (pcpu->policy->cur >= tunables->hispeed_freq &&
 	    new_freq > pcpu->policy->cur &&
 	    now - pcpu->hispeed_validate_time <
 	    freq_to_above_hispeed_delay(tunables, pcpu->policy->cur)) {
+=======
+	if (pcpu->target_freq >= tunables->hispeed_freq &&
+	    new_freq > pcpu->target_freq &&
+	    now - pcpu->hispeed_validate_time <
+	    freq_to_above_hispeed_delay(tunables, pcpu->target_freq)) {
+>>>>>>> 512ca3c... stock
 		trace_cpufreq_interactive_notyet(
 			data, cpu_load, pcpu->target_freq,
 			pcpu->policy->cur, new_freq);
@@ -768,6 +842,11 @@ static void cpufreq_interactive_timer(unsigned long data)
 		goto rearm;
 	}
 
+<<<<<<< HEAD
+=======
+	pcpu->hispeed_validate_time = now;
+
+>>>>>>> 512ca3c... stock
 	if (cpufreq_frequency_table_target(pcpu->policy, pcpu->freq_table,
 					   new_freq, CPUFREQ_RELATION_L,
 					   &index)) {
@@ -777,6 +856,7 @@ static void cpufreq_interactive_timer(unsigned long data)
 
 	new_freq = pcpu->freq_table[index].frequency;
 
+<<<<<<< HEAD
 	if (new_freq < pcpu->target_freq &&
 	    now - pcpu->max_freq_hyst_start_time <
 	    tunables->max_freq_hysteresis) {
@@ -786,6 +866,8 @@ static void cpufreq_interactive_timer(unsigned long data)
 		goto rearm;
 	}
 
+=======
+>>>>>>> 512ca3c... stock
 	/*
 	 * Do not scale below floor_freq unless we have been at or above the
 	 * floor frequency for the minimum sample time since last validated.
@@ -814,16 +896,23 @@ static void cpufreq_interactive_timer(unsigned long data)
 		pcpu->floor_validate_time = now;
 	}
 
+<<<<<<< HEAD
 	if (new_freq == pcpu->policy->max)
 		pcpu->max_freq_hyst_start_time = now;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (pcpu->target_freq == new_freq &&
 			pcpu->target_freq <= pcpu->policy->cur) {
 		trace_cpufreq_interactive_already(
 			data, cpu_load, pcpu->target_freq,
 			pcpu->policy->cur, new_freq);
 		spin_unlock_irqrestore(&pcpu->target_freq_lock, flags);
+<<<<<<< HEAD
 		goto rearm;
+=======
+		goto rearm_if_notmax;
+>>>>>>> 512ca3c... stock
 	}
 
 	trace_cpufreq_interactive_target(data, cpu_load, pcpu->target_freq,
@@ -836,6 +925,21 @@ static void cpufreq_interactive_timer(unsigned long data)
 	spin_unlock_irqrestore(&speedchange_cpumask_lock, flags);
 	wake_up_process(tunables->speedchange_task);
 
+<<<<<<< HEAD
+=======
+rearm_if_notmax:
+	/*
+	 * Already set max speed and don't see a need to change that,
+	 * wait until next idle to re-evaluate, don't need timer.
+	 */
+	if (pcpu->target_freq == pcpu->policy->max)
+#ifdef CONFIG_MODE_AUTO_CHANGE
+		goto rearm;
+#else
+		goto exit;
+#endif
+
+>>>>>>> 512ca3c... stock
 rearm:
 	if (!timer_pending(&pcpu->cpu_timer))
 		cpufreq_interactive_timer_resched(pcpu);
@@ -845,6 +949,40 @@ exit:
 	return;
 }
 
+<<<<<<< HEAD
+=======
+static void cpufreq_interactive_idle_start(void)
+{
+	struct cpufreq_interactive_cpuinfo *pcpu =
+		&per_cpu(cpuinfo, smp_processor_id());
+	int pending;
+
+	if (!down_read_trylock(&pcpu->enable_sem))
+		return;
+	if (!pcpu->governor_enabled) {
+		up_read(&pcpu->enable_sem);
+		return;
+	}
+
+	pending = timer_pending(&pcpu->cpu_timer);
+
+	if (pcpu->target_freq != pcpu->policy->min) {
+		/*
+		 * Entering idle while not at lowest speed.  On some
+		 * platforms this can hold the other CPU(s) at that speed
+		 * even though the CPU is idle. Set a timer to re-evaluate
+		 * speed so this idle CPU doesn't hold the other CPUs above
+		 * min indefinitely.  This should probably be a quirk of
+		 * the CPUFreq driver.
+		 */
+		if (!pending)
+			cpufreq_interactive_timer_resched(pcpu);
+	}
+
+	up_read(&pcpu->enable_sem);
+}
+
+>>>>>>> 512ca3c... stock
 static void cpufreq_interactive_idle_end(void)
 {
 	struct cpufreq_interactive_cpuinfo *pcpu =
@@ -988,7 +1126,10 @@ static int cpufreq_interactive_speedchange_task(void *data)
 		for_each_cpu(cpu, &tmp_mask) {
 			unsigned int j;
 			unsigned int max_freq = 0;
+<<<<<<< HEAD
 			struct cpufreq_interactive_cpuinfo *pjcpu;
+=======
+>>>>>>> 512ca3c... stock
 
 			pcpu = &per_cpu(cpuinfo, cpu);
 
@@ -1000,12 +1141,18 @@ static int cpufreq_interactive_speedchange_task(void *data)
 			}
 
 			for_each_cpu(j, pcpu->policy->cpus) {
+<<<<<<< HEAD
 				pjcpu = &per_cpu(cpuinfo, j);
+=======
+				struct cpufreq_interactive_cpuinfo *pjcpu =
+					&per_cpu(cpuinfo, j);
+>>>>>>> 512ca3c... stock
 
 				if (pjcpu->target_freq > max_freq)
 					max_freq = pjcpu->target_freq;
 			}
 
+<<<<<<< HEAD
 			if (max_freq != pcpu->policy->cur) {
 				u64 now;
 				__cpufreq_driver_target(pcpu->policy,
@@ -1017,6 +1164,12 @@ static int cpufreq_interactive_speedchange_task(void *data)
 					pjcpu->hispeed_validate_time = now;
 				}
 			}
+=======
+			if (max_freq != pcpu->policy->cur)
+				__cpufreq_driver_target(pcpu->policy,
+							max_freq,
+							CPUFREQ_RELATION_H);
+>>>>>>> 512ca3c... stock
 
 #if defined(CONFIG_CPU_THERMAL_IPA)
 			ipa_cpufreq_requested(pcpu->policy, max_freq);
@@ -1335,6 +1488,7 @@ static ssize_t store_hispeed_freq(struct cpufreq_interactive_tunables *tunables,
 	return count;
 }
 
+<<<<<<< HEAD
 #define show_store_one(file_name)					\
 static ssize_t show_##file_name(					\
 	struct cpufreq_interactive_tunables *tunables, char *buf)	\
@@ -1356,6 +1510,8 @@ static ssize_t store_##file_name(					\
 }
 show_store_one(max_freq_hysteresis);
 
+=======
+>>>>>>> 512ca3c... stock
 static ssize_t show_go_hispeed_load(struct cpufreq_interactive_tunables
 		*tunables, char *buf)
 {
@@ -1426,9 +1582,15 @@ static ssize_t show_timer_rate(struct cpufreq_interactive_tunables *tunables,
 		char *buf)
 {
 #ifdef CONFIG_MODE_AUTO_CHANGE
+<<<<<<< HEAD
 	return sprintf(buf, "%u\n", jiffies_to_usecs(tunables->timer_rate_set[tunables->param_index]));
 #else
 	return sprintf(buf, "%u\n", jiffies_to_usecs(tunables->timer_rate));
+=======
+	return sprintf(buf, "%lu\n", tunables->timer_rate_set[tunables->param_index]);
+#else
+	return sprintf(buf, "%lu\n", tunables->timer_rate);
+>>>>>>> 512ca3c... stock
 #endif
 }
 
@@ -1436,13 +1598,18 @@ static ssize_t store_timer_rate(struct cpufreq_interactive_tunables *tunables,
 		const char *buf, size_t count)
 {
 	int ret;
+<<<<<<< HEAD
 	unsigned long val, val_round;
+=======
+	unsigned long val;
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_MODE_AUTO_CHANGE
 	unsigned long flags_idx;
 #endif
 	ret = strict_strtoul(buf, 0, &val);
 	if (ret < 0)
 		return ret;
+<<<<<<< HEAD
 
 	val_round = jiffies_to_usecs(usecs_to_jiffies(val));
 	if (val != val_round)
@@ -1459,6 +1626,16 @@ static ssize_t store_timer_rate(struct cpufreq_interactive_tunables *tunables,
 	spin_unlock_irqrestore(&tunables->param_index_lock, flags_idx);
 #else
 	tunables->timer_rate = val_round;
+=======
+#ifdef CONFIG_MODE_AUTO_CHANGE
+	spin_lock_irqsave(&tunables->param_index_lock, flags_idx);
+	tunables->timer_rate_set[tunables->param_index] = val;
+	if (tunables->cur_param_index == tunables->param_index)
+		tunables->timer_rate = val;
+	spin_unlock_irqrestore(&tunables->param_index_lock, flags_idx);
+#else
+	tunables->timer_rate = val;
+>>>>>>> 512ca3c... stock
 #endif
 	return count;
 }
@@ -1466,7 +1643,11 @@ static ssize_t store_timer_rate(struct cpufreq_interactive_tunables *tunables,
 static ssize_t show_timer_slack(struct cpufreq_interactive_tunables *tunables,
 		char *buf)
 {
+<<<<<<< HEAD
 	return sprintf(buf, "%u\n", jiffies_to_usecs(tunables->timer_slack_val));
+=======
+	return sprintf(buf, "%d\n", tunables->timer_slack_val);
+>>>>>>> 512ca3c... stock
 }
 
 static ssize_t store_timer_slack(struct cpufreq_interactive_tunables *tunables,
@@ -1479,7 +1660,11 @@ static ssize_t store_timer_slack(struct cpufreq_interactive_tunables *tunables,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	tunables->timer_slack_val = usecs_to_jiffies(val);
+=======
+	tunables->timer_slack_val = val;
+>>>>>>> 512ca3c... stock
 	return count;
 }
 
@@ -1815,7 +2000,11 @@ static ssize_t show_cpu_util(struct cpufreq_interactive_tunables
 			pcpu = &per_cpu(cpuinfo, i);
 			get_cpu_idle_time(i, &now, tunables->io_is_busy);
 
+<<<<<<< HEAD
 			if (now - pcpu->time_in_idle_timestamp <= jiffies_to_usecs(tunables->timer_rate))
+=======
+			if (now - pcpu->time_in_idle_timestamp <= tunables->timer_rate)
+>>>>>>> 512ca3c... stock
 				ret += sprintf(buf + ret, "%3u ", per_cpu(cpu_util, i));
 			else
 				ret += sprintf(buf + ret, "%3s ", (pcpu->target_freq == pcpu->policy->max) ? "H_I" : "L_I");
@@ -1950,8 +2139,11 @@ show_gov_pol_sys(cpu_util);
 #ifdef CONFIG_PMU_COREMEM_RATIO
 show_gov_pol_sys(region_time_in_state);
 #endif
+<<<<<<< HEAD
 show_store_gov_pol_sys(max_freq_hysteresis);
 
+=======
+>>>>>>> 512ca3c... stock
 #define gov_sys_attr_rw(_name)						\
 static struct global_attr _name##_gov_sys =				\
 __ATTR(_name, 0660, show_##_name##_gov_sys, store_##_name##_gov_sys)
@@ -1989,7 +2181,10 @@ gov_sys_pol_attr_rw(single_exit_time);
 gov_sys_pol_attr_rw(single_cluster0_min_freq);
 gov_sys_pol_attr_rw(multi_cluster0_min_freq);
 #endif
+<<<<<<< HEAD
 gov_sys_pol_attr_rw(max_freq_hysteresis);
+=======
+>>>>>>> 512ca3c... stock
 
 static struct global_attr boostpulse_gov_sys =
 	__ATTR(boostpulse, 0200, NULL, store_boostpulse_gov_sys);
@@ -2043,7 +2238,10 @@ static struct attribute *interactive_attributes_gov_sys[] = {
 #ifdef CONFIG_PMU_COREMEM_RATIO
 	&region_time_in_state_gov_sys.attr,
 #endif
+<<<<<<< HEAD
 	&max_freq_hysteresis_gov_sys.attr,
+=======
+>>>>>>> 512ca3c... stock
 	NULL,
 };
 
@@ -2084,7 +2282,10 @@ static struct attribute *interactive_attributes_gov_pol[] = {
 #ifdef CONFIG_PMU_COREMEM_RATIO
 	&region_time_in_state_gov_pol.attr,
 #endif
+<<<<<<< HEAD
 	&max_freq_hysteresis_gov_pol.attr,
+=======
+>>>>>>> 512ca3c... stock
 	NULL,
 };
 
@@ -2125,10 +2326,31 @@ static int cpufreq_interactive_idle_notifier(struct notifier_block *nb,
 					     unsigned long val,
 					     void *data)
 {
+<<<<<<< HEAD
 	// CONFIG_PMU_COREMEM_RATIO crippled
 
 	if (val == IDLE_END)
 		cpufreq_interactive_idle_end();
+=======
+#ifdef CONFIG_PMU_COREMEM_RATIO
+	int cpu = smp_processor_id();
+#endif
+
+	switch (val) {
+	case IDLE_START:
+		cpufreq_interactive_idle_start();
+#ifdef CONFIG_PMU_COREMEM_RATIO
+		pmu_suspend_cpu(cpu);
+#endif
+		break;
+	case IDLE_END:
+		cpufreq_interactive_idle_end();
+#ifdef CONFIG_PMU_COREMEM_RATIO
+		pmu_resume_cpu(cpu);
+#endif
+		break;
+	}
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }
@@ -2227,9 +2449,15 @@ static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 			tunables->target_loads = default_target_loads;
 			tunables->ntarget_loads = ARRAY_SIZE(default_target_loads);
 			tunables->min_sample_time = DEFAULT_MIN_SAMPLE_TIME;
+<<<<<<< HEAD
 			tunables->timer_rate = usecs_to_jiffies(DEFAULT_TIMER_RATE);
 			tunables->boostpulse_duration_val = DEFAULT_MIN_SAMPLE_TIME;
 			tunables->timer_slack_val = usecs_to_jiffies(DEFAULT_TIMER_SLACK);
+=======
+			tunables->timer_rate = DEFAULT_TIMER_RATE;
+			tunables->boostpulse_duration_val = DEFAULT_MIN_SAMPLE_TIME;
+			tunables->timer_slack_val = DEFAULT_TIMER_SLACK;
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_MODE_AUTO_CHANGE
 			tunables->multi_enter_time = DEFAULT_MULTI_ENTER_TIME;
 			tunables->multi_enter_load = 4 * DEFAULT_TARGET_LOAD;
@@ -2247,7 +2475,10 @@ static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 #ifdef CONFIG_PMU_COREMEM_RATIO
 			tunables->region_last_stat = jiffies;
 #endif
+<<<<<<< HEAD
 			tunables->max_freq_hysteresis = 100000;
+=======
+>>>>>>> 512ca3c... stock
 		} else {
 			memcpy(tunables, tuned_parameters[policy->cpu], sizeof(*tunables));
 			kfree(tuned_parameters[policy->cpu]);
@@ -2695,6 +2926,7 @@ static struct notifier_block cpufreq_interactive_cluster0_max_qos_notifier = {
 #endif
 #endif
 
+<<<<<<< HEAD
 static void interactive_early_suspend(struct power_suspend *handler)
 {
 	suspended = true;
@@ -2714,6 +2946,8 @@ static struct power_suspend interactive_suspend = {
 	.resume = interactive_late_resume,
 };
 
+=======
+>>>>>>> 512ca3c... stock
 static int __init cpufreq_interactive_init(void)
 {
 	unsigned int i;
@@ -2732,8 +2966,11 @@ static int __init cpufreq_interactive_init(void)
 		init_rwsem(&pcpu->enable_sem);
 	}
 
+<<<<<<< HEAD
 	register_power_suspend(&interactive_suspend);
 
+=======
+>>>>>>> 512ca3c... stock
 	spin_lock_init(&speedchange_cpumask_lock);
 #ifdef CONFIG_PMU_COREMEM_RATIO
 	spin_lock_init(&regionchange_cpumask_lock);

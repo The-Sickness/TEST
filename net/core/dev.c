@@ -927,7 +927,11 @@ bool dev_valid_name(const char *name)
 		return false;
 
 	while (*name) {
+<<<<<<< HEAD
 		if (*name == '/' || *name == ':' || isspace(*name))
+=======
+		if (*name == '/' || isspace(*name))
+>>>>>>> 512ca3c... stock
 			return false;
 		name++;
 	}
@@ -3443,6 +3447,11 @@ static int __netif_receive_skb_core(struct sk_buff *skb, bool pfmemalloc)
 
 	pt_prev = NULL;
 
+<<<<<<< HEAD
+=======
+	rcu_read_lock();
+
+>>>>>>> 512ca3c... stock
 another_round:
 	skb->skb_iif = skb->dev->ifindex;
 
@@ -3452,7 +3461,11 @@ another_round:
 	    skb->protocol == cpu_to_be16(ETH_P_8021AD)) {
 		skb = vlan_untag(skb);
 		if (unlikely(!skb))
+<<<<<<< HEAD
 			goto out;
+=======
+			goto unlock;
+>>>>>>> 512ca3c... stock
 	}
 
 #ifdef CONFIG_NET_CLS_ACT
@@ -3477,7 +3490,11 @@ skip_taps:
 #ifdef CONFIG_NET_CLS_ACT
 	skb = handle_ing(skb, &pt_prev, &ret, orig_dev);
 	if (!skb)
+<<<<<<< HEAD
 		goto out;
+=======
+		goto unlock;
+>>>>>>> 512ca3c... stock
 ncls:
 #endif
 
@@ -3492,7 +3509,11 @@ ncls:
 		if (vlan_do_receive(&skb))
 			goto another_round;
 		else if (unlikely(!skb))
+<<<<<<< HEAD
 			goto out;
+=======
+			goto unlock;
+>>>>>>> 512ca3c... stock
 	}
 
 	rx_handler = rcu_dereference(skb->dev->rx_handler);
@@ -3504,7 +3525,11 @@ ncls:
 		switch (rx_handler(&skb)) {
 		case RX_HANDLER_CONSUMED:
 			ret = NET_RX_SUCCESS;
+<<<<<<< HEAD
 			goto out;
+=======
+			goto unlock;
+>>>>>>> 512ca3c... stock
 		case RX_HANDLER_ANOTHER:
 			goto another_round;
 		case RX_HANDLER_EXACT:
@@ -3556,6 +3581,11 @@ drop:
 		ret = NET_RX_DROP;
 	}
 
+<<<<<<< HEAD
+=======
+unlock:
+	rcu_read_unlock();
+>>>>>>> 512ca3c... stock
 out:
 	return ret;
 }
@@ -3602,30 +3632,51 @@ static int __netif_receive_skb(struct sk_buff *skb)
  */
 int netif_receive_skb(struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	int ret;
 
+=======
+>>>>>>> 512ca3c... stock
 	net_timestamp_check(netdev_tstamp_prequeue, skb);
 
 	if (skb_defer_rx_timestamp(skb))
 		return NET_RX_SUCCESS;
 
+<<<<<<< HEAD
 	rcu_read_lock();
 
 #ifdef CONFIG_RPS
 	if (static_key_false(&rps_needed)) {
 		struct rps_dev_flow voidflow, *rflow = &voidflow;
 		int cpu = get_rps_cpu(skb->dev, skb, &rflow);
+=======
+#ifdef CONFIG_RPS
+	if (static_key_false(&rps_needed)) {
+		struct rps_dev_flow voidflow, *rflow = &voidflow;
+		int cpu, ret;
+
+		rcu_read_lock();
+
+		cpu = get_rps_cpu(skb->dev, skb, &rflow);
+>>>>>>> 512ca3c... stock
 
 		if (cpu >= 0) {
 			ret = enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
 			rcu_read_unlock();
 			return ret;
 		}
+<<<<<<< HEAD
 	}
 #endif
 	ret = __netif_receive_skb(skb);
 	rcu_read_unlock();
 	return ret;
+=======
+		rcu_read_unlock();
+	}
+#endif
+	return __netif_receive_skb(skb);
+>>>>>>> 512ca3c... stock
 }
 EXPORT_SYMBOL(netif_receive_skb);
 
@@ -4038,10 +4089,15 @@ static int process_backlog(struct napi_struct *napi, int quota)
 		unsigned int qlen;
 
 		while ((skb = __skb_dequeue(&sd->process_queue))) {
+<<<<<<< HEAD
 			rcu_read_lock();
 			local_irq_enable();
 			__netif_receive_skb(skb);
 			rcu_read_unlock();
+=======
+			local_irq_enable();
+			__netif_receive_skb(skb);
+>>>>>>> 512ca3c... stock
 			local_irq_disable();
 			input_queue_head_incr(sd);
 			if (++work >= quota) {
@@ -6021,6 +6077,7 @@ static int dev_cpu_callback(struct notifier_block *nfb,
 		oldsd->output_queue = NULL;
 		oldsd->output_queue_tailp = &oldsd->output_queue;
 	}
+<<<<<<< HEAD
 	/* Append NAPI poll list from offline CPU, with one exception :
 	 * process_backlog() must be called by cpu owning percpu backlog.
 	 * We properly handle process_queue & input_pkt_queue later.
@@ -6035,6 +6092,12 @@ static int dev_cpu_callback(struct notifier_block *nfb,
 			napi->state = 0;
 		else
 			____napi_schedule(sd, napi);
+=======
+	/* Append NAPI poll list from offline CPU. */
+	if (!list_empty(&oldsd->poll_list)) {
+		list_splice_init(&oldsd->poll_list, &sd->poll_list);
+		raise_softirq_irqoff(NET_RX_SOFTIRQ);
+>>>>>>> 512ca3c... stock
 	}
 
 	raise_softirq_irqoff(NET_TX_SOFTIRQ);
@@ -6045,7 +6108,11 @@ static int dev_cpu_callback(struct notifier_block *nfb,
 		netif_rx(skb);
 		input_queue_head_incr(oldsd);
 	}
+<<<<<<< HEAD
 	while ((skb = skb_dequeue(&oldsd->input_pkt_queue))) {
+=======
+	while ((skb = __skb_dequeue(&oldsd->input_pkt_queue))) {
+>>>>>>> 512ca3c... stock
 		netif_rx(skb);
 		input_queue_head_incr(oldsd);
 	}

@@ -2438,6 +2438,7 @@ static unsigned int input_estimate_events_per_packet(struct input_dev *dev)
 
 	events = mt_slots + 1; /* count SYN_MT_REPORT and SYN_REPORT */
 
+<<<<<<< HEAD
 	if (test_bit(EV_ABS, dev->evbit)) {
 		for (i = 0; i < ABS_CNT; i++) {
 			if (test_bit(i, dev->absbit)) {
@@ -2454,6 +2455,20 @@ static unsigned int input_estimate_events_per_packet(struct input_dev *dev)
 			if (test_bit(i, dev->relbit))
 				events++;
 	}
+=======
+	for (i = 0; i < ABS_CNT; i++) {
+		if (test_bit(i, dev->absbit)) {
+			if (input_is_mt_axis(i))
+				events += mt_slots;
+			else
+				events++;
+		}
+	}
+
+	for (i = 0; i < REL_CNT; i++)
+		if (test_bit(i, dev->relbit))
+			events++;
+>>>>>>> 512ca3c... stock
 
 	/* Make room for KEY and MSC events */
 	events += 7;

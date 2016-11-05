@@ -739,9 +739,12 @@ const char * const vmstat_text[] = {
 #endif
 	"nr_anon_transparent_hugepages",
 	"nr_free_cma",
+<<<<<<< HEAD
 #ifdef CONFIG_UKSM
 	"nr_uksm_zero_pages",
 #endif
+=======
+>>>>>>> 512ca3c... stock
 	"nr_dirty_threshold",
 	"nr_dirty_background_threshold",
 
@@ -1182,8 +1185,12 @@ int sysctl_stat_interval __read_mostly = HZ;
 static void vmstat_update(struct work_struct *w)
 {
 	refresh_cpu_vm_stats(smp_processor_id());
+<<<<<<< HEAD
 	schedule_delayed_work_on(smp_processor_id(),
 		&__get_cpu_var(vmstat_work),
+=======
+	schedule_delayed_work(&__get_cpu_var(vmstat_work),
+>>>>>>> 512ca3c... stock
 		round_jiffies_relative(sysctl_stat_interval));
 }
 

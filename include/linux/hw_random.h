@@ -29,6 +29,11 @@
  * @read:		New API. drivers can fill up to max bytes of data
  *			into the buffer. The buffer is aligned for any type.
  * @priv:		Private data, for use by the RNG driver.
+<<<<<<< HEAD
+=======
+ * @quality:		Estimation of true entropy in RNG's bitstream
+ *			(per mill).
+>>>>>>> 512ca3c... stock
  */
 struct hwrng {
 	const char *name;
@@ -38,6 +43,10 @@ struct hwrng {
 	int (*data_read)(struct hwrng *rng, u32 *data);
 	int (*read)(struct hwrng *rng, void *data, size_t max, bool wait);
 	unsigned long priv;
+<<<<<<< HEAD
+=======
+	unsigned short quality;
+>>>>>>> 512ca3c... stock
 
 	/* internal. */
 	struct list_head list;
@@ -47,5 +56,10 @@ struct hwrng {
 extern int hwrng_register(struct hwrng *rng);
 /** Unregister a Hardware Random Number Generator driver. */
 extern void hwrng_unregister(struct hwrng *rng);
+<<<<<<< HEAD
+=======
+/** Feed random bits into the pool. */
+extern void add_hwgenerator_randomness(const char *buffer, size_t count, size_t entropy);
+>>>>>>> 512ca3c... stock
 
 #endif /* LINUX_HWRANDOM_H_ */

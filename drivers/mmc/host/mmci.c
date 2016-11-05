@@ -1740,7 +1740,11 @@ static struct amba_id mmci_ids[] = {
 	{
 		.id     = 0x00280180,
 		.mask   = 0x00ffffff,
+<<<<<<< HEAD
 		.data	= &variant_nomadik,
+=======
+		.data	= &variant_u300,
+>>>>>>> 512ca3c... stock
 	},
 	{
 		.id     = 0x00480180,

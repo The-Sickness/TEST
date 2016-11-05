@@ -8,11 +8,17 @@
 
 	.text
 ENTRY(memmove) /* o0=dst o1=src o2=len */
+<<<<<<< HEAD
 	brz,pn		%o2, 99f
 	 mov		%o0, %g1
 
 	cmp		%o0, %o1
 	bleu,pt		%xcc, 2f
+=======
+	mov		%o0, %g1
+	cmp		%o0, %o1
+	bleu,pt		%xcc, memcpy
+>>>>>>> 512ca3c... stock
 	 add		%o1, %o2, %g7
 	cmp		%g7, %o0
 	bleu,pt		%xcc, memcpy
@@ -26,6 +32,7 @@ ENTRY(memmove) /* o0=dst o1=src o2=len */
 	stb		%g7, [%o0]
 	bne,pt		%icc, 1b
 	 sub		%o0, 1, %o0
+<<<<<<< HEAD
 99:
 	retl
 	 mov		%g1, %o0
@@ -56,4 +63,9 @@ ENTRY(memmove) /* o0=dst o1=src o2=len */
 	bne,pt		%icc, 4b
 	 stb		%g7, [%o0 - 0x1]
 	ba,a,pt		%xcc, 99b
+=======
+
+	retl
+	 mov		%g1, %o0
+>>>>>>> 512ca3c... stock
 ENDPROC(memmove)

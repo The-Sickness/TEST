@@ -16,7 +16,11 @@
  */
 #include <linux/module.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <asm/div64.h>
+=======
+
+>>>>>>> 512ca3c... stock
 #include <asm/hardware/icst.h>
 
 /*
@@ -29,11 +33,15 @@ EXPORT_SYMBOL(icst525_s2div);
 
 unsigned long icst_hz(const struct icst_params *p, struct icst_vco vco)
 {
+<<<<<<< HEAD
 	u64 dividend = p->ref * 2 * (u64)(vco.v + 8);
 	u32 divisor = (vco.r + 2) * p->s2div[vco.s];
 
 	do_div(dividend, divisor);
 	return (unsigned long)dividend;
+=======
+	return p->ref * 2 * (vco.v + 8) / ((vco.r + 2) * p->s2div[vco.s]);
+>>>>>>> 512ca3c... stock
 }
 
 EXPORT_SYMBOL(icst_hz);
@@ -62,7 +70,10 @@ icst_hz_to_vco(const struct icst_params *p, unsigned long freq)
 
 		if (f > p->vco_min && f <= p->vco_max)
 			break;
+<<<<<<< HEAD
 		i++;
+=======
+>>>>>>> 512ca3c... stock
 	} while (i < 8);
 
 	if (i >= 8)

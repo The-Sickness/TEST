@@ -1576,6 +1576,7 @@ config SLOB
 
 endchoice
 
+<<<<<<< HEAD
 config SLUB_CPU_PARTIAL
 	default y
 	depends on SLUB
@@ -1587,6 +1588,8 @@ config SLUB_CPU_PARTIAL
 	  which requires the taking of locks that may cause latency spikes.
 	  Typically one would choose no for a realtime system.
 
+=======
+>>>>>>> 512ca3c... stock
 config MMAP_ALLOW_UNINITIALIZED
 	bool "Allow mmapped anonymous memory to be uninitialized"
 	depends on EXPERT && !MMU

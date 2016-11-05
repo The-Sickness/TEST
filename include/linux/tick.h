@@ -102,7 +102,11 @@ extern struct cpumask *tick_get_broadcast_oneshot_mask(void);
 extern void tick_clock_notify(void);
 extern int tick_check_oneshot_change(int allow_nohz);
 extern struct tick_sched *tick_get_tick_sched(int cpu);
+<<<<<<< HEAD
 extern void tick_check_idle(void);
+=======
+extern void tick_check_idle(int cpu);
+>>>>>>> 512ca3c... stock
 extern int tick_oneshot_mode_active(void);
 #  ifndef arch_needs_cpu
 #   define arch_needs_cpu(cpu) (0)
@@ -110,7 +114,11 @@ extern int tick_oneshot_mode_active(void);
 # else
 static inline void tick_clock_notify(void) { }
 static inline int tick_check_oneshot_change(int allow_nohz) { return 0; }
+<<<<<<< HEAD
 static inline void tick_check_idle(void) { }
+=======
+static inline void tick_check_idle(int cpu) { }
+>>>>>>> 512ca3c... stock
 static inline int tick_oneshot_mode_active(void) { return 0; }
 # endif
 
@@ -119,7 +127,11 @@ static inline void tick_init(void) { }
 static inline void tick_cancel_sched_timer(int cpu) { }
 static inline void tick_clock_notify(void) { }
 static inline int tick_check_oneshot_change(int allow_nohz) { return 0; }
+<<<<<<< HEAD
 static inline void tick_check_idle(void) { }
+=======
+static inline void tick_check_idle(int cpu) { }
+>>>>>>> 512ca3c... stock
 static inline int tick_oneshot_mode_active(void) { return 0; }
 #endif /* !CONFIG_GENERIC_CLOCKEVENTS */
 

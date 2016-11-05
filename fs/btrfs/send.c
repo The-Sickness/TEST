@@ -1338,6 +1338,7 @@ static int read_symlink(struct send_ctx *sctx,
 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
 	if (ret < 0)
 		goto out;
+<<<<<<< HEAD
 	if (ret) {
 		/*
 		 * An empty symlink inode. Can happen in rare error paths when
@@ -1353,6 +1354,9 @@ static int read_symlink(struct send_ctx *sctx,
 		ret = -EIO;
 		goto out;
 	}
+=======
+	BUG_ON(ret);
+>>>>>>> 512ca3c... stock
 
 	ei = btrfs_item_ptr(path->nodes[0], path->slots[0],
 			struct btrfs_file_extent_item);

@@ -10,7 +10,10 @@
 #include <linux/stat.h>
 #include <linux/cache.h>
 #include <linux/list.h>
+<<<<<<< HEAD
 #include <linux/llist.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <linux/radix-tree.h>
 #include <linux/rbtree.h>
 #include <linux/init.h>
@@ -46,8 +49,11 @@ struct vfsmount;
 struct cred;
 struct swap_info_struct;
 struct seq_file;
+<<<<<<< HEAD
 struct fscrypt_info;
 struct fscrypt_operations;
+=======
+>>>>>>> 512ca3c... stock
 
 extern void __init inode_init(void);
 extern void __init inode_init_early(void);
@@ -632,11 +638,14 @@ struct inode {
 #ifdef CONFIG_IMA
 	atomic_t		i_readcount; /* struct files open RO */
 #endif
+<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_FS_ENCRYPTION)
 	struct fscrypt_info	*i_crypt_info;
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 	void			*i_private; /* fs or device private pointer */
 };
 
@@ -792,8 +801,17 @@ static inline int ra_has_index(struct file_ra_state *ra, pgoff_t index)
 #define FILE_MNT_WRITE_RELEASED	2
 
 struct file {
+<<<<<<< HEAD
 	union {
 		struct llist_node	fu_llist;
+=======
+	/*
+	 * fu_list becomes invalid after file_free is called and queued via
+	 * fu_rcuhead for RCU freeing
+	 */
+	union {
+		struct list_head	fu_list;
+>>>>>>> 512ca3c... stock
 		struct rcu_head 	fu_rcuhead;
 	} f_u;
 	struct path		f_path;
@@ -806,6 +824,12 @@ struct file {
 	 * Must not be taken from IRQ context.
 	 */
 	spinlock_t		f_lock;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SMP
+	int			f_sb_list_cpu;
+#endif
+>>>>>>> 512ca3c... stock
 	atomic_long_t		f_count;
 	unsigned int 		f_flags;
 	fmode_t			f_mode;
@@ -1280,10 +1304,19 @@ struct super_block {
 	const struct xattr_handler **s_xattr;
 
 	struct list_head	s_inodes;	/* all inodes */
+<<<<<<< HEAD
 
 	const struct fscrypt_operations	*s_cop;
 
 	struct hlist_bl_head	s_anon;		/* anonymous dentries for (nfs) exporting */
+=======
+	struct hlist_bl_head	s_anon;		/* anonymous dentries for (nfs) exporting */
+#ifdef CONFIG_SMP
+	struct list_head __percpu *s_files;
+#else
+	struct list_head	s_files;
+#endif
+>>>>>>> 512ca3c... stock
 	struct list_head	s_mounts;	/* list of mounts; _not_ for fs use */
 	/* s_dentry_lru, s_nr_dentry_unused protected by dcache.c lru locks */
 	struct list_head	s_dentry_lru;	/* unused dentry lru */
@@ -2447,8 +2480,11 @@ extern loff_t no_llseek(struct file *file, loff_t offset, int whence);
 extern loff_t generic_file_llseek(struct file *file, loff_t offset, int whence);
 extern loff_t generic_file_llseek_size(struct file *file, loff_t offset,
 		int whence, loff_t maxsize, loff_t eof);
+<<<<<<< HEAD
 extern loff_t fixed_size_llseek(struct file *file, loff_t offset,
 		int whence, loff_t size);
+=======
+>>>>>>> 512ca3c... stock
 extern int generic_file_open(struct inode * inode, struct file * filp);
 extern int nonseekable_open(struct inode * inode, struct file * filp);
 
@@ -2516,7 +2552,10 @@ extern void generic_fillattr(struct inode *, struct kstat *);
 extern int vfs_getattr(struct path *, struct kstat *);
 void __inode_add_bytes(struct inode *inode, loff_t bytes);
 void inode_add_bytes(struct inode *inode, loff_t bytes);
+<<<<<<< HEAD
 void __inode_sub_bytes(struct inode *inode, loff_t bytes);
+=======
+>>>>>>> 512ca3c... stock
 void inode_sub_bytes(struct inode *inode, loff_t bytes);
 loff_t inode_get_bytes(struct inode *inode);
 void inode_set_bytes(struct inode *inode, loff_t bytes);

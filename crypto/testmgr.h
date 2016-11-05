@@ -54,7 +54,11 @@ struct cipher_testvec {
 	unsigned short tap[MAX_TAP];
 	int np;
 	unsigned char also_non_np;
+<<<<<<< HEAD
 	bool fail;
+=======
+	unsigned char fail;
+>>>>>>> 512ca3c... stock
 	unsigned char wk; /* weak key flag */
 	unsigned char klen;
 	unsigned short ilen;
@@ -71,7 +75,11 @@ struct aead_testvec {
 	unsigned char atap[MAX_TAP];
 	int np;
 	int anp;
+<<<<<<< HEAD
 	bool fail;
+=======
+	unsigned char fail;
+>>>>>>> 512ca3c... stock
 	unsigned char novrfy;	/* ccm dec verification failure expected */
 	unsigned char wk; /* weak key flag */
 	unsigned char klen;
@@ -2219,7 +2227,11 @@ static struct cipher_testvec des_enc_tv_template[] = {
 			  "\xb4\x99\x26\xf7\x1f\xe1\xd4\x90",
 		.rlen	= 24,
 	}, { /* Weak key */
+<<<<<<< HEAD
 		.fail	= true,
+=======
+		.fail	= 1,
+>>>>>>> 512ca3c... stock
 		.wk	= 1,
 		.key	= "\x01\x01\x01\x01\x01\x01\x01\x01",
 		.klen	= 8,
@@ -26972,7 +26984,11 @@ struct comp_testvec {
 };
 
 struct pcomp_testvec {
+<<<<<<< HEAD
 	const void *params;
+=======
+	void *params;
+>>>>>>> 512ca3c... stock
 	unsigned int paramsize;
 	int inlen, outlen;
 	char input[COMP_BUF_SIZE];

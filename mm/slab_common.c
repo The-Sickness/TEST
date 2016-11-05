@@ -375,7 +375,11 @@ struct kmem_cache *kmalloc_slab(size_t size, gfp_t flags)
 {
 	int index;
 
+<<<<<<< HEAD
 	if (unlikely(size > KMALLOC_MAX_SIZE)) {
+=======
+	if (size > KMALLOC_MAX_SIZE) {
+>>>>>>> 512ca3c... stock
 		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
 		return NULL;
 	}

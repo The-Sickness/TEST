@@ -56,8 +56,11 @@ static RAW_NOTIFIER_HEAD(cpu_chain);
  */
 static int cpu_hotplug_disabled;
 
+<<<<<<< HEAD
 unsigned int cpu_core_smp_status[8] = { 1, 1, 1, 1, 1, 1, 1, 1 };
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_HOTPLUG_CPU
 
 static struct {
@@ -372,6 +375,7 @@ int __ref cpu_down(unsigned int cpu)
 {
 	int err;
 
+<<<<<<< HEAD
 	cpu_core_smp_status[cpu] = 0;
 	cpu_maps_update_begin();
 
@@ -383,6 +387,10 @@ int __ref cpu_down(unsigned int cpu)
 	}
 
 	
+=======
+	cpu_maps_update_begin();
+
+>>>>>>> 512ca3c... stock
 	if (cpu_hotplug_disabled) {
 		err = -EBUSY;
 		goto out;
@@ -395,6 +403,7 @@ out:
 	return err;
 }
 EXPORT_SYMBOL(cpu_down);
+<<<<<<< HEAD
 
 // this cpu down function also allows cpu cores 0 and 4 to be shut down
 int __ref cpu_down_nocheck(unsigned int cpu)
@@ -415,6 +424,8 @@ out:
 	return err;
 }
 EXPORT_SYMBOL(cpu_down_nocheck);
+=======
+>>>>>>> 512ca3c... stock
 #endif /*CONFIG_HOTPLUG_CPU*/
 
 /* Requires cpu_add_remove_lock to be held */
@@ -425,7 +436,10 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 	unsigned long mod = tasks_frozen ? CPU_TASKS_FROZEN : 0;
 	struct task_struct *idle;
 
+<<<<<<< HEAD
 	cpu_core_smp_status[cpu] = 1;
+=======
+>>>>>>> 512ca3c... stock
 	cpu_hotplug_begin();
 
 	if (cpu_online(cpu) || !cpu_present(cpu)) {
@@ -610,11 +624,14 @@ extern bool fp_lockscreen_mode;
 #else
 static bool fp_lockscreen_mode = false;
 #endif
+<<<<<<< HEAD
 static bool is_woken_by_button = false;
 void set_is_woken_by_button(bool val)
 {
 	is_woken_by_button = val;
 }
+=======
+>>>>>>> 512ca3c... stock
 
 void __ref enable_nonboot_cpus(void)
 {
@@ -649,12 +666,15 @@ void __ref enable_nonboot_cpus(void)
 	cpumask_clear(frozen_cpus);
 out:
 	cpu_maps_update_done();
+<<<<<<< HEAD
 
 	if (is_woken_by_button) {
 		is_woken_by_button = false;
 		for_each_possible_cpu(cpu)
 			cpu_up(cpu);
 	}
+=======
+>>>>>>> 512ca3c... stock
 }
 
 static int __init alloc_frozen_cpus(void)

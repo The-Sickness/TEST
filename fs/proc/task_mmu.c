@@ -208,7 +208,11 @@ static void *m_start(struct seq_file *m, loff_t *pos)
 
 	/*
 	 * We remember last_addr rather than next_addr to hit with
+<<<<<<< HEAD
 	 *  mmap_cache most of the time. We have zero last_addr at
+=======
+	 * mmap_cache most of the time. We have zero last_addr at
+>>>>>>> 512ca3c... stock
 	 * the beginning and also after lseek. We will have -1 last_addr
 	 * after the end of the vmas.
 	 */
@@ -220,7 +224,11 @@ static void *m_start(struct seq_file *m, loff_t *pos)
 	if (!priv->task)
 		return ERR_PTR(-ESRCH);
 
+<<<<<<< HEAD
 	mm = mm_access(priv->task, PTRACE_MODE_READ_FSCREDS);
+=======
+	mm = mm_access(priv->task, PTRACE_MODE_READ);
+>>>>>>> 512ca3c... stock
 	if (!mm || IS_ERR(mm))
 		return mm;
 	down_read(&mm->mmap_sem);
@@ -1190,7 +1198,11 @@ static ssize_t pagemap_read(struct file *file, char __user *buf,
 	if (!pm.buffer)
 		goto out_task;
 
+<<<<<<< HEAD
 	mm = mm_access(task, PTRACE_MODE_READ_FSCREDS);
+=======
+	mm = mm_access(task, PTRACE_MODE_READ);
+>>>>>>> 512ca3c... stock
 	ret = PTR_ERR(mm);
 	if (!mm || IS_ERR(mm))
 		goto out_free;
@@ -1258,11 +1270,15 @@ out:
 
 static int pagemap_open(struct inode *inode, struct file *file)
 {
+<<<<<<< HEAD
 
 	/* do not disclose physical addresses: attack vector */
 	/* do not disclose physical addresses to unprivileged
 	   userspace (closes a rowhammer attack vector) */
 
+=======
+	/* do not disclose physical addresses: attack vector */
+>>>>>>> 512ca3c... stock
 	if (!capable(CAP_SYS_ADMIN))
 		return -EPERM;
 	return 0;

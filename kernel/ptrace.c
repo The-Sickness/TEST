@@ -246,6 +246,7 @@ static bool ptrace_has_cap(const struct cred *tcred, unsigned int mode)
 static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
 {
 	const struct cred *cred = current_cred(), *tcred;
+<<<<<<< HEAD
 	int dumpable = 0;
 	kuid_t caller_uid;
 	kgid_t caller_gid;
@@ -254,6 +255,8 @@ static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
 		WARN(1, "denying ptrace access check without PTRACE_MODE_*CREDS\n");
 		return -EPERM;
 	}
+=======
+>>>>>>> 512ca3c... stock
 
 	/* May we inspect the given task?
 	 * This check is used both for attaching with ptrace
@@ -263,6 +266,7 @@ static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
 	 * because setting up the necessary parent/child relationship
 	 * or halting the specified task is impossible.
 	 */
+<<<<<<< HEAD
 
 	/* Don't let security modules deny introspection */
 	if (same_thread_group(task, current))
@@ -290,6 +294,20 @@ static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
 	    gid_eq(caller_gid, tcred->egid) &&
 	    gid_eq(caller_gid, tcred->sgid) &&
 	    gid_eq(caller_gid, tcred->gid))
+=======
+	int dumpable = 0;
+	/* Don't let security modules deny introspection */
+	if (task == current)
+		return 0;
+	rcu_read_lock();
+	tcred = __task_cred(task);
+	if (uid_eq(cred->uid, tcred->euid) &&
+	    uid_eq(cred->uid, tcred->suid) &&
+	    uid_eq(cred->uid, tcred->uid)  &&
+	    gid_eq(cred->gid, tcred->egid) &&
+	    gid_eq(cred->gid, tcred->sgid) &&
+	    gid_eq(cred->gid, tcred->gid))
+>>>>>>> 512ca3c... stock
 		goto ok;
 	if (ptrace_has_cap(tcred, mode))
 		goto ok;
@@ -356,7 +374,11 @@ static int ptrace_attach(struct task_struct *task, long request,
 		goto out;
 
 	task_lock(task);
+<<<<<<< HEAD
 	retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
+=======
+	retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH);
+>>>>>>> 512ca3c... stock
 	task_unlock(task);
 	if (retval)
 		goto unlock_creds;
@@ -764,8 +786,11 @@ static int ptrace_peek_siginfo(struct task_struct *child,
 static int ptrace_resume(struct task_struct *child, long request,
 			 unsigned long data)
 {
+<<<<<<< HEAD
 	bool need_siglock;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (!valid_signal(data))
 		return -EIO;
 
@@ -793,6 +818,7 @@ static int ptrace_resume(struct task_struct *child, long request,
 		user_disable_single_step(child);
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Change ->exit_code and ->state under siglock to avoid the race
 	 * with wait_task_stopped() in between; a non-zero ->exit_code will
@@ -813,6 +839,10 @@ static int ptrace_resume(struct task_struct *child, long request,
 	wake_up_state(child, __TASK_TRACED);
 	if (need_siglock)
 		spin_unlock_irq(&child->sighand->siglock);
+=======
+	child->exit_code = data;
+	wake_up_state(child, __TASK_TRACED);
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }

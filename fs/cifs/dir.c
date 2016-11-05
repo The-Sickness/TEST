@@ -227,6 +227,7 @@ cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned int xid,
 				goto cifs_create_get_file_info;
 			}
 
+<<<<<<< HEAD
 			if (S_ISDIR(newinode->i_mode)) {
 				CIFSSMBClose(xid, tcon, fid->netfid);
 				iput(newinode);
@@ -234,6 +235,8 @@ cifs_do_create(struct inode *inode, struct dentry *direntry, unsigned int xid,
 				goto out;
 			}
 
+=======
+>>>>>>> 512ca3c... stock
 			if (!S_ISREG(newinode->i_mode)) {
 				/*
 				 * The server may allow us to open things like
@@ -398,6 +401,7 @@ cifs_create_set_dentry:
 	if (rc != 0) {
 		cifs_dbg(FYI, "Create worked, get_inode_info failed rc = %d\n",
 			 rc);
+<<<<<<< HEAD
 		goto out_err;
 	}
 
@@ -406,6 +410,12 @@ cifs_create_set_dentry:
 		goto out_err;
 	}
 
+=======
+		if (server->ops->close)
+			server->ops->close(xid, tcon, fid);
+		goto out;
+	}
+>>>>>>> 512ca3c... stock
 	d_drop(direntry);
 	d_add(direntry, newinode);
 
@@ -413,6 +423,7 @@ out:
 	kfree(buf);
 	kfree(full_path);
 	return rc;
+<<<<<<< HEAD
 
 out_err:
 	if (server->ops->close)
@@ -420,6 +431,8 @@ out_err:
 	if (newinode)
 		iput(newinode);
 	goto out;
+=======
+>>>>>>> 512ca3c... stock
 }
 
 int

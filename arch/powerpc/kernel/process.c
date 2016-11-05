@@ -1088,7 +1088,10 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
 		current->thread.regs = regs - 1;
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 512ca3c... stock
 	memset(regs->gpr, 0, sizeof(regs->gpr));
 	regs->ctr = 0;
 	regs->link = 0;

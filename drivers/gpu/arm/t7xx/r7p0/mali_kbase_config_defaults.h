@@ -177,19 +177,31 @@ enum {
 /*
  * Power Manager number of ticks before shader cores are powered off
  */
+<<<<<<< HEAD
  /* MALI_SEC_INTEGRATION */
+=======
+/* MALI_SEC_INTEGRATION */
+>>>>>>> 512ca3c... stock
 #define DEFAULT_PM_POWEROFF_TICK_SHADER (0) /* 400-800us */
 
 /*
  * Power Manager number of ticks before GPU is powered off
  */
+<<<<<<< HEAD
   /* MALI_SEC_INTEGRATION */
+=======
+/* MALI_SEC_INTEGRATION */
+>>>>>>> 512ca3c... stock
 #define DEFAULT_PM_POWEROFF_TICK_GPU (0) /* 400-800us */
 
 /*
  * Default scheduling tick granuality
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_SCHEDULING_PERIOD_NS    (100000000u) /* 100ms */
+=======
+#define DEFAULT_JS_SCHEDULING_PERIOD_NS    (50000000u) /* 100ms -> 50ms */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before jobs are soft-stopped.
@@ -197,48 +209,82 @@ enum {
  * This defines the time-slice for a job (which may be different from that of a
  * context)
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_SOFT_STOP_TICKS       (1) /* 100ms-200ms */
+=======
+#define DEFAULT_JS_SOFT_STOP_TICKS       (6) /* 100ms-200ms -> 300ms */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before CL jobs are soft-stopped.
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_SOFT_STOP_TICKS_CL    (1) /* 100ms-200ms */
+=======
+#define DEFAULT_JS_SOFT_STOP_TICKS_CL    (6) /* 100ms-200ms -> 300ms */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before jobs are hard-stopped
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_HARD_STOP_TICKS_SS    (50) /* 5s */
 #define DEFAULT_JS_HARD_STOP_TICKS_SS_8408  (300) /* 30s */
+=======
+#define DEFAULT_JS_HARD_STOP_TICKS_SS    (7) /* 5s -> 350ms */
+#define DEFAULT_JS_HARD_STOP_TICKS_SS_8408  (300) /* 30s -> 15s */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before CL jobs are hard-stopped.
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_HARD_STOP_TICKS_CL    (50) /* 5s */
+=======
+#define DEFAULT_JS_HARD_STOP_TICKS_CL    (7) /* 5s -> 350ms */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before jobs are hard-stopped
  * during dumping
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_HARD_STOP_TICKS_DUMPING   (15000) /* 1500s */
+=======
+#define DEFAULT_JS_HARD_STOP_TICKS_DUMPING   (15000) /* 1500s -> 750s */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before the GPU is reset to clear a
  * "stuck" job
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_RESET_TICKS_SS           (55) /* 5.5s */
 #define DEFAULT_JS_RESET_TICKS_SS_8408     (450) /* 45s */
+=======
+#define DEFAULT_JS_RESET_TICKS_SS           (8) /* 5.5s -> 400ms */
+#define DEFAULT_JS_RESET_TICKS_SS_8408     (450) /* 45s -> 22.5s */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before the GPU is reset to clear a
  * "stuck" CL job.
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_RESET_TICKS_CL        (55) /* 5.5s */
+=======
+#define DEFAULT_JS_RESET_TICKS_CL        (8) /* 5.5s -> 400ms */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default minimum number of scheduling ticks before the GPU is reset to clear a
  * "stuck" job during dumping.
  */
+<<<<<<< HEAD
 #define DEFAULT_JS_RESET_TICKS_DUMPING   (15020) /* 1502s */
+=======
+#define DEFAULT_JS_RESET_TICKS_DUMPING   (15020) /* 1502s -> 751s */
+>>>>>>> 512ca3c... stock
 
 /*
  * Default number of milliseconds given for other jobs on the GPU to be

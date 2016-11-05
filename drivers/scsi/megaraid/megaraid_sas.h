@@ -300,8 +300,11 @@ enum MR_EVT_ARGS {
 	MR_EVT_ARGS_GENERIC,
 };
 
+<<<<<<< HEAD
 
 #define SGE_BUFFER_SIZE	4096
+=======
+>>>>>>> 512ca3c... stock
 /*
  * define constants for device list query options
  */

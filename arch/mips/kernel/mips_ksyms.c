@@ -14,7 +14,10 @@
 #include <linux/mm.h>
 #include <asm/uaccess.h>
 #include <asm/ftrace.h>
+<<<<<<< HEAD
 #include <asm/fpu.h>
+=======
+>>>>>>> 512ca3c... stock
 
 extern void *__bzero(void *__s, size_t __count);
 extern long __strncpy_from_user_nocheck_asm(char *__to,
@@ -27,6 +30,7 @@ extern long __strnlen_user_nocheck_asm(const char *s);
 extern long __strnlen_user_asm(const char *s);
 
 /*
+<<<<<<< HEAD
  * Core architecture code
  */
 #ifdef CONFIG_CPU_R4K_FPU
@@ -34,6 +38,8 @@ EXPORT_SYMBOL_GPL(_save_fp);
 #endif
 
 /*
+=======
+>>>>>>> 512ca3c... stock
  * String functions
  */
 EXPORT_SYMBOL(memset);

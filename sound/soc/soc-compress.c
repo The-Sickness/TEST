@@ -409,13 +409,17 @@ int soc_new_compress(struct snd_soc_pcm_runtime *rtd, int num)
 	struct snd_compr *compr;
 	char new_name[64];
 	int ret = 0, direction = 0;
+<<<<<<< HEAD
 	int playback = 0, capture = 0;
+=======
+>>>>>>> 512ca3c... stock
 
 	/* check client and interface hw capabilities */
 	snprintf(new_name, sizeof(new_name), "%s %s-%d",
 			rtd->dai_link->stream_name, codec_dai->name, num);
 
 	if (codec_dai->driver->playback.channels_min)
+<<<<<<< HEAD
 		playback = 1;
 	if (codec_dai->driver->capture.channels_min)
 		capture = 1;
@@ -437,6 +441,13 @@ int soc_new_compress(struct snd_soc_pcm_runtime *rtd, int num)
 		direction = SND_COMPRESS_PLAYBACK;
 	else
 		direction = SND_COMPRESS_CAPTURE;
+=======
+		direction = SND_COMPRESS_PLAYBACK;
+	else if (codec_dai->driver->capture.channels_min)
+		direction = SND_COMPRESS_CAPTURE;
+	else
+		return -EINVAL;
+>>>>>>> 512ca3c... stock
 
 	compr = kzalloc(sizeof(*compr), GFP_KERNEL);
 	if (compr == NULL) {

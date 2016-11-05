@@ -935,7 +935,11 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
 
 	base = (inst >> 21) & 0x1f;
 	op_inst = (inst >> 16) & 0x1f;
+<<<<<<< HEAD
 	offset = (int16_t)inst;
+=======
+	offset = inst & 0xffff;
+>>>>>>> 512ca3c... stock
 	cache = (inst >> 16) & 0x3;
 	op = (inst >> 18) & 0x7;
 
@@ -972,6 +976,7 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
 	preempt_disable();
 	if (KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG0) {
 
+<<<<<<< HEAD
 		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0 &&
 		    kvm_mips_handle_kseg0_tlb_fault(va, vcpu)) {
 			kvm_err("%s: handling mapped kseg0 tlb fault for %lx, vcpu: %p, ASID: %#lx\n",
@@ -979,6 +984,10 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
 			er = EMULATE_FAIL;
 			preempt_enable();
 			goto done;
+=======
+		if (kvm_mips_host_tlb_lookup(vcpu, va) < 0) {
+			kvm_mips_handle_kseg0_tlb_fault(va, vcpu);
+>>>>>>> 512ca3c... stock
 		}
 	} else if ((KVM_GUEST_KSEGX(va) < KVM_GUEST_KSEG0) ||
 		   KVM_GUEST_KSEGX(va) == KVM_GUEST_KSEG23) {
@@ -1011,6 +1020,7 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
 								run, vcpu);
 				preempt_enable();
 				goto dont_update_pc;
+<<<<<<< HEAD
 			}
 			/* We fault an entry from the guest tlb to the shadow host TLB */
 			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
@@ -1021,6 +1031,13 @@ kvm_mips_emulate_cache(uint32_t inst, uint32_t *opc, uint32_t cause,
 				er = EMULATE_FAIL;
 				preempt_enable();
 				goto done;
+=======
+			} else {
+				/* We fault an entry from the guest tlb to the shadow host TLB */
+				kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
+								     NULL,
+								     NULL);
+>>>>>>> 512ca3c... stock
 			}
 		}
 	} else {
@@ -1636,7 +1653,11 @@ kvm_mips_complete_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run)
 		if (vcpu->mmio_needed == 2)
 			*gpr = *(int16_t *) run->mmio.data;
 		else
+<<<<<<< HEAD
 			*gpr = *(uint16_t *)run->mmio.data;
+=======
+			*gpr = *(int16_t *) run->mmio.data;
+>>>>>>> 512ca3c... stock
 
 		break;
 	case 1:
@@ -1831,6 +1852,7 @@ kvm_mips_handle_tlbmiss(unsigned long cause, uint32_t *opc,
 			     tlb->tlb_hi, tlb->tlb_lo0, tlb->tlb_lo1);
 #endif
 			/* OK we have a Guest TLB entry, now inject it into the shadow host TLB */
+<<<<<<< HEAD
 			if (kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb,
 								 NULL, NULL)) {
 				kvm_err("%s: handling mapped seg tlb fault for %lx, index: %u, vcpu: %p, ASID: %#lx\n",
@@ -1838,6 +1860,10 @@ kvm_mips_handle_tlbmiss(unsigned long cause, uint32_t *opc,
 					read_c0_entryhi());
 				er = EMULATE_FAIL;
 			}
+=======
+			kvm_mips_handle_mapped_seg_tlb_fault(vcpu, tlb, NULL,
+							     NULL);
+>>>>>>> 512ca3c... stock
 		}
 	}
 

@@ -897,6 +897,7 @@ config TOUCHSCREEN_MXT540E
 	  To compile this driver as a module, choose M here: the
 	  module will be called mxt540e.
 
+<<<<<<< HEAD
 config TOUCHSCREEN_SWEEP2WAKE
         tristate "Sweep2Wake for touchscreens"
         select TOUCHSCREEN_PREVENT_SLEEP
@@ -908,6 +909,8 @@ config TOUCHSCREEN_PREVENT_SLEEP
         help
           This disables the sleep function of modified touchscreen drivers.
 
+=======
+>>>>>>> 512ca3c... stock
 source "drivers/input/touchscreen/synaptics_dsx/Kconfig"
 source "drivers/input/touchscreen/synaptics_dsx2/Kconfig"
 source "drivers/input/touchscreen/stm/Kconfig"

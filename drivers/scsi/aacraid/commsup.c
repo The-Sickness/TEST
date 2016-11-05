@@ -587,10 +587,17 @@ int aac_fib_send(u16 command, struct fib *fibptr, unsigned long size,
 					}
 					return -EFAULT;
 				}
+<<<<<<< HEAD
 				/*
 				 * Allow other processes / CPUS to use core
 				 */
 				schedule();
+=======
+				/* We used to udelay() here but that absorbed
+				 * a CPU when a timeout occured. Not very
+				 * useful. */
+				cpu_relax();
+>>>>>>> 512ca3c... stock
 			}
 		} else if (down_interruptible(&fibptr->event_wait)) {
 			/* Do nothing ... satisfy
@@ -1917,10 +1924,13 @@ int aac_command_thread(void *data)
 		if (difference <= 0)
 			difference = 1;
 		set_current_state(TASK_INTERRUPTIBLE);
+<<<<<<< HEAD
 
 		if (kthread_should_stop())
 			break;
 
+=======
+>>>>>>> 512ca3c... stock
 		schedule_timeout(difference);
 
 		if (kthread_should_stop())

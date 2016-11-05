@@ -160,8 +160,11 @@ good_area:
 	/* TBD: switch to pagefault_out_of_memory() */
 	if (fault & VM_FAULT_OOM)
 		goto out_of_memory;
+<<<<<<< HEAD
 	else if (fault & VM_FAULT_SIGSEGV)
 		goto bad_area;
+=======
+>>>>>>> 512ca3c... stock
 	else if (fault & VM_FAULT_SIGBUS)
 		goto do_sigbus;
 

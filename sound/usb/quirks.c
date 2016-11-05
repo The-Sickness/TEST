@@ -313,7 +313,10 @@ int snd_usb_create_quirk(struct snd_usb_audio *chip,
 		[QUIRK_MIDI_CME] = create_any_midi_quirk,
 		[QUIRK_MIDI_AKAI] = create_any_midi_quirk,
 		[QUIRK_MIDI_FTDI] = create_any_midi_quirk,
+<<<<<<< HEAD
 		[QUIRK_MIDI_CH345] = create_any_midi_quirk,
+=======
+>>>>>>> 512ca3c... stock
 		[QUIRK_AUDIO_STANDARD_INTERFACE] = create_standard_audio_quirk,
 		[QUIRK_AUDIO_FIXED_ENDPOINT] = create_fixed_stream_quirk,
 		[QUIRK_AUDIO_EDIROL_UAXX] = create_uaxx_quirk,
@@ -900,12 +903,17 @@ void snd_usb_set_interface_quirk(struct usb_device *dev)
 	 * "Playback Design" products need a 50ms delay after setting the
 	 * USB interface.
 	 */
+<<<<<<< HEAD
 	switch (le16_to_cpu(dev->descriptor.idVendor)) {
 	case 0x23ba: /* Playback Design */
 	case 0x0644: /* TEAC Corp. */
 		mdelay(50);
 		break;
 	}
+=======
+	if (le16_to_cpu(dev->descriptor.idVendor) == 0x23ba)
+		mdelay(50);
+>>>>>>> 512ca3c... stock
 }
 
 void snd_usb_ctl_msg_quirk(struct usb_device *dev, unsigned int pipe,
@@ -919,6 +927,7 @@ void snd_usb_ctl_msg_quirk(struct usb_device *dev, unsigned int pipe,
 	if ((le16_to_cpu(dev->descriptor.idVendor) == 0x23ba) &&
 	    (requesttype & USB_TYPE_MASK) == USB_TYPE_CLASS)
 		mdelay(20);
+<<<<<<< HEAD
 
 	/*
 	 * "TEAC Corp." products need a 20ms delay after each
@@ -941,6 +950,8 @@ void snd_usb_ctl_msg_quirk(struct usb_device *dev, unsigned int pipe,
 			break;
 		}
 	}
+=======
+>>>>>>> 512ca3c... stock
 }
 
 /*

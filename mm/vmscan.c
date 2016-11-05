@@ -779,15 +779,31 @@ static unsigned long shrink_page_list(struct list_head *page_list,
 			 * could easily OOM just because too many pages are in
 			 * writeback and there is nothing else to reclaim.
 			 *
+<<<<<<< HEAD
 			 * Require may_enter_fs to wait on writeback, because
 			 * fs may not have submitted IO yet. And a loop driver
+=======
+			 * Check __GFP_IO, certainly because a loop driver
+>>>>>>> 512ca3c... stock
 			 * thread might enter reclaim, and deadlock if it waits
 			 * on a page for which it is needed to do the write
 			 * (loop masks off __GFP_IO|__GFP_FS for this reason);
 			 * but more thought would probably show more reasons.
+<<<<<<< HEAD
 			 */
 			if (global_reclaim(sc) ||
 			    !PageReclaim(page) || !may_enter_fs) {
+=======
+			 *
+			 * Don't require __GFP_FS, since we're not going into
+			 * the FS, just waiting on its writeback completion.
+			 * Worryingly, ext4 gfs2 and xfs allocate pages with
+			 * grab_cache_page_write_begin(,,AOP_FLAG_NOFS), so
+			 * testing may_enter_fs here is liable to OOM on them.
+			 */
+			if (global_reclaim(sc) ||
+			    !PageReclaim(page) || !(sc->gfp_mask & __GFP_IO)) {
+>>>>>>> 512ca3c... stock
 				/*
 				 * This is slightly racy - end_page_writeback()
 				 * might have just cleared PageReclaim, then
@@ -974,7 +990,11 @@ cull_mlocked:
 		if (PageSwapCache(page))
 			try_to_free_swap(page);
 		unlock_page(page);
+<<<<<<< HEAD
 		list_add(&page->lru, &ret_pages);
+=======
+		putback_lru_page(page);
+>>>>>>> 512ca3c... stock
 		continue;
 
 activate_locked:
@@ -2685,10 +2705,13 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int classzone_idx)
 static bool prepare_kswapd_sleep(pg_data_t *pgdat, int order, long remaining,
 					int classzone_idx)
 {
+<<<<<<< HEAD
 	/* If kswapd has been running too long, just sleep */
 	if (need_resched())
 		return false;
 
+=======
+>>>>>>> 512ca3c... stock
 	/* If a direct reclaimer woke kswapd within HZ/10, it's premature */
 	if (remaining)
 		return false;

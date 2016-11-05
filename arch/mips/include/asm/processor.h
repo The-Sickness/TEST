@@ -51,7 +51,11 @@ extern unsigned int vced_count, vcei_count;
  * User space process size: 2GB. This is hardcoded into a few places,
  * so don't change it unless you know what you are doing.
  */
+<<<<<<< HEAD
 #define TASK_SIZE	0x80000000UL
+=======
+#define TASK_SIZE	0x7fff8000UL
+>>>>>>> 512ca3c... stock
 #endif
 
 #ifdef __KERNEL__

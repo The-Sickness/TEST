@@ -1495,6 +1495,7 @@ static void udf_fill_inode(struct inode *inode, struct buffer_head *bh)
 		iinfo->i_checkpoint = le32_to_cpu(efe->checkpoint);
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Sanity check length of allocation descriptors and extended attrs to
 	 * avoid integer overflows
@@ -1505,6 +1506,8 @@ static void udf_fill_inode(struct inode *inode, struct buffer_head *bh)
 	if (udf_file_entry_alloc_offset(inode) + iinfo->i_lenAlloc > inode->i_sb->s_blocksize)
 		return;
 
+=======
+>>>>>>> 512ca3c... stock
 	switch (fe->icbTag.fileType) {
 	case ICBTAG_FILE_TYPE_DIRECTORY:
 		inode->i_op = &udf_dir_inode_operations;
@@ -2055,21 +2058,28 @@ void udf_write_aext(struct inode *inode, struct extent_position *epos,
 		epos->offset += adsize;
 }
 
+<<<<<<< HEAD
 /*
  * Only 1 indirect extent in a row really makes sense but allow upto 16 in case
  * someone does some weird stuff.
  */
 #define UDF_MAX_INDIR_EXTS 16
 
+=======
+>>>>>>> 512ca3c... stock
 int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
 		     struct kernel_lb_addr *eloc, uint32_t *elen, int inc)
 {
 	int8_t etype;
+<<<<<<< HEAD
 	unsigned int indirections = 0;
+=======
+>>>>>>> 512ca3c... stock
 
 	while ((etype = udf_current_aext(inode, epos, eloc, elen, inc)) ==
 	       (EXT_NEXT_EXTENT_ALLOCDECS >> 30)) {
 		int block;
+<<<<<<< HEAD
 
 		if (++indirections > UDF_MAX_INDIR_EXTS) {
 			udf_err(inode->i_sb,
@@ -2078,6 +2088,8 @@ int8_t udf_next_aext(struct inode *inode, struct extent_position *epos,
 			return -1;
 		}
 
+=======
+>>>>>>> 512ca3c... stock
 		epos->block = *eloc;
 		epos->offset = sizeof(struct allocExtDesc);
 		brelse(epos->bh);

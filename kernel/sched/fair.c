@@ -48,7 +48,11 @@
 
 /*
  * Targeted preemption latency for CPU-bound tasks:
+<<<<<<< HEAD
  * (default: 3ms * (1 + ilog(ncpus)), units: nanoseconds)
+=======
+ * (default: 6ms * (1 + ilog(ncpus)), units: nanoseconds)
+>>>>>>> 512ca3c... stock
  *
  * NOTE: this latency value is not the same as the concept of
  * 'timeslice length' - timeslices in CFS are of variable length
@@ -58,8 +62,13 @@
  * (to see the precise effective timeslice length of your workload,
  *  run vmstat and monitor the context-switches (cs) field)
  */
+<<<<<<< HEAD
 unsigned int sysctl_sched_latency = 3000000ULL;
 unsigned int normalized_sysctl_sched_latency = 3000000ULL;
+=======
+unsigned int sysctl_sched_latency = 6000000ULL;
+unsigned int normalized_sysctl_sched_latency = 6000000ULL;
+>>>>>>> 512ca3c... stock
 
 /*
  * The initial- and re-scaling of tunables is configurable
@@ -172,11 +181,14 @@ void sched_init_granularity(void)
 	update_sysctl();
 }
 
+<<<<<<< HEAD
 /* Save per_cpu information that will be shared with other frameworks */
 DEFINE_PER_CPU(struct sched_pm, sched_stat) = {
 	.wake_latency = ATOMIC_INIT(0)
 };
 
+=======
+>>>>>>> 512ca3c... stock
 #if BITS_PER_LONG == 32
 # define WMULT_CONST	(~0UL)
 #else
@@ -1233,9 +1245,15 @@ struct hmp_global_attr {
 };
 
 #ifdef CONFIG_HMP_FREQUENCY_INVARIANT_SCALE
+<<<<<<< HEAD
 #define HMP_DATA_SYSFS_MAX 21
 #else
 #define HMP_DATA_SYSFS_MAX 20
+=======
+#define HMP_DATA_SYSFS_MAX 14
+#else
+#define HMP_DATA_SYSFS_MAX 13
+>>>>>>> 512ca3c... stock
 #endif
 
 struct hmp_data_struct {
@@ -1295,7 +1313,10 @@ static u64 hmp_variable_scale_convert(u64 delta);
 #define SCHED_FREQSCALE_SHIFT 10
 struct cpufreq_extents {
 	u32 curr_scale;
+<<<<<<< HEAD
 	u32 curr_index;
+=======
+>>>>>>> 512ca3c... stock
 	u32 cpufreq_min;
 	u32 cpufreq_max;
 	u32 thermal_min;
@@ -1589,6 +1610,7 @@ static inline void __update_group_entity_contrib(struct sched_entity *se) {}
  * tweaking suit particular needs.
  */
 
+<<<<<<< HEAD
 unsigned int hmp_up_threshold = 700;
 unsigned int hmp_down_threshold = 256;
 
@@ -1746,6 +1768,14 @@ static inline unsigned int is_efficient_down(unsigned int load_ratio)
 	return 0;
 }
 
+=======
+unsigned int hmp_up_threshold = 479;
+unsigned int hmp_down_threshold = 214;
+
+unsigned int hmp_semiboost_up_threshold = 400;
+unsigned int hmp_semiboost_down_threshold = 150;
+
+>>>>>>> 512ca3c... stock
 /*
  * Needed to determine heaviest tasks etc.
  */
@@ -1769,7 +1799,11 @@ static inline void __update_task_entity_contrib(struct sched_entity *se)
 	se->avg.load_avg_ratio = scale_load(contrib);
 #ifdef CONFIG_SCHED_HMP
 	if (!hmp_cpu_is_fastest(cpu_of(se->cfs_rq->rq)) &&
+<<<<<<< HEAD
 		se->avg.load_avg_ratio > (hmp_power_migration ? hmp_up_power_threshold : hmp_up_threshold))
+=======
+		se->avg.load_avg_ratio > hmp_up_threshold)
+>>>>>>> 512ca3c... stock
 		cpu_rq(smp_processor_id())->next_balance = jiffies;
 #endif
 	trace_sched_task_runnable_ratio(task_of(se), se->avg.load_avg_ratio);
@@ -1984,7 +2018,10 @@ static inline void update_cfs_rq_blocked_load(struct cfs_rq *cfs_rq,
 					      int force_update) {}
 #endif
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 512ca3c... stock
 static void enqueue_sleeper(struct cfs_rq *cfs_rq, struct sched_entity *se)
 {
 #ifdef CONFIG_SCHEDSTATS
@@ -2060,6 +2097,7 @@ static void check_spread(struct cfs_rq *cfs_rq, struct sched_entity *se)
 #endif
 }
 
+<<<<<<< HEAD
 static unsigned int Lgentle_fair_sleepers = 1;
 static unsigned int Larch_power = 1;
 
@@ -2073,6 +2111,8 @@ void relay_ap(unsigned int ap)
 	Larch_power = ap;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static void
 place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
 {
@@ -2095,7 +2135,11 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int initial)
 		 * Halve their sleep time's effect, to allow
 		 * for a gentler effect of sleepers:
 		 */
+<<<<<<< HEAD
 		if (Lgentle_fair_sleepers)
+=======
+		if (sched_feat(GENTLE_FAIR_SLEEPERS))
+>>>>>>> 512ca3c... stock
 			thresh >>= 1;
 
 		vruntime -= thresh;
@@ -2867,7 +2911,11 @@ static int runtime_refresh_within(struct cfs_bandwidth *cfs_b, u64 min_expire)
 	u64 remaining;
 
 	/* if the call-back is running a quota refresh is already occurring */
+<<<<<<< HEAD
 	if (hrtimer_callback_running_relaxed(refresh_timer))
+=======
+	if (hrtimer_callback_running(refresh_timer))
+>>>>>>> 512ca3c... stock
 		return 1;
 
 	/* is a quota refresh about to occur? */
@@ -3373,6 +3421,7 @@ static unsigned long cpu_avg_load_per_task(int cpu)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void record_wakee(struct task_struct *p)
 {
 	/*
@@ -3390,6 +3439,8 @@ static void record_wakee(struct task_struct *p)
 		current->wakee_flips++;
 	}
 }
+=======
+>>>>>>> 512ca3c... stock
 
 static void task_waking_fair(struct task_struct *p)
 {
@@ -3410,7 +3461,10 @@ static void task_waking_fair(struct task_struct *p)
 #endif
 
 	se->vruntime -= min_vruntime;
+<<<<<<< HEAD
 	record_wakee(p);
+=======
+>>>>>>> 512ca3c... stock
 }
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
@@ -3529,6 +3583,7 @@ static inline unsigned long effective_load(struct task_group *tg, int cpu,
 
 #endif
 
+<<<<<<< HEAD
 static int wake_wide(struct task_struct *p)
 {
 	int factor = nr_cpus_node(cpu_to_node(smp_processor_id()));
@@ -3551,6 +3606,8 @@ static int wake_wide(struct task_struct *p)
 	return 0;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static int wake_affine(struct sched_domain *sd, struct task_struct *p, int sync)
 {
 	s64 this_load, load;
@@ -3560,6 +3617,7 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p, int sync)
 	unsigned long weight;
 	int balanced;
 
+<<<<<<< HEAD
 	/*
 	 * If we wake multiple tasks be careful to not bounce
 	 * ourselves around too much.
@@ -3567,6 +3625,8 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p, int sync)
 	if (wake_wide(p))
 		return 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	idx	  = sd->wake_idx;
 	this_cpu  = smp_processor_id();
 	prev_cpu  = task_cpu(p);
@@ -3915,6 +3975,7 @@ static struct sched_entity *hmp_get_lightest_task(struct sched_entity* se, int m
  * hmp_up_prio: Only up migrate task with high priority (<hmp_up_prio)
  * hmp_next_up_threshold: Delay before next up migration (1024 ~= 1 ms)
  * hmp_next_down_threshold: Delay before next down migration (1024 ~= 1 ms)
+<<<<<<< HEAD
  *
  * Small Task Packing:
  * We can choose to fill the littlest CPUs in an HMP system rather than
@@ -3922,6 +3983,8 @@ static struct sched_entity *hmp_get_lightest_task(struct sched_entity* se, int m
  * two variables.
  * hmp_packing_enabled: runtime control over pack/spread
  * hmp_full_threshold: Consider a CPU with this much unweighted load full
+=======
+>>>>>>> 512ca3c... stock
  */
 static int hmp_boostpulse_duration = 1000000; /* microseconds */
 static u64 hmp_boostpulse_endtime;
@@ -3944,11 +4007,14 @@ unsigned int hmp_up_prio = NICE_TO_PRIO(CONFIG_SCHED_HMP_PRIO_FILTER_VAL);
 unsigned int hmp_next_up_threshold = 4096;
 unsigned int hmp_next_down_threshold = 4096;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP_LITTLE_PACKING
 unsigned int hmp_packing_enabled = 1;
 unsigned int hmp_full_threshold = 42;
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 static inline int hmp_boost(void)
 {
 	u64 now = ktime_to_us(ktime_get());
@@ -3977,11 +4043,14 @@ static unsigned int hmp_down_migration(int cpu, struct sched_entity *se);
 static inline unsigned int hmp_domain_min_load(struct hmp_domain *hmpd,
 						int *min_cpu, struct cpumask *affinity);
 
+<<<<<<< HEAD
 static inline struct hmp_domain *hmp_smallest_domain(void)
 {
 	return list_entry(hmp_domains.prev, struct hmp_domain, hmp_domains);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /* Check if cpu is in fastest hmp_domain */
 static inline unsigned int hmp_cpu_is_fastest(int cpu)
 {
@@ -4059,6 +4128,7 @@ static inline unsigned int hmp_select_slower_cpu(struct task_struct *tsk,
 
 	return lowest_cpu;
 }
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP_LITTLE_PACKING
 /*
  * Select the 'best' candidate little CPU to wake up on.
@@ -4102,6 +4172,9 @@ static inline unsigned int hmp_best_little_cpu(struct task_struct *tsk,
 	return cpu;
 }
 #endif
+=======
+
+>>>>>>> 512ca3c... stock
 static inline void hmp_next_up_delay(struct sched_entity *se, int cpu)
 {
 	/* hack - always use clock from first online CPU */
@@ -4228,6 +4301,7 @@ static int hmp_semiboost_period_from_sysfs(int value)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hmp_power_migration_from_sysfs(int value)
 {
 	hmp_power_migration = !!value;
@@ -4235,6 +4309,8 @@ static int hmp_power_migration_from_sysfs(int value)
 	return 0;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /* max value for threshold is 1024 */
 static int hmp_up_threshold_from_sysfs(int value)
 {
@@ -4246,6 +4322,7 @@ static int hmp_up_threshold_from_sysfs(int value)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hmp_up_perf_threshold_from_sysfs(int value)
 {
 	if ((value > 1024) || (value < 0))
@@ -4273,6 +4350,8 @@ static int hmp_up_perf_hysteresis_from_sysfs(int value)
 	return 0;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static int hmp_semiboost_up_threshold_from_sysfs(int value)
 {
 	if ((value > 1024) || (value < 0))
@@ -4293,6 +4372,7 @@ static int hmp_down_threshold_from_sysfs(int value)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hmp_down_perf_hysteresis_from_sysfs(int value)
 {
 	hmp_down_perf_hysteresis = value;
@@ -4300,6 +4380,8 @@ static int hmp_down_perf_hysteresis_from_sysfs(int value)
 	return 0;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static int hmp_semiboost_down_threshold_from_sysfs(int value)
 {
 	if ((value > 1024) || (value < 0))
@@ -4486,16 +4568,20 @@ int get_hmp_semiboost(void)
 	return hmp_semiboost();
 }
 
+<<<<<<< HEAD
 int set_hmp_power_migration(int value)
 {
 	return hmp_power_migration_from_sysfs(value);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 int set_hmp_up_threshold(int value)
 {
 	return hmp_up_threshold_from_sysfs(value);
 }
 
+<<<<<<< HEAD
 int set_hmp_up_perf_threshold(int value)
 {
 	return hmp_up_perf_threshold_from_sysfs(value);
@@ -4511,16 +4597,21 @@ int set_hmp_up_perf_hysteresis(int value)
 	return hmp_up_perf_hysteresis_from_sysfs(value);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 int set_hmp_down_threshold(int value)
 {
 	return hmp_down_threshold_from_sysfs(value);
 }
 
+<<<<<<< HEAD
 int set_hmp_down_perf_hysteresis(int value)
 {
 	return hmp_down_perf_hysteresis_from_sysfs(value);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_HMP_FREQUENCY_INVARIANT_SCALE
 /* freqinvar control is only 0,1 off/on */
 static int hmp_freqinvar_from_sysfs(int value)
@@ -4530,6 +4621,7 @@ static int hmp_freqinvar_from_sysfs(int value)
 	return value;
 }
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP_LITTLE_PACKING
 /* packing value must be non-negative */
 static int hmp_packing_limit_from_sysfs(int value)
@@ -4549,6 +4641,8 @@ static int hmp_packing_from_sysfs(int value)
 	return 0;
 }
 #endif
+=======
+>>>>>>> 512ca3c... stock
 static void hmp_attr_add(
 	const char *name,
 	int *value,
@@ -4580,14 +4674,18 @@ static int hmp_attr_init(void)
 		&hmp_data.multiplier,
 		hmp_period_to_sysfs,
 		hmp_period_from_sysfs);
+<<<<<<< HEAD
 	hmp_attr_add("power_migration",
 		&hmp_power_migration,
 		NULL,
 		hmp_power_migration_from_sysfs);
+=======
+>>>>>>> 512ca3c... stock
 	hmp_attr_add("up_threshold",
 		&hmp_up_threshold,
 		NULL,
 		hmp_up_threshold_from_sysfs);
+<<<<<<< HEAD
 	hmp_attr_add("up_perf_threshold",
 		&hmp_up_perf_threshold,
 		NULL,
@@ -4596,10 +4694,13 @@ static int hmp_attr_init(void)
 		&hmp_up_power_threshold,
 		NULL,
 		hmp_up_power_threshold_from_sysfs);
+=======
+>>>>>>> 512ca3c... stock
 	hmp_attr_add("down_threshold",
 		&hmp_down_threshold,
 		NULL,
 		hmp_down_threshold_from_sysfs);
+<<<<<<< HEAD
 	
 	hmp_attr_add("up_perf_hysteresis",
 		&hmp_up_perf_hysteresis,
@@ -4609,6 +4710,8 @@ static int hmp_attr_init(void)
 		&hmp_down_perf_hysteresis,
 		NULL,
 		hmp_down_perf_hysteresis_from_sysfs);
+=======
+>>>>>>> 512ca3c... stock
 
 	hmp_attr_add("sb_load_avg_period_ms",
 		&hmp_data.semiboost_multiplier,
@@ -4663,6 +4766,7 @@ static int hmp_attr_init(void)
 		NULL,
 		hmp_freqinvar_from_sysfs);
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP_LITTLE_PACKING
 	hmp_attr_add("packing_enable",
 		&hmp_packing_enabled,
@@ -4673,6 +4777,8 @@ static int hmp_attr_init(void)
 		NULL,
 		hmp_packing_limit_from_sysfs);
 #endif
+=======
+>>>>>>> 512ca3c... stock
 	hmp_data.attr_group.name = "hmp";
 	hmp_data.attr_group.attrs = hmp_data.attributes;
 	ret = sysfs_create_group(kernel_kobj,
@@ -4828,6 +4934,7 @@ select_task_rq_fair(struct task_struct *p, int sd_flag, int wake_flags)
 	if (p->nr_cpus_allowed == 1)
 		return prev_cpu;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP
 	/* always put non-kernel forking tasks on a big domain */
 	if (unlikely(sd_flag & SD_BALANCE_FORK) && hmp_task_should_forkboost(p)) {
@@ -4841,6 +4948,8 @@ select_task_rq_fair(struct task_struct *p, int sd_flag, int wake_flags)
 	}
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 	if (sd_flag & SD_BALANCE_WAKE) {
 		if (cpumask_test_cpu(cpu, tsk_cpus_allowed(p)))
 			want_affine = 1;
@@ -4924,11 +5033,15 @@ unlock:
 		return new_cpu;
 	}
 	if (hmp_down_migration(prev_cpu, &p->se)) {
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP_LITTLE_PACKING
 		new_cpu = hmp_best_little_cpu(p, prev_cpu);
 #else
 		new_cpu = hmp_select_slower_cpu(p, prev_cpu);
 #endif
+=======
+		new_cpu = hmp_select_slower_cpu(p, prev_cpu);
+>>>>>>> 512ca3c... stock
 		/*
 		 * we might have no suitable CPU
 		 * in which case new_cpu == NR_CPUS
@@ -5697,6 +5810,7 @@ static int tg_load_down(struct task_group *tg, void *data)
 	long cpu = (long)data;
 
 	if (!tg->parent) {
+<<<<<<< HEAD
 		load = cpu_rq(cpu)->avg.load_avg_contrib;
 	} else {
                 unsigned long tmp_rla;
@@ -5707,6 +5821,13 @@ static int tg_load_down(struct task_group *tg, void *data)
 				tg->parent->cfs_rq[cpu]->runnable_load_avg + 1);
 		load *= tg->se[cpu]->avg.load_avg_contrib;
 		load /= tmp_rla;
+=======
+		load = cpu_rq(cpu)->load.weight;
+	} else {
+		load = tg->parent->cfs_rq[cpu]->h_load;
+		load *= tg->se[cpu]->load.weight;
+		load /= tg->parent->cfs_rq[cpu]->load.weight + 1;
+>>>>>>> 512ca3c... stock
 	}
 
 	tg->cfs_rq[cpu]->h_load = load;
@@ -5732,9 +5853,18 @@ static void update_h_load(long cpu)
 static unsigned long task_h_load(struct task_struct *p)
 {
 	struct cfs_rq *cfs_rq = task_cfs_rq(p);
+<<<<<<< HEAD
 
 	return div64_ul(p->se.avg.load_avg_contrib * cfs_rq->h_load,
 			cfs_rq->runnable_load_avg + 1);
+=======
+	unsigned long load;
+
+	load = p->se.load.weight;
+	load = div_u64(load * cfs_rq->h_load, cfs_rq->load.weight + 1);
+
+	return load;
+>>>>>>> 512ca3c... stock
 }
 #else
 static inline void update_blocked_averages(int cpu)
@@ -5747,7 +5877,11 @@ static inline void update_h_load(long cpu)
 
 static unsigned long task_h_load(struct task_struct *p)
 {
+<<<<<<< HEAD
 	return p->se.avg.load_avg_contrib;
+=======
+	return p->se.load.weight;
+>>>>>>> 512ca3c... stock
 }
 #endif
 
@@ -5884,7 +6018,11 @@ static void update_cpu_power(struct sched_domain *sd, int cpu)
 	struct sched_group *sdg = sd->groups;
 
 	if ((sd->flags & SD_SHARE_CPUPOWER) && weight > 1) {
+<<<<<<< HEAD
 		if (Larch_power)
+=======
+		if (sched_feat(ARCH_POWER))
+>>>>>>> 512ca3c... stock
 			power *= arch_scale_smt_power(sd, cpu);
 		else
 			power *= default_scale_smt_power(sd, cpu);
@@ -5894,7 +6032,11 @@ static void update_cpu_power(struct sched_domain *sd, int cpu)
 
 	sdg->sgp->power_orig = power;
 
+<<<<<<< HEAD
 	if (Larch_power)
+=======
+	if (sched_feat(ARCH_POWER))
+>>>>>>> 512ca3c... stock
 		power *= arch_scale_freq_power(sd, cpu);
 	else
 		power *= default_scale_freq_power(sd, cpu);
@@ -6489,10 +6631,17 @@ static struct rq *find_busiest_queue(struct lb_env *env,
 				     struct sched_group *group)
 {
 	struct rq *busiest = NULL, *rq;
+<<<<<<< HEAD
 	unsigned long busiest_load = 0, busiest_power = 1;
 	int i;
 
         for_each_cpu_and(i, sched_group_cpus(group), env->cpus) {
+=======
+	unsigned long max_load = 0;
+	int i;
+
+	for_each_cpu(i, sched_group_cpus(group)) {
+>>>>>>> 512ca3c... stock
 		unsigned long power = power_of(i);
 		unsigned long capacity = DIV_ROUND_CLOSEST(power,
 							   SCHED_POWER_SCALE);
@@ -6501,6 +6650,12 @@ static struct rq *find_busiest_queue(struct lb_env *env,
 		if (!capacity)
 			capacity = fix_small_capacity(env->sd, group);
 
+<<<<<<< HEAD
+=======
+		if (!cpumask_test_cpu(i, env->cpus))
+			continue;
+
+>>>>>>> 512ca3c... stock
 		rq = cpu_rq(i);
 		wl = weighted_cpuload(i);
 
@@ -6516,6 +6671,7 @@ static struct rq *find_busiest_queue(struct lb_env *env,
 		 * the weighted_cpuload() scaled with the cpu power, so that
 		 * the load can be moved away from the cpu that is potentially
 		 * running at a lower capacity.
+<<<<<<< HEAD
 		 *
 		 * Thus we're looking for max(wl_i / power_i), crosswise
 		 * multiplication to rid ourselves of the division works out
@@ -6525,6 +6681,13 @@ static struct rq *find_busiest_queue(struct lb_env *env,
 		if (wl * busiest_power > busiest_load * power) {
 			busiest_load = wl;
 			busiest_power = power;
+=======
+		 */
+		wl = (wl * SCHED_POWER_SCALE) / power;
+
+		if (wl > max_load) {
+			max_load = wl;
+>>>>>>> 512ca3c... stock
 			busiest = rq;
 		}
 	}
@@ -6676,15 +6839,24 @@ more_balance:
 		 */
 		if ((env.flags & LBF_SOME_PINNED) && env.imbalance > 0) {
 
+<<<<<<< HEAD
 			/* Prevent to re-select dst_cpu via env's cpus */
 			cpumask_clear_cpu(env.dst_cpu, env.cpus);
 
+=======
+>>>>>>> 512ca3c... stock
 			env.dst_rq	 = cpu_rq(env.new_dst_cpu);
 			env.dst_cpu	 = env.new_dst_cpu;
 			env.flags	&= ~LBF_SOME_PINNED;
 			env.loop	 = 0;
 			env.loop_break	 = sched_nr_migrate_break;
 
+<<<<<<< HEAD
+=======
+			/* Prevent to re-select dst_cpu via env's cpus */
+			cpumask_clear_cpu(env.dst_cpu, env.cpus);
+
+>>>>>>> 512ca3c... stock
 			/*
 			 * Go back to "more_balance" rather than "redo" since we
 			 * need to continue with same src_cpu.
@@ -6844,6 +7016,7 @@ void idle_balance(int this_cpu, struct rq *this_rq)
 
 	raw_spin_lock(&this_rq->lock);
 
+<<<<<<< HEAD
 	/*
 	 * While browsing the domains, we released the rq lock.
 	 * A task could have be enqueued in the meantime
@@ -6852,6 +7025,8 @@ void idle_balance(int this_cpu, struct rq *this_rq)
 		return;
 		
 		
+=======
+>>>>>>> 512ca3c... stock
 	if (pulled_task || time_after(jiffies, this_rq->next_balance)) {
 		/*
 		 * We are going idle. next_balance may be set based on
@@ -6953,6 +7128,7 @@ static int nohz_test_cpu(int cpu)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP_LITTLE_PACKING
 /*
  * Decide if the tasks on the busy CPUs in the
@@ -6981,10 +7157,13 @@ static int hmp_packing_ilb_needed(int cpu, int ilb_needed)
 
 DEFINE_PER_CPU(cpumask_var_t, ilb_tmpmask);
 
+=======
+>>>>>>> 512ca3c... stock
 static inline int find_new_ilb(int call_cpu)
 {
 	int ilb = cpumask_first(nohz.idle_cpus_mask);
 #ifdef CONFIG_SCHED_HMP
+<<<<<<< HEAD
 	int ilb_needed = 0;
 	int cpu;
 	struct cpumask* tmp = per_cpu(ilb_tmpmask, smp_processor_id());
@@ -7015,6 +7194,14 @@ static inline int find_new_ilb(int call_cpu)
 	if (ilb < nr_cpu_ids && idle_cpu(ilb))
 		return ilb;
 #endif
+=======
+	/* restrict nohz balancing to occur in the same hmp domain */
+	ilb = cpumask_first_and(nohz.idle_cpus_mask,
+			&((struct hmp_domain *)hmp_cpu_domain(call_cpu))->cpus);
+#endif
+	if (ilb < nr_cpu_ids && idle_cpu(ilb))
+		return ilb;
+>>>>>>> 512ca3c... stock
 
 	return nr_cpu_ids;
 }
@@ -7369,6 +7556,7 @@ static unsigned int hmp_up_migration(int cpu, int *target_cpu, struct sched_enti
 		if (hmp_semiboost())
 			up_threshold = hmp_semiboost_up_threshold;
 		else
+<<<<<<< HEAD
 			up_threshold = hmp_power_migration ? hmp_up_perf_threshold : hmp_up_threshold;
 
 		if (se->avg.load_avg_ratio < up_threshold) {
@@ -7380,6 +7568,12 @@ static unsigned int hmp_up_migration(int cpu, int *target_cpu, struct sched_enti
 				return 0;
 			}
 		}
+=======
+			up_threshold = hmp_up_threshold;
+
+		if (se->avg.load_avg_ratio < up_threshold)
+			return 0;
+>>>>>>> 512ca3c... stock
 	}
 
 	/* Let the task load settle before doing another up migration */
@@ -7419,6 +7613,7 @@ static unsigned int hmp_down_migration(int cpu, struct sched_entity *se)
 	struct task_struct *p = task_of(se);
 	u64 now;
 
+<<<<<<< HEAD
 	if (hmp_cpu_is_slowest(cpu)) {
 #ifdef CONFIG_SCHED_HMP_LITTLE_PACKING
 		if(hmp_packing_enabled)
@@ -7427,6 +7622,10 @@ static unsigned int hmp_down_migration(int cpu, struct sched_entity *se)
 #endif
 		return 0;
 	}
+=======
+	if (hmp_cpu_is_slowest(cpu))
+		return 0;
+>>>>>>> 512ca3c... stock
 
 #ifdef CONFIG_SCHED_HMP_PRIO_FILTER
 	/* Filter by task priority */
@@ -7463,11 +7662,16 @@ static unsigned int hmp_down_migration(int cpu, struct sched_entity *se)
 			down_threshold = hmp_semiboost_down_threshold;
 		else
 			down_threshold = hmp_down_threshold;
+<<<<<<< HEAD
 		
 		if (hmp_power_migration && is_efficient_down(se->avg.load_avg_ratio))
 			return 1;
 
 		if (!hmp_power_migration && se->avg.load_avg_ratio < down_threshold)
+=======
+
+		if (se->avg.load_avg_ratio < down_threshold)
+>>>>>>> 512ca3c... stock
 			return 1;
 	}
 	return 0;
@@ -7863,7 +8067,11 @@ static unsigned int hmp_idle_pull(int this_cpu)
 		if (hmp_semiboost())
 			up_threshold = hmp_semiboost_up_threshold;
 		else
+<<<<<<< HEAD
 			up_threshold = hmp_power_migration ? hmp_up_perf_threshold : hmp_up_threshold;
+=======
+			up_threshold = hmp_up_threshold;
+>>>>>>> 512ca3c... stock
 
 		if (hmp_boost() || curr->avg.load_avg_ratio > up_threshold)
 			if (curr->avg.load_avg_ratio > ratio) {
@@ -8455,7 +8663,11 @@ static int cpufreq_callback(struct notifier_block *nb,
 					unsigned long val, void *data)
 {
 	struct cpufreq_freqs *freq = data;
+<<<<<<< HEAD
 	int i, cluster, cpu = freq->cpu;
+=======
+	int cpu = freq->cpu;
+>>>>>>> 512ca3c... stock
 	struct cpufreq_extents *extents;
 
 	if (freq->flags & CPUFREQ_CONST_LOOPS)
@@ -8480,6 +8692,7 @@ static int cpufreq_callback(struct notifier_block *nb,
 		extents->curr_scale = cpufreq_calc_scale(extents->min,
 				extents->max, freq->new);
 	}
+<<<<<<< HEAD
 	
 	cluster = (cpu > 3);
 	if (((struct cpu_p_state)(cluster ? fast : slow)).freq == freq->new)
@@ -8493,6 +8706,8 @@ static int cpufreq_callback(struct notifier_block *nb,
 		fast = cpu_efficiency_table[cluster].p_states[i];
 	else
 		slow = cpu_efficiency_table[cluster].p_states[i];
+=======
+>>>>>>> 512ca3c... stock
 
 	return NOTIFY_OK;
 }

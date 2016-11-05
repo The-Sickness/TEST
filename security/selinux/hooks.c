@@ -177,7 +177,26 @@ extern struct security_operations *security_ops;
 /* SECMARK reference count */
 static atomic_t selinux_secmark_refcount = ATOMIC_INIT(0);
 
+<<<<<<< HEAD
 int selinux_enforcing = 0;
+=======
+#ifdef CONFIG_SECURITY_SELINUX_DEVELOP
+int selinux_enforcing;
+
+static int __init enforcing_setup(char *str)
+{
+	unsigned long enforcing;
+	if (!strict_strtoul(str, 0, &enforcing))
+#ifdef CONFIG_ALWAYS_ENFORCE
+		selinux_enforcing = 1;
+#else
+		selinux_enforcing = enforcing ? 1 : 0;
+#endif
+	return 1;
+}
+__setup("enforcing=", enforcing_setup);
+#endif
+>>>>>>> 512ca3c... stock
 
 #ifdef CONFIG_SECURITY_SELINUX_BOOTPARAM
 int selinux_enabled = CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE;
@@ -515,10 +534,13 @@ static int sb_finish_set_opts(struct super_block *sb)
 	if (strncmp(sb->s_type->name, "rootfs", sizeof("rootfs")) == 0)
 		sbsec->flags |= SE_SBLABELSUPP;
 
+<<<<<<< HEAD
 	/* Special handling for f2fs */
 	if (strncmp(sb->s_type->name, "f2fs", sizeof("f2fs")) == 0)
 		sbsec->flags |= SE_SBLABELSUPP;
 
+=======
+>>>>>>> 512ca3c... stock
 	/* Initialize the root inode. */
 	rc = inode_doinit_with_dentry(root_inode, root);
 
@@ -3045,7 +3067,11 @@ static noinline int audit_inode_permission(struct inode *inode,
 	ad.u.inode = inode;
 
 	rc = slow_avc_audit(current_sid(), isec->sid, isec->sclass, perms,
+<<<<<<< HEAD
 			    audited, 0, result, &ad, flags);
+=======
+			    audited, denied, result, &ad, flags);
+>>>>>>> 512ca3c... stock
 	if (rc)
 		return rc;
 	return 0;
@@ -3090,7 +3116,11 @@ static int selinux_inode_permission(struct inode *inode, int mask)
 	if (likely(!audited))
 		return rc;
 
+<<<<<<< HEAD
 	rc2 = audit_inode_permission(inode, perms, audited, 0, rc, flags);
+=======
+	rc2 = audit_inode_permission(inode, perms, audited, denied, rc, flags);
+>>>>>>> 512ca3c... stock
 	if (rc2)
 		return rc2;
 	return rc;

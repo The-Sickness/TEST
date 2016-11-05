@@ -298,7 +298,11 @@ static ssize_t process_vm_rw_core(pid_t pid, const struct iovec *lvec,
 		goto free_proc_pages;
 	}
 
+<<<<<<< HEAD
 	mm = mm_access(task, PTRACE_MODE_ATTACH_REALCREDS);
+=======
+	mm = mm_access(task, PTRACE_MODE_ATTACH);
+>>>>>>> 512ca3c... stock
 	if (!mm || IS_ERR(mm)) {
 		rc = IS_ERR(mm) ? PTR_ERR(mm) : -ESRCH;
 		/*

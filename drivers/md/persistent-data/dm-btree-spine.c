@@ -249,6 +249,7 @@ int shadow_root(struct shadow_spine *s)
 {
 	return s->root;
 }
+<<<<<<< HEAD
 
 static void le64_inc(void *context, const void *value_le)
 {
@@ -286,3 +287,5 @@ void init_le64_type(struct dm_transaction_manager *tm,
 	vt->dec = le64_dec;
 	vt->equal = le64_equal;
 }
+=======
+>>>>>>> 512ca3c... stock

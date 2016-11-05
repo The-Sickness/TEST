@@ -617,6 +617,7 @@ void mark_buffer_dirty_inode_sync(struct buffer_head *bh, struct inode *inode)
 }
 EXPORT_SYMBOL(mark_buffer_dirty_inode_sync);
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_DEV_IO_TRACE
 static inline void save_dirty_task(struct page *page)
 {
@@ -629,6 +630,8 @@ static inline void save_dirty_task(struct page *page)
 }
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * Mark the page dirty, and set it dirty in the radix tree, and mark the inode
  * dirty.
@@ -647,7 +650,10 @@ static void __set_page_dirty(struct page *page,
 		account_page_dirtied(page, mapping);
 		radix_tree_tag_set(&mapping->page_tree,
 				page_index(page), PAGECACHE_TAG_DIRTY);
+<<<<<<< HEAD
 		save_dirty_task(page);
+=======
+>>>>>>> 512ca3c... stock
 	}
 	spin_unlock_irqrestore(&mapping->tree_lock, flags);
 	__mark_inode_dirty(mapping->host, I_DIRTY_PAGES);
@@ -1264,7 +1270,11 @@ static struct buffer_head *__bread_slow(struct buffer_head *bh)
  * a local interrupt disable for that.
  */
 
+<<<<<<< HEAD
 #define BH_LRU_SIZE	16
+=======
+#define BH_LRU_SIZE	8
+>>>>>>> 512ca3c... stock
 
 struct bh_lru {
 	struct buffer_head *bhs[BH_LRU_SIZE];

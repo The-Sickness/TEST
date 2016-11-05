@@ -4,7 +4,10 @@
  * Copyright (C) 1996 Russell King.
  * Copyright (C) 2002 Deep Blue Solutions Ltd.
  * Copyright (C) 2012 ARM Ltd.
+<<<<<<< HEAD
  * Copyright (C) 2014, NVIDIA CORPORATION.  All rights reserved.
+=======
+>>>>>>> 512ca3c... stock
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -39,6 +42,7 @@
  */
 #define atomic_read(v)	(*(volatile int *)&(v)->counter)
 #define atomic_set(v,i)	(((v)->counter) = (i))
+<<<<<<< HEAD
 #define cpu_relaxed_read_atomic(v)	ldax32((volatile int *)&(v->counter))
 
 /*
@@ -104,6 +108,8 @@ _LD(  ldax8,  u8, "ldaxrb", "w")
 _STX( stlx8,  u8, "stlxrb", "w")
 _LD(   lda8,  u8,  "ldarb", "w")
 _STL(  stl8,  u8,  "stlrb", "w")
+=======
+>>>>>>> 512ca3c... stock
 
 /*
  * AArch64 UP and SMP safe atomic ops.  We use load exclusive and

@@ -103,6 +103,13 @@ static char *twl_aen_severity_table[] =
 #define TW_CURRENT_DRIVER_BUILD 0
 #define TW_CURRENT_DRIVER_BRANCH 0
 
+<<<<<<< HEAD
+=======
+/* Phase defines */
+#define TW_PHASE_INITIAL 0
+#define TW_PHASE_SGLIST  2
+
+>>>>>>> 512ca3c... stock
 /* Misc defines */
 #define TW_SECTOR_SIZE                        512
 #define TW_MAX_UNITS			      32

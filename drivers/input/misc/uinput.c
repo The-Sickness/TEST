@@ -438,7 +438,12 @@ static int uinput_setup_device(struct uinput_device *udev,
 	return retval;
 }
 
+<<<<<<< HEAD
 static inline ssize_t uinput_inject_event(struct uinput_device *udev, const char __user *buffer, size_t count, __u8 *do_sleep)
+=======
+static ssize_t uinput_inject_event(struct uinput_device *udev,
+				   const char __user *buffer, size_t count)
+>>>>>>> 512ca3c... stock
 {
 	struct input_event ev;
 
@@ -450,10 +455,13 @@ static inline ssize_t uinput_inject_event(struct uinput_device *udev, const char
 
 	input_event(udev->dev, ev.type, ev.code, ev.value);
 
+<<<<<<< HEAD
 	/* XXX UGLY HACK to throttle system_server orientation sensor code */
 	if (ev.type == 2 && ev.code == 2) {
 		*do_sleep = 1;
 	}
+=======
+>>>>>>> 512ca3c... stock
 	return input_event_size();
 }
 
@@ -462,7 +470,10 @@ static ssize_t uinput_write(struct file *file, const char __user *buffer,
 {
 	struct uinput_device *udev = file->private_data;
 	int retval;
+<<<<<<< HEAD
 	__u8 do_sleep = 0;
+=======
+>>>>>>> 512ca3c... stock
 
 	if (count == 0)
 		return 0;
@@ -472,16 +483,23 @@ static ssize_t uinput_write(struct file *file, const char __user *buffer,
 		return retval;
 
 	retval = udev->state == UIST_CREATED ?
+<<<<<<< HEAD
 			uinput_inject_event(udev, buffer, count, &do_sleep) :
+=======
+			uinput_inject_event(udev, buffer, count) :
+>>>>>>> 512ca3c... stock
 			uinput_setup_device(udev, buffer, count);
 
 	mutex_unlock(&udev->mutex);
 
+<<<<<<< HEAD
 	/* XXX UGLY HACK to throttle system_server orientation sensor code */
 	if (do_sleep) {
 		set_current_state(TASK_INTERRUPTIBLE);
 		schedule_timeout(HZ/5);
 	}
+=======
+>>>>>>> 512ca3c... stock
 	return retval;
 }
 
@@ -852,6 +870,7 @@ static long uinput_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 }
 
 #ifdef CONFIG_COMPAT
+<<<<<<< HEAD
 
 #define UI_SET_PHYS_COMPAT	_IOW(UINPUT_IOCTL_BASE, 108, compat_uptr_t)
 
@@ -861,6 +880,11 @@ static long uinput_compat_ioctl(struct file *file,
 	if (cmd == UI_SET_PHYS_COMPAT)
 		cmd = UI_SET_PHYS;
 
+=======
+static long uinput_compat_ioctl(struct file *file,
+				unsigned int cmd, unsigned long arg)
+{
+>>>>>>> 512ca3c... stock
 	return uinput_ioctl_handler(file, cmd, arg, compat_ptr(arg));
 }
 #endif

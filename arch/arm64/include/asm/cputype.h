@@ -81,8 +81,11 @@ static inline u32 __attribute_const__ read_cpuid_cachetype(void)
 	return read_cpuid(CTR_EL0);
 }
 
+<<<<<<< HEAD
 void cpuinfo_store_cpu(void);
 
+=======
+>>>>>>> 512ca3c... stock
 #endif /* __ASSEMBLY__ */
 
 #endif

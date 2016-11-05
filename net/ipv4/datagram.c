@@ -20,7 +20,11 @@
 #include <net/route.h>
 #include <net/tcp_states.h>
 
+<<<<<<< HEAD
 int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+=======
+int ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+>>>>>>> 512ca3c... stock
 {
 	struct inet_sock *inet = inet_sk(sk);
 	struct sockaddr_in *usin = (struct sockaddr_in *) uaddr;
@@ -39,6 +43,11 @@ int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
 
 	sk_dst_reset(sk);
 
+<<<<<<< HEAD
+=======
+	lock_sock(sk);
+
+>>>>>>> 512ca3c... stock
 	oif = sk->sk_bound_dev_if;
 	saddr = inet->inet_saddr;
 	if (ipv4_is_multicast(usin->sin_addr.s_addr)) {
@@ -79,6 +88,7 @@ int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
 	sk_dst_set(sk, &rt->dst);
 	err = 0;
 out:
+<<<<<<< HEAD
 	return err;
 }
 EXPORT_SYMBOL(__ip4_datagram_connect);
@@ -91,6 +101,10 @@ int ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
 	res = __ip4_datagram_connect(sk, uaddr, addr_len);
 	release_sock(sk);
 	return res;
+=======
+	release_sock(sk);
+	return err;
+>>>>>>> 512ca3c... stock
 }
 EXPORT_SYMBOL(ip4_datagram_connect);
 

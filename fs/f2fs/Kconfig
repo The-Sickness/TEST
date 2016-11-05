@@ -1,8 +1,13 @@
 config F2FS_FS
+<<<<<<< HEAD
 	tristate "F2FS filesystem support"
 	depends on BLOCK
 	select CRYPTO
 	select CRYPTO_CRC32
+=======
+	tristate "F2FS filesystem support (EXPERIMENTAL)"
+	depends on BLOCK
+>>>>>>> 512ca3c... stock
 	help
 	  F2FS is based on Log-structured File System (LFS), which supports
 	  versatile "flash-friendly" features. The design has been focused on
@@ -21,11 +26,19 @@ config F2FS_STAT_FS
 	depends on F2FS_FS && DEBUG_FS
 	default y
 	help
+<<<<<<< HEAD
 	  /sys/debug/f2fs/ contains information about all the partitions
 	  mounted as f2fs. Each file shows the whole f2fs information.
 
 	  /sys/debug/f2fs/status includes:
 	    - major filesystem information managed by f2fs currently
+=======
+	  /sys/kernel/debug/f2fs/ contains information about all the partitions
+	  mounted as f2fs. Each file shows the whole f2fs information.
+
+	  /sys/kernel/debug/f2fs/status includes:
+	    - major file system information managed by f2fs currently
+>>>>>>> 512ca3c... stock
 	    - average SIT information about whole segments
 	    - current memory footprint consumed by f2fs.
 
@@ -47,12 +60,17 @@ config F2FS_FS_POSIX_ACL
 	default y
 	help
 	  Posix Access Control Lists (ACLs) support permissions for users and
+<<<<<<< HEAD
 	  groups beyond the owner/group/world scheme.
+=======
+	  gourps beyond the owner/group/world scheme.
+>>>>>>> 512ca3c... stock
 
 	  To learn more about Access Control Lists, visit the POSIX ACLs for
 	  Linux website <http://acl.bestbits.at/>.
 
 	  If you don't know what Access Control Lists are, say N
+<<<<<<< HEAD
 
 config F2FS_FS_SECURITY
 	bool "F2FS Security Labels"
@@ -94,3 +112,5 @@ config F2FS_IO_TRACE
 	  information and block IO patterns in the filesystem level.
 
 	  If unsure, say N.
+=======
+>>>>>>> 512ca3c... stock

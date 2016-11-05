@@ -195,10 +195,13 @@ SYSCALL_DEFINE2(settimeofday, struct timeval __user *, tv,
 	if (tv) {
 		if (copy_from_user(&user_tv, tv, sizeof(*tv)))
 			return -EFAULT;
+<<<<<<< HEAD
 
 		if (!timeval_valid(&user_tv))
 			return -EINVAL;
 
+=======
+>>>>>>> 512ca3c... stock
 		new_ts.tv_sec = user_tv.tv_sec;
 		new_ts.tv_nsec = user_tv.tv_usec * NSEC_PER_USEC;
 	}

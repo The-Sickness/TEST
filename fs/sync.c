@@ -17,11 +17,14 @@
 #include <linux/backing-dev.h>
 #include "internal.h"
 
+<<<<<<< HEAD
 #include <linux/moduleparam.h>
 
 bool fsync_enabled = true;
 module_param(fsync_enabled, bool, 0755);
 
+=======
+>>>>>>> 512ca3c... stock
 #define VALID_FLAGS (SYNC_FILE_RANGE_WAIT_BEFORE|SYNC_FILE_RANGE_WRITE| \
 			SYNC_FILE_RANGE_WAIT_AFTER)
 
@@ -104,7 +107,11 @@ static void fdatawait_one_bdev(struct block_device *bdev, void *arg)
  * just write metadata (such as inodes or bitmaps) to block device page cache
  * and do not sync it on their own in ->sync_fs().
  */
+<<<<<<< HEAD
 static void do_sync(void)
+=======
+SYSCALL_DEFINE0(sync)
+>>>>>>> 512ca3c... stock
 {
 	int nowait = 0, wait = 1;
 
@@ -116,6 +123,7 @@ static void do_sync(void)
 	iterate_bdevs(fdatawait_one_bdev, NULL);
 	if (unlikely(laptop_mode))
 		laptop_sync_completion();
+<<<<<<< HEAD
 	return;
 }
 
@@ -170,6 +178,8 @@ SYSCALL_DEFINE0(sync)
 	ACCESS_ONCE(sync_seq)++;
 	WARN_ON_ONCE((sync_seq & 0x1) != 0);
 	mutex_unlock(&sync_mutex);
+=======
+>>>>>>> 512ca3c... stock
 	return 0;
 }
 
@@ -211,9 +221,12 @@ SYSCALL_DEFINE1(syncfs, int, fd)
 	struct super_block *sb;
 	int ret;
 
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (!f.file)
 		return -EBADF;
 	sb = f.file->f_dentry->d_sb;
@@ -239,9 +252,12 @@ SYSCALL_DEFINE1(syncfs, int, fd)
  */
 int vfs_fsync_range(struct file *file, loff_t start, loff_t end, int datasync)
 {
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 			
+=======
+>>>>>>> 512ca3c... stock
 	if (!file->f_op || !file->f_op->fsync)
 		return -EINVAL;
 	return file->f_op->fsync(file, start, end, datasync);
@@ -258,9 +274,12 @@ EXPORT_SYMBOL(vfs_fsync_range);
  */
 int vfs_fsync(struct file *file, int datasync)
 {
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 			
+=======
+>>>>>>> 512ca3c... stock
 	return vfs_fsync_range(file, 0, LLONG_MAX, datasync);
 }
 EXPORT_SYMBOL(vfs_fsync);
@@ -270,9 +289,12 @@ static int do_fsync(unsigned int fd, int datasync)
 	struct fd f = fdget(fd);
 	int ret = -EBADF;
 
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (f.file) {
 		ret = vfs_fsync(f.file, datasync);
 		fdput(f);
@@ -282,17 +304,23 @@ static int do_fsync(unsigned int fd, int datasync)
 
 SYSCALL_DEFINE1(fsync, unsigned int, fd)
 {
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 			
+=======
+>>>>>>> 512ca3c... stock
 	return do_fsync(fd, 0);
 }
 
 SYSCALL_DEFINE1(fdatasync, unsigned int, fd)
 {
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 			
+=======
+>>>>>>> 512ca3c... stock
 	return do_fsync(fd, 1);
 }
 
@@ -306,9 +334,12 @@ SYSCALL_DEFINE1(fdatasync, unsigned int, fd)
  */
 int generic_write_sync(struct file *file, loff_t pos, loff_t count)
 {
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 			
+=======
+>>>>>>> 512ca3c... stock
 	if (!(file->f_flags & O_DSYNC) && !IS_SYNC(file->f_mapping->host))
 		return 0;
 	return vfs_fsync_range(file, pos, pos + count - 1,
@@ -372,9 +403,12 @@ SYSCALL_DEFINE4(sync_file_range, int, fd, loff_t, offset, loff_t, nbytes,
 	loff_t endbyte;			/* inclusive */
 	umode_t i_mode;
 
+<<<<<<< HEAD
 	if (!fsync_enabled)
 			return 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	ret = -EINVAL;
 	if (flags & ~VALID_FLAGS)
 		goto out;
@@ -435,8 +469,12 @@ SYSCALL_DEFINE4(sync_file_range, int, fd, loff_t, offset, loff_t, nbytes,
 	}
 
 	if (flags & SYNC_FILE_RANGE_WRITE) {
+<<<<<<< HEAD
 		ret = __filemap_fdatawrite_range(mapping, offset, endbyte,
 						 WB_SYNC_NONE);
+=======
+		ret = filemap_fdatawrite_range(mapping, offset, endbyte);
+>>>>>>> 512ca3c... stock
 		if (ret < 0)
 			goto out_put;
 	}

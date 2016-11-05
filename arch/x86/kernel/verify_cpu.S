@@ -34,11 +34,18 @@
 #include <asm/msr-index.h>
 
 verify_cpu:
+<<<<<<< HEAD
 	pushf				# Save caller passed flags
 	push	$0			# Kill any dangerous flags
 	popf
 
 #ifndef __x86_64__
+=======
+	pushfl				# Save caller passed flags
+	pushl	$0			# Kill any dangerous flags
+	popfl
+
+>>>>>>> 512ca3c... stock
 	pushfl				# standard way to check for cpuid
 	popl	%eax
 	movl	%eax,%ebx
@@ -49,7 +56,10 @@ verify_cpu:
 	popl	%eax
 	cmpl	%eax,%ebx
 	jz	verify_cpu_no_longmode	# cpu has no cpuid
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 512ca3c... stock
 
 	movl	$0x0,%eax		# See if cpuid 1 is implemented
 	cpuid
@@ -132,10 +142,18 @@ verify_cpu_sse_test:
 	jmp	verify_cpu_sse_test	# try again
 
 verify_cpu_no_longmode:
+<<<<<<< HEAD
 	popf				# Restore caller passed flags
 	movl $1,%eax
 	ret
 verify_cpu_sse_ok:
 	popf				# Restore caller passed flags
+=======
+	popfl				# Restore caller passed flags
+	movl $1,%eax
+	ret
+verify_cpu_sse_ok:
+	popfl				# Restore caller passed flags
+>>>>>>> 512ca3c... stock
 	xorl %eax, %eax
 	ret

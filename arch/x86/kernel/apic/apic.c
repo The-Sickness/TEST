@@ -350,6 +350,7 @@ static void __setup_APIC_LVTT(unsigned int clocks, int oneshot, int irqen)
 	apic_write(APIC_LVTT, lvtt_value);
 
 	if (lvtt_value & APIC_LVT_TIMER_TSCDEADLINE) {
+<<<<<<< HEAD
 		/*
 		 * See Intel SDM: TSC-Deadline Mode chapter. In xAPIC mode,
 		 * writing to the APIC LVTT and TSC_DEADLINE MSR isn't serialized.
@@ -357,6 +358,8 @@ static void __setup_APIC_LVTT(unsigned int clocks, int oneshot, int irqen)
 		 */
 		asm volatile("mfence" : : : "memory");
 
+=======
+>>>>>>> 512ca3c... stock
 		printk_once(KERN_DEBUG "TSC deadline timer enabled\n");
 		return;
 	}

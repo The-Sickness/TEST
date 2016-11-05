@@ -18,7 +18,10 @@
 #include <asm/page.h>
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
+<<<<<<< HEAD
 #include <asm/sections.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <asm/suspend.h>
 
 #include "mach/pm.h"

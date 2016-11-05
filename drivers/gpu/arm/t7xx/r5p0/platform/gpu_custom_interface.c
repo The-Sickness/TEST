@@ -18,8 +18,11 @@
 #include <mali_kbase.h>
 
 #include <linux/fb.h>
+<<<<<<< HEAD
 #include <linux/ipa.h>
 #include <linux/sysfs_helpers.h>
+=======
+>>>>>>> 512ca3c... stock
 
 #include "mali_kbase_platform.h"
 #include "gpu_dvfs_handler.h"
@@ -32,6 +35,7 @@
 #include <mach/apm-exynos.h>
 #include <mach/asv-exynos.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_SOC_EXYNOS7420
 #define GPU_MAX_VOLT		925000
 #define GPU_MIN_VOLT		500000
@@ -40,6 +44,8 @@
 #error "Please define gpu voltage ranges for current SoC."
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 extern struct kbase_device *pkbdev;
 
 int gpu_pmqos_dvfs_min_lock(int level)
@@ -229,6 +235,7 @@ static ssize_t show_asv_table(struct device *dev, struct device_attribute *attr,
 	return ret;
 }
 
+<<<<<<< HEAD
 
 static ssize_t show_volt_table(struct device *dev, struct device_attribute *attr, char *buf)
 {
@@ -298,6 +305,8 @@ static ssize_t set_volt_table(struct device *dev, struct device_attribute *attr,
 	return count;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static int gpu_get_dvfs_table(struct exynos_context *platform, char *buf, size_t buf_size)
 {
 	int i, cnt = 0;
@@ -1486,7 +1495,10 @@ DEVICE_ATTR(clock, S_IRUGO|S_IWUSR, show_clock, set_clock);
 DEVICE_ATTR(vol, S_IRUGO, show_vol, NULL);
 DEVICE_ATTR(power_state, S_IRUGO, show_power_state, NULL);
 DEVICE_ATTR(asv_table, S_IRUGO, show_asv_table, NULL);
+<<<<<<< HEAD
 DEVICE_ATTR(volt_table, S_IRUGO|S_IWUSR, show_volt_table, set_volt_table);
+=======
+>>>>>>> 512ca3c... stock
 DEVICE_ATTR(dvfs_table, S_IRUGO, show_dvfs_table, NULL);
 DEVICE_ATTR(time_in_state, S_IRUGO|S_IWUSR, show_time_in_state, set_time_in_state);
 DEVICE_ATTR(utilization, S_IRUGO, show_utilization, NULL);
@@ -1548,11 +1560,14 @@ int gpu_create_sysfs_file(struct device *dev)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (device_create_file(dev, &dev_attr_volt_table)) {
 		GPU_LOG(DVFS_ERROR, DUMMY, 0u, 0u, "couldn't create sysfs file [volt_table]\n");
 		goto out;
 	}
 
+=======
+>>>>>>> 512ca3c... stock
 	if (device_create_file(dev, &dev_attr_dvfs_table)) {
 		GPU_LOG(DVFS_ERROR, DUMMY, 0u, 0u, "couldn't create sysfs file [dvfs_table]\n");
 		goto out;
@@ -1709,7 +1724,10 @@ void gpu_remove_sysfs_file(struct device *dev)
 	device_remove_file(dev, &dev_attr_vol);
 	device_remove_file(dev, &dev_attr_power_state);
 	device_remove_file(dev, &dev_attr_asv_table);
+<<<<<<< HEAD
 	device_remove_file(dev, &dev_attr_volt_table);
+=======
+>>>>>>> 512ca3c... stock
 	device_remove_file(dev, &dev_attr_dvfs_table);
 	device_remove_file(dev, &dev_attr_time_in_state);
 	device_remove_file(dev, &dev_attr_utilization);

@@ -626,9 +626,19 @@ static unsigned int msm_ipc_router_poll(struct file *file,
 static int msm_ipc_router_close(struct socket *sock)
 {
 	struct sock *sk = sock->sk;
+<<<<<<< HEAD
 	struct msm_ipc_port *port_ptr = msm_ipc_sk_port(sk);
 	int ret;
 
+=======
+	struct msm_ipc_port *port_ptr;
+	int ret;
+
+	if (!sk)
+		return -EINVAL;
+
+	port_ptr = msm_ipc_sk_port(sk);
+>>>>>>> 512ca3c... stock
 	lock_sock(sk);
 	ret = msm_ipc_router_close_port(port_ptr);
 	msm_ipc_unload_default_node(msm_ipc_sk(sk)->default_node_vote_info);

@@ -49,8 +49,11 @@ struct nilfs_iget_args {
 	int for_gc;
 };
 
+<<<<<<< HEAD
 static int nilfs_iget_test(struct inode *inode, void *opaque);
 
+=======
+>>>>>>> 512ca3c... stock
 void nilfs_inode_add_blocks(struct inode *inode, int n)
 {
 	struct nilfs_root *root = NILFS_I(inode)->i_root;
@@ -349,6 +352,7 @@ const struct address_space_operations nilfs_aops = {
 	.is_partially_uptodate  = block_is_partially_uptodate,
 };
 
+<<<<<<< HEAD
 static int nilfs_insert_inode_locked(struct inode *inode,
 				     struct nilfs_root *root,
 				     unsigned long ino)
@@ -360,6 +364,8 @@ static int nilfs_insert_inode_locked(struct inode *inode,
 	return insert_inode_locked4(inode, ino, nilfs_iget_test, &args);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 struct inode *nilfs_new_inode(struct inode *dir, umode_t mode)
 {
 	struct super_block *sb = dir->i_sb;
@@ -395,7 +401,11 @@ struct inode *nilfs_new_inode(struct inode *dir, umode_t mode)
 	if (S_ISREG(mode) || S_ISDIR(mode) || S_ISLNK(mode)) {
 		err = nilfs_bmap_read(ii->i_bmap, NULL);
 		if (err < 0)
+<<<<<<< HEAD
 			goto failed_after_creation;
+=======
+			goto failed_bmap;
+>>>>>>> 512ca3c... stock
 
 		set_bit(NILFS_I_BMAP, &ii->i_state);
 		/* No lock is needed; iget() ensures it. */
@@ -411,6 +421,7 @@ struct inode *nilfs_new_inode(struct inode *dir, umode_t mode)
 	spin_lock(&nilfs->ns_next_gen_lock);
 	inode->i_generation = nilfs->ns_next_generation++;
 	spin_unlock(&nilfs->ns_next_gen_lock);
+<<<<<<< HEAD
 	if (nilfs_insert_inode_locked(inode, root, ino) < 0) {
 		err = -EIO;
 		goto failed_after_creation;
@@ -419,16 +430,31 @@ struct inode *nilfs_new_inode(struct inode *dir, umode_t mode)
 	err = nilfs_init_acl(inode, dir);
 	if (unlikely(err))
 		goto failed_after_creation; /* never occur. When supporting
+=======
+	insert_inode_hash(inode);
+
+	err = nilfs_init_acl(inode, dir);
+	if (unlikely(err))
+		goto failed_acl; /* never occur. When supporting
+>>>>>>> 512ca3c... stock
 				    nilfs_init_acl(), proper cancellation of
 				    above jobs should be considered */
 
 	return inode;
 
+<<<<<<< HEAD
  failed_after_creation:
 	clear_nlink(inode);
 	unlock_new_inode(inode);
 	iput(inode);  /* raw_inode will be deleted through
 			 nilfs_evict_inode() */
+=======
+ failed_acl:
+ failed_bmap:
+	clear_nlink(inode);
+	iput(inode);  /* raw_inode will be deleted through
+			 generic_delete_inode() */
+>>>>>>> 512ca3c... stock
 	goto failed;
 
  failed_ifile_create_inode:
@@ -476,8 +502,13 @@ int nilfs_read_inode_common(struct inode *inode,
 	inode->i_atime.tv_nsec = le32_to_cpu(raw_inode->i_mtime_nsec);
 	inode->i_ctime.tv_nsec = le32_to_cpu(raw_inode->i_ctime_nsec);
 	inode->i_mtime.tv_nsec = le32_to_cpu(raw_inode->i_mtime_nsec);
+<<<<<<< HEAD
 	if (inode->i_nlink == 0)
 		return -ESTALE; /* this inode is deleted */
+=======
+	if (inode->i_nlink == 0 && inode->i_mode == 0)
+		return -EINVAL; /* this inode is deleted */
+>>>>>>> 512ca3c... stock
 
 	inode->i_blocks = le64_to_cpu(raw_inode->i_blocks);
 	ii->i_flags = le32_to_cpu(raw_inode->i_flags);

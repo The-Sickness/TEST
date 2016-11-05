@@ -366,6 +366,7 @@ static struct dmi_system_id __initdata reboot_dmi_table[] = {
 			DMI_MATCH(DMI_BOARD_NAME, "P4S800"),
 		},
 	},
+<<<<<<< HEAD
 	{	/* Handle problems with rebooting on the iMac10,1. */
 		.callback = set_pci_reboot,
 		.ident = "Apple iMac10,1",
@@ -374,6 +375,8 @@ static struct dmi_system_id __initdata reboot_dmi_table[] = {
 		    DMI_MATCH(DMI_PRODUCT_NAME, "iMac10,1"),
 		},
 	},
+=======
+>>>>>>> 512ca3c... stock
 
 	{	/* Handle reboot issue on Acer Aspire one */
 		.callback = set_kbd_reboot,

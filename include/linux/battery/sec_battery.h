@@ -151,6 +151,12 @@ struct sec_battery_info {
 	/* wpc temperature and pad status check */
 	bool pad_limit;
 
+<<<<<<< HEAD
+=======
+	/* bat temperature check */
+	bool mix_limit;
+
+>>>>>>> 512ca3c... stock
 	/* temperature check */
 	int temperature;	/* battery temperature */
 	int temper_amb;		/* target temperature */
@@ -439,8 +445,11 @@ enum {
 	BATT_MISC_EVENT,
 };
 
+<<<<<<< HEAD
 void charger_control_init(struct sec_battery_info *info);
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_OF
 extern int adc_read(struct sec_battery_info *battery, int channel);
 extern void adc_init(struct platform_device *pdev, struct sec_battery_info *battery);

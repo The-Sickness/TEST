@@ -111,10 +111,14 @@ bool ip6_frag_match(struct inet_frag_queue *q, void *a)
 	return	fq->id == arg->id &&
 		fq->user == arg->user &&
 		ipv6_addr_equal(&fq->saddr, arg->src) &&
+<<<<<<< HEAD
 		ipv6_addr_equal(&fq->daddr, arg->dst) &&
 		(arg->iif == fq->iif ||
 		 !(ipv6_addr_type(arg->dst) & (IPV6_ADDR_MULTICAST |
 					       IPV6_ADDR_LINKLOCAL)));
+=======
+		ipv6_addr_equal(&fq->daddr, arg->dst);
+>>>>>>> 512ca3c... stock
 }
 EXPORT_SYMBOL(ip6_frag_match);
 
@@ -183,7 +187,11 @@ static void ip6_frag_expire(unsigned long data)
 
 static __inline__ struct frag_queue *
 fq_find(struct net *net, __be32 id, const struct in6_addr *src,
+<<<<<<< HEAD
 	const struct in6_addr *dst, int iif, u8 ecn)
+=======
+	const struct in6_addr *dst, u8 ecn)
+>>>>>>> 512ca3c... stock
 {
 	struct inet_frag_queue *q;
 	struct ip6_create_arg arg;
@@ -193,7 +201,10 @@ fq_find(struct net *net, __be32 id, const struct in6_addr *src,
 	arg.user = IP6_DEFRAG_LOCAL_DELIVER;
 	arg.src = src;
 	arg.dst = dst;
+<<<<<<< HEAD
 	arg.iif = iif;
+=======
+>>>>>>> 512ca3c... stock
 	arg.ecn = ecn;
 
 	read_lock(&ip6_frags.lock);
@@ -562,7 +573,11 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
 				 IPSTATS_MIB_REASMFAILS, evicted);
 
 	fq = fq_find(net, fhdr->identification, &hdr->saddr, &hdr->daddr,
+<<<<<<< HEAD
 		     skb->dev ? skb->dev->ifindex : 0, ip6_frag_ecn(hdr));
+=======
+		     ip6_frag_ecn(hdr));
+>>>>>>> 512ca3c... stock
 	if (fq != NULL) {
 		int ret;
 

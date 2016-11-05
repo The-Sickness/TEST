@@ -495,7 +495,11 @@ static void iommu_disable_irq_remapping(struct intel_iommu *iommu)
 
 	raw_spin_lock_irqsave(&iommu->register_lock, flags);
 
+<<<<<<< HEAD
 	sts = readl(iommu->reg + DMAR_GSTS_REG);
+=======
+	sts = dmar_readq(iommu->reg + DMAR_GSTS_REG);
+>>>>>>> 512ca3c... stock
 	if (!(sts & DMA_GSTS_IRES))
 		goto end;
 

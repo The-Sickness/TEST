@@ -16,10 +16,13 @@
 #include <linux/sysfs.h>
 #include <linux/balloon_compaction.h>
 #include <linux/page-isolation.h>
+<<<<<<< HEAD
 #include <linux/fb.h>
 #include <linux/kthread.h>
 #include <linux/freezer.h>
 #include <linux/module.h>
+=======
+>>>>>>> 512ca3c... stock
 #include "internal.h"
 
 #ifdef CONFIG_COMPACTION
@@ -1114,6 +1117,7 @@ unsigned long try_to_compact_pages(struct zonelist *zonelist,
 	return rc;
 }
 
+<<<<<<< HEAD
 static struct compact_thread {
 	wait_queue_head_t waitqueue;
 	struct task_struct *task;
@@ -1185,6 +1189,8 @@ static struct notifier_block compact_notifier_block = {
 	.notifier_call = compact_notifier,
 	.priority = -1,
 };
+=======
+>>>>>>> 512ca3c... stock
 
 /* Compact all zones within a node */
 static void __compact_pgdat(pg_data_t *pgdat, struct compact_control *cc)
@@ -1318,6 +1324,7 @@ void compaction_unregister_node(struct node *node)
 }
 #endif /* CONFIG_SYSFS && CONFIG_NUMA */
 
+<<<<<<< HEAD
 static int  __init mem_compaction_init(void)
 {
 	struct sched_param param = { .sched_priority = 0 };
@@ -1334,4 +1341,6 @@ static int  __init mem_compaction_init(void)
 	return 0;
 }
 late_initcall(mem_compaction_init);
+=======
+>>>>>>> 512ca3c... stock
 #endif /* CONFIG_COMPACTION */

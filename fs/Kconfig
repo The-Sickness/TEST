@@ -62,8 +62,11 @@ config FILE_LOCKING
           for filesystems like NFS and for the flock() system
           call. Disabling this option saves about 11k.
 
+<<<<<<< HEAD
 source "fs/crypto/Kconfig"
 
+=======
+>>>>>>> 512ca3c... stock
 source "fs/notify/Kconfig"
 
 source "fs/quota/Kconfig"
@@ -273,6 +276,7 @@ endif # NETWORK_FILESYSTEMS
 source "fs/nls/Kconfig"
 source "fs/dlm/Kconfig"
 
+<<<<<<< HEAD
 config RESTRICT_ROOTFS_SLAVE
 	bool "Android: Restrict rootfs slave mountspace to /storage"
 	help
@@ -304,4 +308,6 @@ config DYNAMIC_FSYNC
 	help
 	An experimental file sync control using Android's power suspend / late resume drivers
 
+=======
+>>>>>>> 512ca3c... stock
 endmenu

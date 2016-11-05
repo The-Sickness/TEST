@@ -575,6 +575,7 @@ void elv_requeue_request(struct request_queue *q, struct request *rq)
 	__elv_add_request(q, rq, ELEVATOR_INSERT_REQUEUE);
 }
 
+<<<<<<< HEAD
 /**
  * elv_reinsert_request() - Insert a request back to the scheduler
  * @q:		request queue where request should be inserted
@@ -610,6 +611,8 @@ int elv_reinsert_request(struct request_queue *q, struct request *rq)
 	return res;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 void elv_drain_elevator(struct request_queue *q)
 {
 	static int printed;
@@ -786,11 +789,14 @@ void elv_completed_request(struct request_queue *q, struct request *rq)
 {
 	struct elevator_queue *e = q->elevator;
 
+<<<<<<< HEAD
 	if (rq->cmd_flags & REQ_URGENT) {
 		q->notified_urgent = false;
 		WARN_ON(!q->dispatched_urgent);
 		q->dispatched_urgent = false;
 	}
+=======
+>>>>>>> 512ca3c... stock
 	/*
 	 * request is released from the driver, io must be done
 	 */

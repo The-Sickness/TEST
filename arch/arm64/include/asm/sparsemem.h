@@ -17,7 +17,11 @@
 #define __ASM_SPARSEMEM_H
 
 #ifdef CONFIG_SPARSEMEM
+<<<<<<< HEAD
 #define MAX_PHYSMEM_BITS	48
+=======
+#define MAX_PHYSMEM_BITS	40
+>>>>>>> 512ca3c... stock
 #define SECTION_SIZE_BITS	30
 #endif
 

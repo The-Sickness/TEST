@@ -361,6 +361,7 @@ int ecryptfs_propagate_fmpinfo(struct inode *inode, unsigned int flag)
 	return 0;
 }
 #endif
+<<<<<<< HEAD
 static int ecryptfs_mmap(struct file *file, struct vm_area_struct *vma)
 {
 	struct file *lower_file = ecryptfs_file_to_lower(file);
@@ -373,6 +374,8 @@ static int ecryptfs_mmap(struct file *file, struct vm_area_struct *vma)
 		return -ENODEV;
 	return generic_file_mmap(file, vma);
 }
+=======
+>>>>>>> 512ca3c... stock
 
 /**
  * ecryptfs_open
@@ -866,7 +869,11 @@ const struct file_operations ecryptfs_main_fops = {
 #ifdef CONFIG_COMPAT
 	.compat_ioctl = ecryptfs_compat_ioctl,
 #endif
+<<<<<<< HEAD
 	.mmap = ecryptfs_mmap,
+=======
+	.mmap = generic_file_mmap,
+>>>>>>> 512ca3c... stock
 	.open = ecryptfs_open,
 	.flush = ecryptfs_flush,
 	.release = ecryptfs_release,

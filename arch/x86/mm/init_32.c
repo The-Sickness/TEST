@@ -137,7 +137,10 @@ page_table_range_init_count(unsigned long start, unsigned long end)
 
 	vaddr = start;
 	pgd_idx = pgd_index(vaddr);
+<<<<<<< HEAD
 	pmd_idx = pmd_index(vaddr);
+=======
+>>>>>>> 512ca3c... stock
 
 	for ( ; (pgd_idx < PTRS_PER_PGD) && (vaddr != end); pgd_idx++) {
 		for (; (pmd_idx < PTRS_PER_PMD) && (vaddr != end);

@@ -729,6 +729,7 @@ lookup:
 	if (tmpres) {
 		spin_unlock(&dlm->spinlock);
 		spin_lock(&tmpres->spinlock);
+<<<<<<< HEAD
 
 		/*
 		 * Right after dlm spinlock was released, dlm_thread could have
@@ -742,6 +743,8 @@ lookup:
 			goto lookup;
 		}
 
+=======
+>>>>>>> 512ca3c... stock
 		/* Wait on the thread that is mastering the resource */
 		if (tmpres->owner == DLM_LOCK_RES_OWNER_UNKNOWN) {
 			__dlm_wait_on_lockres(tmpres);
@@ -2456,11 +2459,14 @@ static int dlm_migrate_lockres(struct dlm_ctxt *dlm,
 	spin_lock(&dlm->master_lock);
 	ret = dlm_add_migration_mle(dlm, res, mle, &oldmle, name,
 				    namelen, target, dlm->node_num);
+<<<<<<< HEAD
 	/* get an extra reference on the mle.
 	 * otherwise the assert_master from the new
 	 * master will destroy this.
 	 */
 	dlm_get_mle_inuse(mle);
+=======
+>>>>>>> 512ca3c... stock
 	spin_unlock(&dlm->master_lock);
 	spin_unlock(&dlm->spinlock);
 
@@ -2496,7 +2502,10 @@ fail:
 		if (mle_added) {
 			dlm_mle_detach_hb_events(dlm, mle);
 			dlm_put_mle(mle);
+<<<<<<< HEAD
 			dlm_put_mle_inuse(mle);
+=======
+>>>>>>> 512ca3c... stock
 		} else if (mle) {
 			kmem_cache_free(dlm_mle_cache, mle);
 			mle = NULL;
@@ -2514,6 +2523,20 @@ fail:
 	 * ensure that all assert_master work is flushed. */
 	flush_workqueue(dlm->dlm_worker);
 
+<<<<<<< HEAD
+=======
+	/* get an extra reference on the mle.
+	 * otherwise the assert_master from the new
+	 * master will destroy this.
+	 * also, make sure that all callers of dlm_get_mle
+	 * take both dlm->spinlock and dlm->master_lock */
+	spin_lock(&dlm->spinlock);
+	spin_lock(&dlm->master_lock);
+	dlm_get_mle_inuse(mle);
+	spin_unlock(&dlm->master_lock);
+	spin_unlock(&dlm->spinlock);
+
+>>>>>>> 512ca3c... stock
 	/* notify new node and send all lock state */
 	/* call send_one_lockres with migration flag.
 	 * this serves as notice to the target node that a
@@ -3241,6 +3264,7 @@ top:
 			    mle->new_master != dead_node)
 				continue;
 
+<<<<<<< HEAD
 			if (mle->new_master == dead_node && mle->inuse) {
 				mlog(ML_NOTICE, "%s: target %u died during "
 						"migration from %u, the MLE is "
@@ -3250,6 +3274,8 @@ top:
 				continue;
 			}
 
+=======
+>>>>>>> 512ca3c... stock
 			/* If we have reached this point, this mle needs to be
 			 * removed from the list and freed. */
 			dlm_clean_migration_mle(dlm, mle);

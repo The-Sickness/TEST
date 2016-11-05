@@ -524,6 +524,7 @@ gigaset_tty_open(struct tty_struct *tty)
 	cs->hw.ser->tty = tty;
 	atomic_set(&cs->hw.ser->refcnt, 1);
 	init_completion(&cs->hw.ser->dead_cmp);
+<<<<<<< HEAD
 	tty->disc_data = cs;
 
 	/* Set the amount of data we're willing to receive per call
@@ -535,6 +536,10 @@ gigaset_tty_open(struct tty_struct *tty)
 	 * never happen as the device is slow and the buffer size ample.
 	 */
 	tty->receive_room = RBUFSIZE/2;
+=======
+
+	tty->disc_data = cs;
+>>>>>>> 512ca3c... stock
 
 	/* OK.. Initialization of the datastructures and the HW is done.. Now
 	 * startup system and notify the LL that we are ready to run

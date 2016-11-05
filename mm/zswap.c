@@ -90,7 +90,11 @@ static char *zswap_compressor = ZSWAP_COMPRESSOR_DEFAULT;
 module_param_named(compressor, zswap_compressor, charp, 0444);
 
 /* The maximum percentage of memory that the compressed pool can occupy */
+<<<<<<< HEAD
 static unsigned int zswap_max_pool_percent = 75;
+=======
+static unsigned int zswap_max_pool_percent = 50;
+>>>>>>> 512ca3c... stock
 module_param_named(max_pool_percent,
 			zswap_max_pool_percent, uint, 0644);
 

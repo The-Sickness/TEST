@@ -11,7 +11,10 @@
 #include <linux/namei.h>
 #include <linux/mm.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/kmemleak.h>
+=======
+>>>>>>> 512ca3c... stock
 #include "internal.h"
 
 static const struct dentry_operations proc_sys_dentry_operations;
@@ -1208,8 +1211,11 @@ struct ctl_table_header *__register_sysctl_table(
 	if (!header)
 		return NULL;
 
+<<<<<<< HEAD
 	kmemleak_not_leak(header);
 
+=======
+>>>>>>> 512ca3c... stock
 	node = (struct ctl_node *)(header + 1);
 	init_header(header, root, set, node, table);
 	if (sysctl_check_table(path, table))

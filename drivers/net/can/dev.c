@@ -385,7 +385,11 @@ void can_free_echo_skb(struct net_device *dev, unsigned int idx)
 	BUG_ON(idx >= priv->echo_skb_max);
 
 	if (priv->echo_skb[idx]) {
+<<<<<<< HEAD
 		dev_kfree_skb_any(priv->echo_skb[idx]);
+=======
+		kfree_skb(priv->echo_skb[idx]);
+>>>>>>> 512ca3c... stock
 		priv->echo_skb[idx] = NULL;
 	}
 }
@@ -503,6 +507,7 @@ struct sk_buff *alloc_can_skb(struct net_device *dev, struct can_frame **cf)
 	skb->pkt_type = PACKET_BROADCAST;
 	skb->ip_summed = CHECKSUM_UNNECESSARY;
 
+<<<<<<< HEAD
 	skb_reset_mac_header(skb);
 	skb_reset_network_header(skb);
 	skb_reset_transport_header(skb);
@@ -511,6 +516,8 @@ struct sk_buff *alloc_can_skb(struct net_device *dev, struct can_frame **cf)
 	skb_reset_network_header(skb);
 	skb_reset_transport_header(skb);
 
+=======
+>>>>>>> 512ca3c... stock
 	can_skb_reserve(skb);
 	can_skb_prv(skb)->ifindex = dev->ifindex;
 
@@ -651,6 +658,7 @@ static int can_changelink(struct net_device *dev,
 		if (dev->flags & IFF_UP)
 			return -EBUSY;
 		cm = nla_data(data[IFLA_CAN_CTRLMODE]);
+<<<<<<< HEAD
 
 		/* check whether changed bits are allowed to be modified */
 		if (cm->mask & ~priv->ctrlmode_supported)
@@ -659,6 +667,12 @@ static int can_changelink(struct net_device *dev,
 		/* clear bits to be modified and copy the flag values */
 		priv->ctrlmode &= ~cm->mask;
 		priv->ctrlmode |= (cm->flags & cm->mask);
+=======
+		if (cm->flags & ~priv->ctrlmode_supported)
+			return -EOPNOTSUPP;
+		priv->ctrlmode &= ~cm->mask;
+		priv->ctrlmode |= cm->flags;
+>>>>>>> 512ca3c... stock
 	}
 
 	if (data[IFLA_CAN_BITTIMING]) {
@@ -772,11 +786,14 @@ static int can_newlink(struct net *src_net, struct net_device *dev,
 	return -EOPNOTSUPP;
 }
 
+<<<<<<< HEAD
 static void can_dellink(struct net_device *dev, struct list_head *head)
 {
 	return;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static struct rtnl_link_ops can_link_ops __read_mostly = {
 	.kind		= "can",
 	.maxtype	= IFLA_CAN_MAX,
@@ -784,7 +801,10 @@ static struct rtnl_link_ops can_link_ops __read_mostly = {
 	.setup		= can_setup,
 	.newlink	= can_newlink,
 	.changelink	= can_changelink,
+<<<<<<< HEAD
 	.dellink	= can_dellink,
+=======
+>>>>>>> 512ca3c... stock
 	.get_size	= can_get_size,
 	.fill_info	= can_fill_info,
 	.get_xstats_size = can_get_xstats_size,

@@ -169,6 +169,7 @@ struct inodes_stat_t {
 #define FS_IOC_INVAL_MAPPING		_IO('f', 13)
 
 /*
+<<<<<<< HEAD
  * File system encryption support
  */
 /* Policy provided via an ioctl on the topmost directory */
@@ -187,6 +188,8 @@ struct fscrypt_policy {
 #define FS_IOC_GET_ENCRYPTION_POLICY	_IOW('f', 21, struct fscrypt_policy)
 
 /*
+=======
+>>>>>>> 512ca3c... stock
  * Inode flags (FS_IOC_GETFLAGS / FS_IOC_SETFLAGS)
  */
 #define	FS_SECRM_FL			0x00000001 /* Secure deletion */

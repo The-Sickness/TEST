@@ -1250,6 +1250,7 @@ SMB2_echo(struct TCP_Server_Info *server)
 
 	cifs_dbg(FYI, "In echo request\n");
 
+<<<<<<< HEAD
 	if (server->tcpStatus == CifsNeedNegotiate) {
 		struct list_head *tmp, *tmp2;
 		struct cifs_ses *ses;
@@ -1277,6 +1278,8 @@ SMB2_echo(struct TCP_Server_Info *server)
 	if (server->tcpStatus == CifsNeedNegotiate)
 		return -EIO;
 
+=======
+>>>>>>> 512ca3c... stock
 	rc = small_smb2_init(SMB2_ECHO, NULL, (void **)&req);
 	if (rc)
 		return rc;

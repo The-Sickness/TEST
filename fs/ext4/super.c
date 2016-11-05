@@ -406,6 +406,7 @@ static void ext4_handle_error(struct super_block *sb, char* buf)
 		ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
 		sb->s_flags |= MS_RDONLY;
 	}
+<<<<<<< HEAD
 	if (test_opt(sb, ERRORS_PANIC)) {
 		if (EXT4_SB(sb)->s_journal &&
 		  !(EXT4_SB(sb)->s_journal->j_flags & JBD2_REC_ERR))
@@ -413,6 +414,11 @@ static void ext4_handle_error(struct super_block *sb, char* buf)
 		panic("EXT4-fs (device %s): panic! %s\n",
 			sb->s_id, buf?buf:"no message");
 	}
+=======
+	if (test_opt(sb, ERRORS_PANIC))
+		panic("EXT4-fs (device %s): panic! %s\n",
+			sb->s_id, buf?buf:"no message");
+>>>>>>> 512ca3c... stock
 }
 
 void __ext4_error(struct super_block *sb, const char *function,
@@ -623,12 +629,17 @@ void __ext4_abort(struct super_block *sb, const char *function,
 			jbd2_journal_abort(EXT4_SB(sb)->s_journal, -EIO);
 		save_error_info(sb, function, line);
 	}
+<<<<<<< HEAD
 	if (test_opt(sb, ERRORS_PANIC)) {
 		if (EXT4_SB(sb)->s_journal &&
 		  !(EXT4_SB(sb)->s_journal->j_flags & JBD2_REC_ERR))
 			return;
 		panic("EXT4-fs panic from previous error\n");
 	}
+=======
+	if (test_opt(sb, ERRORS_PANIC))
+		panic("EXT4-fs panic from previous error\n");
+>>>>>>> 512ca3c... stock
 }
 
 void ext4_msg(struct super_block *sb, const char *prefix, const char *fmt, ...)
@@ -639,7 +650,11 @@ void ext4_msg(struct super_block *sb, const char *prefix, const char *fmt, ...)
 	va_start(args, fmt);
 	vaf.fmt = fmt;
 	vaf.va = &args;
+<<<<<<< HEAD
 	printk_ratelimited("%sEXT4-fs (%s): %pV\n", prefix, sb->s_id, &vaf);
+=======
+	printk("%sEXT4-fs (%s): %pV\n", prefix, sb->s_id, &vaf);
+>>>>>>> 512ca3c... stock
 	va_end(args);
 }
 
@@ -863,7 +878,10 @@ static void ext4_put_super(struct super_block *sb)
 		dump_orphan_list(sb, sbi);
 	J_ASSERT(list_empty(&sbi->s_orphan));
 
+<<<<<<< HEAD
 	sync_blockdev(sb->s_bdev);
+=======
+>>>>>>> 512ca3c... stock
 	invalidate_bdev(sb->s_bdev);
 	if (sbi->journal_bdev && sbi->journal_bdev != sb->s_bdev) {
 		/*
@@ -2208,6 +2226,7 @@ static void ext4_orphan_cleanup(struct super_block *sb,
 	while (es->s_last_orphan) {
 		struct inode *inode;
 
+<<<<<<< HEAD
 		/*
 		 * We may have encountered an error during cleanup; if
 		 * so, skip the rest.
@@ -2218,6 +2237,8 @@ static void ext4_orphan_cleanup(struct super_block *sb,
 			break;
 		}
 
+=======
+>>>>>>> 512ca3c... stock
 		inode = ext4_orphan_get(sb, le32_to_cpu(es->s_last_orphan));
 		if (IS_ERR(inode)) {
 			es->s_last_orphan = 0;

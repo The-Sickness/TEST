@@ -878,17 +878,25 @@ EXPORT_SYMBOL_GPL(acpi_dev_resume_early);
 int acpi_subsys_prepare(struct device *dev)
 {
 	/*
+<<<<<<< HEAD
 	 * Devices having power.ignore_children set may still be necessary for
 	 * suspending their children in the next phase of device suspend.
 	 */
 	if (dev->power.ignore_children)
 		pm_runtime_resume(dev);
 
+=======
+	 * Follow PCI and resume devices suspended at run time before running
+	 * their system suspend callbacks.
+	 */
+	pm_runtime_resume(dev);
+>>>>>>> 512ca3c... stock
 	return pm_generic_prepare(dev);
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_prepare);
 
 /**
+<<<<<<< HEAD
  * acpi_subsys_suspend - Run the device driver's suspend callback.
  * @dev: Device to handle.
  *
@@ -902,6 +910,8 @@ int acpi_subsys_suspend(struct device *dev)
 }
 
 /**
+=======
+>>>>>>> 512ca3c... stock
  * acpi_subsys_suspend_late - Suspend device using ACPI.
  * @dev: Device to suspend.
  *
@@ -929,6 +939,7 @@ int acpi_subsys_resume_early(struct device *dev)
 	return ret ? ret : pm_generic_resume_early(dev);
 }
 EXPORT_SYMBOL_GPL(acpi_subsys_resume_early);
+<<<<<<< HEAD
 
 /**
  * acpi_subsys_freeze - Run the device driver's freeze callback.
@@ -946,6 +957,8 @@ int acpi_subsys_freeze(struct device *dev)
 	return pm_generic_freeze(dev);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 #endif /* CONFIG_PM_SLEEP */
 
 static struct dev_pm_domain acpi_general_pm_domain = {
@@ -957,11 +970,16 @@ static struct dev_pm_domain acpi_general_pm_domain = {
 #endif
 #ifdef CONFIG_PM_SLEEP
 		.prepare = acpi_subsys_prepare,
+<<<<<<< HEAD
 		.suspend = acpi_subsys_suspend,
 		.suspend_late = acpi_subsys_suspend_late,
 		.resume_early = acpi_subsys_resume_early,
 		.freeze = acpi_subsys_freeze,
 		.poweroff = acpi_subsys_suspend,
+=======
+		.suspend_late = acpi_subsys_suspend_late,
+		.resume_early = acpi_subsys_resume_early,
+>>>>>>> 512ca3c... stock
 		.poweroff_late = acpi_subsys_suspend_late,
 		.restore_early = acpi_subsys_resume_early,
 #endif

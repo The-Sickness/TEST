@@ -84,9 +84,12 @@ SUBSYS(bcache)
 #endif
 
 /* */
+<<<<<<< HEAD
 
 #if IS_SUBSYS_ENABLED(CONFIG_CGROUP_BFQIO)
 SUBSYS(bfqio)
 #endif
 
 /* */
+=======
+>>>>>>> 512ca3c... stock

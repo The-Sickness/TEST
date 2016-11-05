@@ -3898,6 +3898,13 @@ static int hpsa_kdump_hard_reset_controller(struct pci_dev *pdev)
 
 	/* Save the PCI command register */
 	pci_read_config_word(pdev, 4, &command_register);
+<<<<<<< HEAD
+=======
+	/* Turn the board off.  This is so that later pci_restore_state()
+	 * won't turn the board on before the rest of config space is ready.
+	 */
+	pci_disable_device(pdev);
+>>>>>>> 512ca3c... stock
 	pci_save_state(pdev);
 
 	/* find the first memory BAR, so we can find the cfg table */
@@ -3945,6 +3952,14 @@ static int hpsa_kdump_hard_reset_controller(struct pci_dev *pdev)
 		goto unmap_cfgtable;
 
 	pci_restore_state(pdev);
+<<<<<<< HEAD
+=======
+	rc = pci_enable_device(pdev);
+	if (rc) {
+		dev_warn(&pdev->dev, "failed to enable device.\n");
+		goto unmap_cfgtable;
+	}
+>>>>>>> 512ca3c... stock
 	pci_write_config_word(pdev, 4, command_register);
 
 	/* Some devices (notably the HP Smart Array 5i Controller)
@@ -4439,6 +4454,7 @@ static int hpsa_init_reset_devices(struct pci_dev *pdev)
 	if (!reset_devices)
 		return 0;
 
+<<<<<<< HEAD
 	/* kdump kernel is loading, we don't know in which state is
 	 * the pci interface. The dev->enable_cnt is equal zero
 	 * so we call enable+disable, wait a while and switch it on.
@@ -4456,6 +4472,8 @@ static int hpsa_init_reset_devices(struct pci_dev *pdev)
 		return -ENODEV;
 	}
 	pci_set_master(pdev);
+=======
+>>>>>>> 512ca3c... stock
 	/* Reset the controller with a PCI power-cycle or via doorbell */
 	rc = hpsa_kdump_hard_reset_controller(pdev);
 
@@ -4464,11 +4482,18 @@ static int hpsa_init_reset_devices(struct pci_dev *pdev)
 	 * "performant mode".  Or, it might be 640x, which can't reset
 	 * due to concerns about shared bbwc between 6402/6404 pair.
 	 */
+<<<<<<< HEAD
 	if (rc) {
 		if (rc != -ENOTSUPP) /* just try to do the kdump anyhow. */
 			rc = -ENODEV;
 		goto out_disable;
 	}
+=======
+	if (rc == -ENOTSUPP)
+		return rc; /* just try to do the kdump anyhow. */
+	if (rc)
+		return -ENODEV;
+>>>>>>> 512ca3c... stock
 
 	/* Now try to get the controller to respond to a no-op */
 	dev_warn(&pdev->dev, "Waiting for controller to respond to no-op\n");
@@ -4479,11 +4504,15 @@ static int hpsa_init_reset_devices(struct pci_dev *pdev)
 			dev_warn(&pdev->dev, "no-op failed%s\n",
 					(i < 11 ? "; re-trying" : ""));
 	}
+<<<<<<< HEAD
 
 out_disable:
 
 	pci_disable_device(pdev);
 	return rc;
+=======
+	return 0;
+>>>>>>> 512ca3c... stock
 }
 
 static int hpsa_allocate_cmd_pool(struct ctlr_info *h)
@@ -4626,7 +4655,10 @@ static void hpsa_undo_allocations_after_kdump_soft_reset(struct ctlr_info *h)
 		iounmap(h->transtable);
 	if (h->cfgtable)
 		iounmap(h->cfgtable);
+<<<<<<< HEAD
 	pci_disable_device(h->pdev);
+=======
+>>>>>>> 512ca3c... stock
 	pci_release_regions(h->pdev);
 	kfree(h);
 }

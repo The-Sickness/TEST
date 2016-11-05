@@ -773,8 +773,13 @@ static void delete_vma_from_mm(struct vm_area_struct *vma)
 	protect_vma(vma, 0);
 
 	mm->map_count--;
+<<<<<<< HEAD
         if (mm->mmap_cache == vma)
  -		mm->mmap_cache = NULL;
+=======
+	if (mm->mmap_cache == vma)
+		mm->mmap_cache = NULL;
+>>>>>>> 512ca3c... stock
 
 	/* remove the VMA from the mapping */
 	if (vma->vm_file) {
@@ -823,7 +828,11 @@ struct vm_area_struct *find_vma(struct mm_struct *mm, unsigned long addr)
 
 	/* check the cache first */
 	vma = ACCESS_ONCE(mm->mmap_cache);
+<<<<<<< HEAD
  	if (vma && vma->vm_start <= addr && vma->vm_end > addr)
+=======
+	if (vma && vma->vm_start <= addr && vma->vm_end > addr)
+>>>>>>> 512ca3c... stock
 		return vma;
 
 	/* trawl the list (there may be multiple mappings in which addr
@@ -872,7 +881,11 @@ static struct vm_area_struct *find_vma_exact(struct mm_struct *mm,
 
 	/* check the cache first */
 	vma = mm->mmap_cache;
+<<<<<<< HEAD
  	if (vma && vma->vm_start == addr && vma->vm_end == end)
+=======
+	if (vma && vma->vm_start == addr && vma->vm_end == end)
+>>>>>>> 512ca3c... stock
 		return vma;
 
 	/* trawl the list (there may be multiple mappings in which addr
@@ -883,7 +896,11 @@ static struct vm_area_struct *find_vma_exact(struct mm_struct *mm,
 		if (vma->vm_start > addr)
 			return NULL;
 		if (vma->vm_end == end) {
+<<<<<<< HEAD
 		mm->mmap_cache = vma;	
+=======
+			mm->mmap_cache = vma;
+>>>>>>> 512ca3c... stock
 			return vma;
 		}
 	}

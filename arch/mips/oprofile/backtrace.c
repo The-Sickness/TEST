@@ -92,7 +92,11 @@ static inline int unwind_user_frame(struct stackframe *old_frame,
 				/* This marks the end of the previous function,
 				   which means we overran. */
 				break;
+<<<<<<< HEAD
 			stack_size = (unsigned long) stack_adjustment;
+=======
+			stack_size = (unsigned) stack_adjustment;
+>>>>>>> 512ca3c... stock
 		} else if (is_ra_save_ins(&ip)) {
 			int ra_slot = ip.i_format.simmediate;
 			if (ra_slot < 0)

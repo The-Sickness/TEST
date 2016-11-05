@@ -709,4 +709,7 @@ module_exit(crypto_authenc_module_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Simple AEAD wrapper for IPsec");
+<<<<<<< HEAD
 MODULE_ALIAS_CRYPTO("authenc");
+=======
+>>>>>>> 512ca3c... stock

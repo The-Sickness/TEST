@@ -214,6 +214,7 @@ err1:
 	return NULL;
 }
 
+<<<<<<< HEAD
 
 static void
 __netlink_set_ring(struct sock *sk, struct nl_mmap_req *req, bool tx_ring, void **pg_vec,
@@ -260,6 +261,27 @@ static int netlink_set_ring(struct sock *sk, struct nl_mmap_req *req,
 		return -EBUSY;
 	if (atomic_read(&ring->pending))
 		return -EBUSY;
+=======
+static int netlink_set_ring(struct sock *sk, struct nl_mmap_req *req,
+			    bool closing, bool tx_ring)
+{
+	struct netlink_sock *nlk = nlk_sk(sk);
+	struct netlink_ring *ring;
+	struct sk_buff_head *queue;
+	void **pg_vec = NULL;
+	unsigned int order = 0;
+	int err;
+
+	ring  = tx_ring ? &nlk->tx_ring : &nlk->rx_ring;
+	queue = tx_ring ? &sk->sk_write_queue : &sk->sk_receive_queue;
+
+	if (!closing) {
+		if (atomic_read(&nlk->mapped))
+			return -EBUSY;
+		if (atomic_read(&ring->pending))
+			return -EBUSY;
+	}
+>>>>>>> 512ca3c... stock
 
 	if (req->nm_block_nr) {
 		if (ring->pg_vec != NULL)
@@ -291,6 +313,7 @@ static int netlink_set_ring(struct sock *sk, struct nl_mmap_req *req,
 			return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&nlk->pg_vec_lock);
 	if (atomic_read(&nlk->mapped) == 0) {
 		__netlink_set_ring(sk, req, tx_ring, pg_vec, order);
@@ -298,12 +321,38 @@ static int netlink_set_ring(struct sock *sk, struct nl_mmap_req *req,
 		return 0;
 	}
 
+=======
+	err = -EBUSY;
+	mutex_lock(&nlk->pg_vec_lock);
+	if (closing || atomic_read(&nlk->mapped) == 0) {
+		err = 0;
+		spin_lock_bh(&queue->lock);
+
+		ring->frame_max		= req->nm_frame_nr - 1;
+		ring->head		= 0;
+		ring->frame_size	= req->nm_frame_size;
+		ring->pg_vec_pages	= req->nm_block_size / PAGE_SIZE;
+
+		swap(ring->pg_vec_len, req->nm_block_nr);
+		swap(ring->pg_vec_order, order);
+		swap(ring->pg_vec, pg_vec);
+
+		__skb_queue_purge(queue);
+		spin_unlock_bh(&queue->lock);
+
+		WARN_ON(atomic_read(&nlk->mapped));
+	}
+>>>>>>> 512ca3c... stock
 	mutex_unlock(&nlk->pg_vec_lock);
 
 	if (pg_vec)
 		free_pg_vec(pg_vec, order, req->nm_block_nr);
+<<<<<<< HEAD
 
 	return -EBUSY;
+=======
+	return err;
+>>>>>>> 512ca3c... stock
 }
 
 static void netlink_mm_open(struct vm_area_struct *vma)
@@ -389,14 +438,22 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static void netlink_frame_flush_dcache(const struct nl_mmap_hdr *hdr, unsigned int nm_len)
+=======
+static void netlink_frame_flush_dcache(const struct nl_mmap_hdr *hdr)
+>>>>>>> 512ca3c... stock
 {
 #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE == 1
 	struct page *p_start, *p_end;
 
 	/* First page is flushed through netlink_{get,set}_status */
 	p_start = pgvec_to_page(hdr + PAGE_SIZE);
+<<<<<<< HEAD
 	p_end   = pgvec_to_page((void *)hdr + NL_MMAP_HDRLEN + nm_len - 1);
+=======
+	p_end   = pgvec_to_page((void *)hdr + NL_MMAP_HDRLEN + hdr->nm_len - 1);
+>>>>>>> 512ca3c... stock
 	while (p_start <= p_end) {
 		flush_dcache_page(p_start);
 		p_start++;
@@ -414,9 +471,15 @@ static enum nl_mmap_status netlink_get_status(const struct nl_mmap_hdr *hdr)
 static void netlink_set_status(struct nl_mmap_hdr *hdr,
 			       enum nl_mmap_status status)
 {
+<<<<<<< HEAD
 	smp_mb();
 	hdr->nm_status = status;
 	flush_dcache_page(pgvec_to_page(hdr));
+=======
+	hdr->nm_status = status;
+	flush_dcache_page(pgvec_to_page(hdr));
+	smp_wmb();
+>>>>>>> 512ca3c... stock
 }
 
 static struct nl_mmap_hdr *
@@ -578,16 +641,34 @@ static int netlink_mmap_sendmsg(struct sock *sk, struct msghdr *msg,
 	struct nl_mmap_hdr *hdr;
 	struct sk_buff *skb;
 	unsigned int maxlen;
+<<<<<<< HEAD
 	int err = 0, len = 0;
 
+=======
+	bool excl = true;
+	int err = 0, len = 0;
+
+	/* Netlink messages are validated by the receiver before processing.
+	 * In order to avoid userspace changing the contents of the message
+	 * after validation, the socket and the ring may only be used by a
+	 * single process, otherwise we fall back to copying.
+	 */
+	if (atomic_long_read(&sk->sk_socket->file->f_count) > 1 ||
+	    atomic_read(&nlk->mapped) > 1)
+		excl = false;
+
+>>>>>>> 512ca3c... stock
 	mutex_lock(&nlk->pg_vec_lock);
 
 	ring   = &nlk->tx_ring;
 	maxlen = ring->frame_size - NL_MMAP_HDRLEN;
 
 	do {
+<<<<<<< HEAD
 		unsigned int nm_len;
 
+=======
+>>>>>>> 512ca3c... stock
 		hdr = netlink_current_frame(ring, NL_MMAP_STATUS_VALID);
 		if (hdr == NULL) {
 			if (!(msg->msg_flags & MSG_DONTWAIT) &&
@@ -595,13 +676,18 @@ static int netlink_mmap_sendmsg(struct sock *sk, struct msghdr *msg,
 				schedule();
 			continue;
 		}
+<<<<<<< HEAD
 
 		nm_len = ACCESS_ONCE(hdr->nm_len);
 		if (nm_len > maxlen) {
+=======
+		if (hdr->nm_len > maxlen) {
+>>>>>>> 512ca3c... stock
 			err = -EINVAL;
 			goto out;
 		}
 
+<<<<<<< HEAD
 		netlink_frame_flush_dcache(hdr, nm_len);
 
 		skb = alloc_skb(nm_len, GFP_KERNEL);
@@ -612,6 +698,32 @@ static int netlink_mmap_sendmsg(struct sock *sk, struct msghdr *msg,
 		__skb_put(skb, nm_len);
 		memcpy(skb->data, (void *)hdr + NL_MMAP_HDRLEN, nm_len);
 		netlink_set_status(hdr, NL_MMAP_STATUS_UNUSED);
+=======
+		netlink_frame_flush_dcache(hdr);
+
+		if (likely(dst_portid == 0 && dst_group == 0 && excl)) {
+			skb = alloc_skb_head(GFP_KERNEL);
+			if (skb == NULL) {
+				err = -ENOBUFS;
+				goto out;
+			}
+			sock_hold(sk);
+			netlink_ring_setup_skb(skb, sk, ring, hdr);
+			NETLINK_CB(skb).flags |= NETLINK_SKB_TX;
+			__skb_put(skb, hdr->nm_len);
+			netlink_set_status(hdr, NL_MMAP_STATUS_RESERVED);
+			atomic_inc(&ring->pending);
+		} else {
+			skb = alloc_skb(hdr->nm_len, GFP_KERNEL);
+			if (skb == NULL) {
+				err = -ENOBUFS;
+				goto out;
+			}
+			__skb_put(skb, hdr->nm_len);
+			memcpy(skb->data, (void *)hdr + NL_MMAP_HDRLEN, hdr->nm_len);
+			netlink_set_status(hdr, NL_MMAP_STATUS_UNUSED);
+		}
+>>>>>>> 512ca3c... stock
 
 		netlink_increment_head(ring);
 
@@ -657,7 +769,11 @@ static void netlink_queue_mmaped_skb(struct sock *sk, struct sk_buff *skb)
 	hdr->nm_pid	= NETLINK_CB(skb).creds.pid;
 	hdr->nm_uid	= from_kuid(sk_user_ns(sk), NETLINK_CB(skb).creds.uid);
 	hdr->nm_gid	= from_kgid(sk_user_ns(sk), NETLINK_CB(skb).creds.gid);
+<<<<<<< HEAD
 	netlink_frame_flush_dcache(hdr, hdr->nm_len);
+=======
+	netlink_frame_flush_dcache(hdr);
+>>>>>>> 512ca3c... stock
 	netlink_set_status(hdr, NL_MMAP_STATUS_VALID);
 
 	NETLINK_CB(skb).flags |= NETLINK_SKB_DELIVERED;
@@ -777,10 +893,17 @@ static void netlink_sock_destruct(struct sock *sk)
 
 		memset(&req, 0, sizeof(req));
 		if (nlk->rx_ring.pg_vec)
+<<<<<<< HEAD
 			__netlink_set_ring(sk, &req, false, NULL, 0);
 		memset(&req, 0, sizeof(req));
 		if (nlk->tx_ring.pg_vec)
 			__netlink_set_ring(sk, &req, true, NULL, 0);
+=======
+			netlink_set_ring(sk, &req, true, false);
+		memset(&req, 0, sizeof(req));
+		if (nlk->tx_ring.pg_vec)
+			netlink_set_ring(sk, &req, true, true);
+>>>>>>> 512ca3c... stock
 	}
 #endif /* CONFIG_NETLINK_MMAP */
 
@@ -2032,7 +2155,11 @@ static int netlink_setsockopt(struct socket *sock, int level, int optname,
 			return -EINVAL;
 		if (copy_from_user(&req, optval, sizeof(req)))
 			return -EFAULT;
+<<<<<<< HEAD
 		err = netlink_set_ring(sk, &req,
+=======
+		err = netlink_set_ring(sk, &req, false,
+>>>>>>> 512ca3c... stock
 				       optname == NETLINK_TX_RING);
 		break;
 	}

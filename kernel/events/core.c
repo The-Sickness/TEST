@@ -2938,7 +2938,11 @@ find_lively_task_by_vpid(pid_t vpid)
 
 	/* Reuse ptrace permission checks for now. */
 	err = -EACCES;
+<<<<<<< HEAD
 	if (!ptrace_may_access(task, PTRACE_MODE_READ_REALCREDS))
+=======
+	if (!ptrace_may_access(task, PTRACE_MODE_READ))
+>>>>>>> 512ca3c... stock
 		goto errout;
 
 	return task;
@@ -3993,6 +3997,7 @@ static const struct file_operations perf_fops = {
  * to user-space before waking everybody up.
  */
 
+<<<<<<< HEAD
 static inline struct fasync_struct **perf_event_fasync(struct perf_event *event)
 {
 	/* only the parent has fasync state */
@@ -4001,12 +4006,18 @@ static inline struct fasync_struct **perf_event_fasync(struct perf_event *event)
 	return &event->fasync;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 void perf_event_wakeup(struct perf_event *event)
 {
 	ring_buffer_wakeup(event);
 
 	if (event->pending_kill) {
+<<<<<<< HEAD
 		kill_fasync(perf_event_fasync(event), SIGIO, event->pending_kill);
+=======
+		kill_fasync(&event->fasync, SIGIO, event->pending_kill);
+>>>>>>> 512ca3c... stock
 		event->pending_kill = 0;
 	}
 }
@@ -4015,6 +4026,7 @@ static void perf_pending_event(struct irq_work *entry)
 {
 	struct perf_event *event = container_of(entry,
 			struct perf_event, pending);
+<<<<<<< HEAD
 	int rctx;
 
 	rctx = perf_swevent_get_recursion_context();
@@ -4022,6 +4034,8 @@ static void perf_pending_event(struct irq_work *entry)
 	 * If we 'fail' here, that's OK, it means recursion is already disabled
 	 * and we won't recurse 'further'.
 	 */
+=======
+>>>>>>> 512ca3c... stock
 
 	if (event->pending_disable) {
 		event->pending_disable = 0;
@@ -4032,9 +4046,12 @@ static void perf_pending_event(struct irq_work *entry)
 		event->pending_wakeup = 0;
 		perf_event_wakeup(event);
 	}
+<<<<<<< HEAD
 
 	if (rctx >= 0)
 		perf_swevent_put_recursion_context(rctx);
+=======
+>>>>>>> 512ca3c... stock
 }
 
 /*
@@ -5161,7 +5178,11 @@ static int __perf_event_overflow(struct perf_event *event,
 	else
 		perf_event_output(event, data, regs);
 
+<<<<<<< HEAD
 	if (*perf_event_fasync(event) && event->pending_kill) {
+=======
+	if (event->fasync && event->pending_kill) {
+>>>>>>> 512ca3c... stock
 		event->pending_wakeup = 1;
 		irq_work_queue(&event->pending);
 	}
@@ -5639,10 +5660,13 @@ static int perf_tp_filter_match(struct perf_event *event,
 {
 	void *record = data->raw->data;
 
+<<<<<<< HEAD
 	/* only top level events have filters set */
 	if (event->parent)
 		event = event->parent;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (likely(!event->filter) || filter_match_preds(event->filter, record))
 		return 1;
 	return 0;
@@ -6909,11 +6933,19 @@ SYSCALL_DEFINE5(perf_event_open,
 
 	if (move_group) {
 		synchronize_rcu();
+<<<<<<< HEAD
 		perf_install_in_context(ctx, group_leader, group_leader->cpu);
 		get_ctx(ctx);
 		list_for_each_entry(sibling, &group_leader->sibling_list,
 				    group_entry) {
 			perf_install_in_context(ctx, sibling, sibling->cpu);
+=======
+		perf_install_in_context(ctx, group_leader, event->cpu);
+		get_ctx(ctx);
+		list_for_each_entry(sibling, &group_leader->sibling_list,
+				    group_entry) {
+			perf_install_in_context(ctx, sibling, event->cpu);
+>>>>>>> 512ca3c... stock
 			get_ctx(ctx);
 		}
 	}

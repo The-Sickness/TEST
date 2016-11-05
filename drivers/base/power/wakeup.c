@@ -21,6 +21,7 @@
 
 #include "power.h"
 
+<<<<<<< HEAD
 #include <linux/moduleparam.h>
 
 static bool enable_sensorhub_wl = true;
@@ -32,15 +33,20 @@ module_param(enable_ssp_wl, bool, 0644);
 static bool enable_bcm4773_wl = true;
 module_param(enable_bcm4773_wl, bool, 0644);
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * If set, the suspend/hibernate code will abort transitions to a sleep state
  * if wakeup events are registered during or immediately before the transition.
  */
 bool events_check_enabled __read_mostly;
 
+<<<<<<< HEAD
 /* If set and the system is suspending, terminate the suspend. */
 static bool pm_abort_suspend __read_mostly;
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * Combined counters of registered wakeup events and wakeup events in progress.
  * They need to be modified together atomically, so it's better to use one
@@ -399,6 +405,7 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 {
 	unsigned int cec;
 
+<<<<<<< HEAD
 	if (!enable_sensorhub_wl && !strcmp(ws->name, "ssp_sensorhub_wake_lock")) {
 		pr_info("wakeup source sensorhub activation skipped\n");
 		return;
@@ -414,6 +421,8 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 		return;
 	}
 
+=======
+>>>>>>> 512ca3c... stock
 	/*
 	 * active wakeup source should bring the system
 	 * out of PM_SUSPEND_FREEZE state
@@ -773,7 +782,11 @@ void pm_get_active_wakeup_sources(char *pending_wakeup_source, size_t max)
 	rcu_read_lock();
 	len += snprintf(pending_wakeup_source, max, "Pending Wakeup Sources: ");
 	list_for_each_entry_rcu(ws, &wakeup_sources, entry) {
+<<<<<<< HEAD
 		if (ws->active && len < max) {
+=======
+		if (ws->active) {
+>>>>>>> 512ca3c... stock
 			len += snprintf(pending_wakeup_source + len, max,
 				"%s ", ws->name);
 		}
@@ -833,6 +846,7 @@ bool pm_wakeup_pending(void)
 	if (ret)
 		print_active_wakeup_sources();
 
+<<<<<<< HEAD
 	return ret || pm_abort_suspend;
 }
 
@@ -845,6 +859,9 @@ void pm_system_wakeup(void)
 void pm_wakeup_clear(void)
 {
 	pm_abort_suspend = false;
+=======
+	return ret;
+>>>>>>> 512ca3c... stock
 }
 
 /**

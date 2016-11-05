@@ -28,7 +28,10 @@
 
 #include <linux/mfd/arizona/core.h>
 #include <linux/mfd/arizona/registers.h>
+<<<<<<< HEAD
 #include <linux/mfd/arizona/control.h>
+=======
+>>>>>>> 512ca3c... stock
 
 #include "arizona.h"
 #include "wm_adsp.h"
@@ -2961,8 +2964,11 @@ static int clearwater_codec_probe(struct snd_soc_codec *codec)
 			ret);
 		return ret;
 	}
+<<<<<<< HEAD
 	
 	arizona_control_init(codec);
+=======
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }

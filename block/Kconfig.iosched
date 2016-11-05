@@ -21,6 +21,7 @@ config IOSCHED_DEADLINE
 	  a new point in the service tree and doing a batch of IO from there
 	  in case of expiry.
 
+<<<<<<< HEAD
 config IOSCHED_ROW
 	tristate "ROW I/O scheduler"
 	default y
@@ -32,6 +33,8 @@ config IOSCHED_ROW
 	  according to queue priority.
 	  Most suitable for mobile devices.
 
+=======
+>>>>>>> 512ca3c... stock
 config IOSCHED_CFQ
 	tristate "CFQ I/O scheduler"
 	default y
@@ -43,6 +46,7 @@ config IOSCHED_CFQ
 
 	  This is the default I/O scheduler.
 
+<<<<<<< HEAD
 config IOSCHED_TRIPNDROID
 	tristate "TripNDroid IO Scheduler"
 	default n
@@ -116,6 +120,8 @@ config CGROUP_BFQIO
 	  filesystem interface.  The name of the subsystem will be
 	  bfqio.
 
+=======
+>>>>>>> 512ca3c... stock
 config CFQ_GROUP_IOSCHED
 	bool "CFQ Group Scheduling support"
 	depends on IOSCHED_CFQ && BLK_CGROUP
@@ -123,6 +129,7 @@ config CFQ_GROUP_IOSCHED
 	---help---
 	  Enable group IO scheduling in CFQ.
 
+<<<<<<< HEAD
 config IOSCHED_FIOPS
 	tristate "IOPS based I/O scheduler"
 	default y
@@ -132,6 +139,8 @@ config IOSCHED_FIOPS
           Flash based storage.
 
 
+=======
+>>>>>>> 512ca3c... stock
 choice
 	prompt "Default I/O scheduler"
 	default DEFAULT_CFQ
@@ -148,6 +157,7 @@ choice
 	config DEFAULT_NOOP
 		bool "No-op"
 
+<<<<<<< HEAD
         config DEFAULT_TRIPNDROID
 		bool "TD" if IOSCHED_TRIPNDROID=y
 
@@ -192,11 +202,14 @@ choice
 	config DEFAULT_FIOPS
 		bool "FIOPS" if IOSCHED_FIOPS=y
 
+=======
+>>>>>>> 512ca3c... stock
 endchoice
 
 config DEFAULT_IOSCHED
 	string
 	default "deadline" if DEFAULT_DEADLINE
+<<<<<<< HEAD
 	default "tripndroid" if DEFAULT_TRIPNDROID
 	default "sioplus" if DEFAULT_SIOPLUS
 	default "row" if DEFAULT_ROW
@@ -209,6 +222,10 @@ config DEFAULT_IOSCHED
 	default "vr" if DEFAULT_VR
         default "tripndroid" if DEFAULT_TRIPNDROID
 	default "sioplus" if DEFAULT_SIOPLUS
+=======
+	default "cfq" if DEFAULT_CFQ
+	default "noop" if DEFAULT_NOOP
+>>>>>>> 512ca3c... stock
 
 endmenu
 

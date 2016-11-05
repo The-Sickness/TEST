@@ -558,7 +558,11 @@ static int ip6addrlbl_get(struct sk_buff *in_skb, struct nlmsghdr* nlh)
 
 	rcu_read_lock();
 	p = __ipv6_addr_label(net, addr, ipv6_addr_type(addr), ifal->ifal_index);
+<<<<<<< HEAD
 	if (p && !ip6addrlbl_hold(p))
+=======
+	if (p && ip6addrlbl_hold(p))
+>>>>>>> 512ca3c... stock
 		p = NULL;
 	lseq = ip6addrlbl_table.seq;
 	rcu_read_unlock();

@@ -314,6 +314,7 @@ found:
 	return s;
 }
 
+<<<<<<< HEAD
 /* Support code for asymmetrically connected dgram sockets
  *
  * If a datagram socket is connected to a socket not itself connected
@@ -426,6 +427,8 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
 	return 0;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static inline int unix_writable(struct sock *sk)
 {
 	return (atomic_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
@@ -530,8 +533,11 @@ static void unix_release_sock(struct sock *sk, int embrion)
 			skpair->sk_state_change(skpair);
 			sk_wake_async(skpair, SOCK_WAKE_WAITD, POLL_HUP);
 		}
+<<<<<<< HEAD
 
 		unix_dgram_peer_wake_disconnect(sk, skpair);
+=======
+>>>>>>> 512ca3c... stock
 		sock_put(skpair); /* It may now die */
 		unix_peer(sk) = NULL;
 	}
@@ -765,7 +771,10 @@ static struct sock *unix_create1(struct net *net, struct socket *sock)
 	INIT_LIST_HEAD(&u->link);
 	mutex_init(&u->readlock); /* single task reading lock */
 	init_waitqueue_head(&u->peer_wait);
+<<<<<<< HEAD
 	init_waitqueue_func_entry(&u->peer_wake, unix_dgram_peer_wake_relay);
+=======
+>>>>>>> 512ca3c... stock
 	unix_insert_socket(unix_sockets_unbound(sk), sk);
 out:
 	if (sk == NULL)
@@ -1133,8 +1142,11 @@ restart:
 	if (unix_peer(sk)) {
 		struct sock *old_peer = unix_peer(sk);
 		unix_peer(sk) = other;
+<<<<<<< HEAD
 		unix_dgram_peer_wake_disconnect_wakeup(sk, old_peer);
 
+=======
+>>>>>>> 512ca3c... stock
 		unix_state_double_unlock(sk, other);
 
 		if (other != old_peer)
@@ -1467,7 +1479,11 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
 	UNIXCB(skb).fp = NULL;
 
 	for (i = scm->fp->count-1; i >= 0; i--)
+<<<<<<< HEAD
 		unix_notinflight(scm->fp->user, scm->fp->fp[i]);
+=======
+		unix_notinflight(scm->fp->fp[i]);
+>>>>>>> 512ca3c... stock
 }
 
 static void unix_destruct_scm(struct sk_buff *skb)
@@ -1484,6 +1500,7 @@ static void unix_destruct_scm(struct sk_buff *skb)
 	sock_wfree(skb);
 }
 
+<<<<<<< HEAD
 /*
  * The "user->unix_inflight" variable is protected by the garbage
  * collection lock, and we just read it locklessly here. If you go
@@ -1499,6 +1516,8 @@ static inline bool too_many_unix_fds(struct task_struct *p)
 	return false;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 #define MAX_RECURSION_LEVEL 4
 
 static int unix_attach_fds(struct scm_cookie *scm, struct sk_buff *skb)
@@ -1507,9 +1526,12 @@ static int unix_attach_fds(struct scm_cookie *scm, struct sk_buff *skb)
 	unsigned char max_level = 0;
 	int unix_sock_count = 0;
 
+<<<<<<< HEAD
 	if (too_many_unix_fds(current))
 		return -ETOOMANYREFS;
 
+=======
+>>>>>>> 512ca3c... stock
 	for (i = scm->fp->count - 1; i >= 0; i--) {
 		struct sock *sk = unix_get_socket(scm->fp->fp[i]);
 
@@ -1531,8 +1553,15 @@ static int unix_attach_fds(struct scm_cookie *scm, struct sk_buff *skb)
 	if (!UNIXCB(skb).fp)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	for (i = scm->fp->count - 1; i >= 0; i--)
 		unix_inflight(scm->fp->user, scm->fp->fp[i]);
+=======
+	if (unix_sock_count) {
+		for (i = scm->fp->count - 1; i >= 0; i--)
+			unix_inflight(scm->fp->fp[i]);
+	}
+>>>>>>> 512ca3c... stock
 	return max_level;
 }
 
@@ -1590,7 +1619,10 @@ static int unix_dgram_sendmsg(struct kiocb *kiocb, struct socket *sock,
 	struct scm_cookie tmp_scm;
 	int max_level;
 	int data_len = 0;
+<<<<<<< HEAD
 	int sk_locked;
+=======
+>>>>>>> 512ca3c... stock
 
 	if (NULL == siocb->scm)
 		siocb->scm = &tmp_scm;
@@ -1667,14 +1699,22 @@ restart:
 		goto out_free;
 	}
 
+<<<<<<< HEAD
 	sk_locked = 0;
 	unix_state_lock(other);
 restart_locked:
+=======
+	unix_state_lock(other);
+>>>>>>> 512ca3c... stock
 	err = -EPERM;
 	if (!unix_may_send(sk, other))
 		goto out_unlock;
 
+<<<<<<< HEAD
 	if (unlikely(sock_flag(other, SOCK_DEAD))) {
+=======
+	if (sock_flag(other, SOCK_DEAD)) {
+>>>>>>> 512ca3c... stock
 		/*
 		 *	Check with 1003.1g - what should
 		 *	datagram error
@@ -1682,6 +1722,7 @@ restart_locked:
 		unix_state_unlock(other);
 		sock_put(other);
 
+<<<<<<< HEAD
 		if (!sk_locked)
 			unix_state_lock(sk);
 
@@ -1690,6 +1731,12 @@ restart_locked:
 			unix_peer(sk) = NULL;
 			unix_dgram_peer_wake_disconnect_wakeup(sk, other);
 
+=======
+		err = 0;
+		unix_state_lock(sk);
+		if (unix_peer(sk) == other) {
+			unix_peer(sk) = NULL;
+>>>>>>> 512ca3c... stock
 			unix_state_unlock(sk);
 
 			unix_dgram_disconnected(sk, other);
@@ -1715,6 +1762,7 @@ restart_locked:
 			goto out_unlock;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(unix_peer(other) != sk && unix_recvq_full(other))) {
 		if (timeo) {
 			timeo = unix_wait_for_peer(other, timeo);
@@ -1746,6 +1794,22 @@ restart_locked:
 
 	if (unlikely(sk_locked))
 		unix_state_unlock(sk);
+=======
+	if (unix_peer(other) != sk && unix_recvq_full(other)) {
+		if (!timeo) {
+			err = -EAGAIN;
+			goto out_unlock;
+		}
+
+		timeo = unix_wait_for_peer(other, timeo);
+
+		err = sock_intr_errno(timeo);
+		if (signal_pending(current))
+			goto out_free;
+
+		goto restart;
+	}
+>>>>>>> 512ca3c... stock
 
 	if (sock_flag(other, SOCK_RCVTSTAMP))
 		__net_timestamp(skb);
@@ -1760,8 +1824,11 @@ restart_locked:
 	return len;
 
 out_unlock:
+<<<<<<< HEAD
 	if (sk_locked)
 		unix_state_unlock(sk);
+=======
+>>>>>>> 512ca3c... stock
 	unix_state_unlock(other);
 out_free:
 	kfree_skb(skb);
@@ -1933,7 +2000,11 @@ static int unix_dgram_recvmsg(struct kiocb *iocb, struct socket *sock,
 	struct scm_cookie tmp_scm;
 	struct sock *sk = sock->sk;
 	struct unix_sock *u = unix_sk(sk);
+<<<<<<< HEAD
 	int __attribute__((unused)) noblock = flags & MSG_DONTWAIT;
+=======
+	int noblock = flags & MSG_DONTWAIT;
+>>>>>>> 512ca3c... stock
 	struct sk_buff *skb;
 	int err;
 	int peeked, skip;
@@ -2049,10 +2120,13 @@ static long unix_stream_data_wait(struct sock *sk, long timeo,
 		unix_state_unlock(sk);
 		timeo = freezable_schedule_timeout(timeo);
 		unix_state_lock(sk);
+<<<<<<< HEAD
 
 		if (sock_flag(sk, SOCK_DEAD))
 			break;
 
+=======
+>>>>>>> 512ca3c... stock
 		clear_bit(SOCK_ASYNC_WAITDATA, &sk->sk_socket->flags);
 	}
 
@@ -2103,17 +2177,31 @@ static int unix_stream_recvmsg(struct kiocb *iocb, struct socket *sock,
 		memset(&tmp_scm, 0, sizeof(tmp_scm));
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&u->readlock);
+=======
+	err = mutex_lock_interruptible(&u->readlock);
+	if (unlikely(err)) {
+		/* recvmsg() in non blocking mode is supposed to return -EAGAIN
+		 * sk_rcvtimeo is not honored by mutex_lock_interruptible()
+		 */
+		err = noblock ? -EAGAIN : -ERESTARTSYS;
+		goto out;
+	}
+>>>>>>> 512ca3c... stock
 
 	do {
 		int chunk;
 		struct sk_buff *skb, *last;
 
 		unix_state_lock(sk);
+<<<<<<< HEAD
 		if (sock_flag(sk, SOCK_DEAD)) {
 			err = -ECONNRESET;
 			goto unlock;
 		}
+=======
+>>>>>>> 512ca3c... stock
 		last = skb = skb_peek(&sk->sk_receive_queue);
 again:
 		if (skb == NULL) {
@@ -2139,12 +2227,20 @@ again:
 
 			timeo = unix_stream_data_wait(sk, timeo, last);
 
+<<<<<<< HEAD
 			if (signal_pending(current)) {
+=======
+			if (signal_pending(current)
+			    ||  mutex_lock_interruptible(&u->readlock)) {
+>>>>>>> 512ca3c... stock
 				err = sock_intr_errno(timeo);
 				goto out;
 			}
 
+<<<<<<< HEAD
 			mutex_lock(&u->readlock);
+=======
+>>>>>>> 512ca3c... stock
 			continue;
  unlock:
 			unix_state_unlock(sk);
@@ -2213,6 +2309,7 @@ again:
 			if (UNIXCB(skb).fp)
 				siocb->scm->fp = scm_fp_dup(UNIXCB(skb).fp);
 
+<<<<<<< HEAD
 			if (skip) {
 				sk_peek_offset_fwd(sk, chunk);
 				skip -= chunk;
@@ -2227,6 +2324,10 @@ again:
 			if (skb)
 				goto again;
 			unix_state_unlock(sk);
+=======
+			sk_peek_offset_fwd(sk, chunk);
+
+>>>>>>> 512ca3c... stock
 			break;
 		}
 	} while (size);
@@ -2410,6 +2511,7 @@ static unsigned int unix_dgram_poll(struct file *file, struct socket *sock,
 		return mask;
 
 	writable = unix_writable(sk);
+<<<<<<< HEAD
 	if (writable) {
 		unix_state_lock(sk);
 
@@ -2420,6 +2522,16 @@ static unsigned int unix_dgram_poll(struct file *file, struct socket *sock,
 			writable = 0;
 
 		unix_state_unlock(sk);
+=======
+	other = unix_peer_get(sk);
+	if (other) {
+		if (unix_peer(other) != sk) {
+			sock_poll_wait(file, &unix_sk(other)->peer_wait, wait);
+			if (unix_recvq_full(other))
+				writable = 0;
+		}
+		sock_put(other);
+>>>>>>> 512ca3c... stock
 	}
 
 	if (writable)

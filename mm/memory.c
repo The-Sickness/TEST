@@ -118,6 +118,7 @@ __setup("norandmaps", disable_randmaps);
 unsigned long zero_pfn __read_mostly;
 unsigned long highest_memmap_pfn __read_mostly;
 
+<<<<<<< HEAD
 #ifdef CONFIG_UKSM
 unsigned long uksm_zero_pfn __read_mostly;
 struct page *empty_uksm_zero_page;
@@ -139,6 +140,8 @@ static int __init setup_uksm_zero_page(void)
 core_initcall(setup_uksm_zero_page);
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * CONFIG_MMU architectures set up ZERO_PAGE in their paging_init()
  */
@@ -150,7 +153,10 @@ static int __init init_zero_pfn(void)
 core_initcall(init_zero_pfn);
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 512ca3c... stock
 #if defined(SPLIT_RSS_COUNTING)
 
 void sync_mm_rss(struct mm_struct *mm)
@@ -917,11 +923,14 @@ copy_one_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
 			rss[MM_ANONPAGES]++;
 		else
 			rss[MM_FILEPAGES]++;
+<<<<<<< HEAD
 
 		/* Should return NULL in vm_normal_page() */
 		uksm_bugon_zeropage(pte);
 	} else {
 		uksm_map_zero_page(pte);
+=======
+>>>>>>> 512ca3c... stock
 	}
 
 out_set_pte:
@@ -1164,10 +1173,15 @@ again:
 			ptent = ptep_get_and_clear_full(mm, addr, pte,
 							tlb->fullmm);
 			tlb_remove_tlb_entry(tlb, pte, addr);
+<<<<<<< HEAD
 			if (unlikely(!page)) {
 				uksm_unmap_zero_page(ptent);
 				continue;
 			}
+=======
+			if (unlikely(!page))
+				continue;
+>>>>>>> 512ca3c... stock
 			if (unlikely(details) && details->nonlinear_vma
 			    && linear_page_index(details->nonlinear_vma,
 						addr) != page->index)
@@ -1491,6 +1505,7 @@ int zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
 }
 EXPORT_SYMBOL_GPL(zap_vma_ptes);
 
+<<<<<<< HEAD
 /*
  * FOLL_FORCE can write to even unwritable pte's, but only
  * after we've gone through a COW cycle and they are dirty.
@@ -1501,6 +1516,8 @@ static inline bool can_follow_write_pte(pte_t pte, unsigned int flags)
 		((flags & FOLL_FORCE) && (flags & FOLL_COW) && pte_dirty(pte));
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /**
  * follow_page_mask - look up a page descriptor from a user-virtual address
  * @vma: vm_area_struct mapping @address
@@ -1608,7 +1625,11 @@ split_fallthrough:
 	}
 	if ((flags & FOLL_NUMA) && pte_numa(pte))
 		goto no_page;
+<<<<<<< HEAD
 	if ((flags & FOLL_WRITE) && !can_follow_write_pte(pte, flags)) 
+=======
+	if ((flags & FOLL_WRITE) && !pte_write(pte))
+>>>>>>> 512ca3c... stock
 		goto unlock;
 
 	page = vm_normal_page(vma, address, pte);
@@ -1752,7 +1773,11 @@ long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
 
 	VM_BUG_ON(!!pages != !!(gup_flags & FOLL_GET));
 
+<<<<<<< HEAD
 	/*
+=======
+	/* 
+>>>>>>> 512ca3c... stock
 	 * Require read or write permissions.
 	 * If FOLL_FORCE is set, we only require the "MAY" flags.
 	 */
@@ -1812,7 +1837,11 @@ long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
 				page = vm_normal_page(vma, start, *pte);
 				if (!page) {
 					if (!(gup_flags & FOLL_DUMP) &&
+<<<<<<< HEAD
 					    (is_zero_pfn(pte_pfn(*pte))))
+=======
+					     is_zero_pfn(pte_pfn(*pte)))
+>>>>>>> 512ca3c... stock
 						page = pte_page(*pte);
 					else {
 						pte_unmap(pte);
@@ -1883,8 +1912,12 @@ long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
 						else
 							return -EFAULT;
 					}
+<<<<<<< HEAD
 					if (ret & (VM_FAULT_SIGBUS |
 						   VM_FAULT_SIGSEGV))
+=======
+					if (ret & VM_FAULT_SIGBUS)
+>>>>>>> 512ca3c... stock
 						return i ? i : -EFAULT;
 					BUG();
 				}
@@ -1916,7 +1949,11 @@ long __get_user_pages(struct task_struct *tsk, struct mm_struct *mm,
 				 */
 				if ((ret & VM_FAULT_WRITE) &&
 				    !(vma->vm_flags & VM_WRITE))
+<<<<<<< HEAD
 					foll_flags |= FOLL_COW; 
+=======
+					foll_flags &= ~FOLL_WRITE;
+>>>>>>> 512ca3c... stock
 
 				cond_resched();
 			}
@@ -1994,7 +2031,11 @@ int fixup_user_fault(struct task_struct *tsk, struct mm_struct *mm,
 			return -ENOMEM;
 		if (ret & (VM_FAULT_HWPOISON | VM_FAULT_HWPOISON_LARGE))
 			return -EHWPOISON;
+<<<<<<< HEAD
 		if (ret & (VM_FAULT_SIGBUS | VM_FAULT_SIGSEGV))
+=======
+		if (ret & VM_FAULT_SIGBUS)
+>>>>>>> 512ca3c... stock
 			return -EFAULT;
 		BUG();
 	}
@@ -2633,10 +2674,15 @@ static inline void cow_user_page(struct page *dst, struct page *src, unsigned lo
 			clear_page(kaddr);
 		kunmap_atomic(kaddr);
 		flush_dcache_page(dst);
+<<<<<<< HEAD
 	} else {
 		copy_user_highpage(dst, src, va, vma);
 		uksm_cow_page(vma, src);
 	}
+=======
+	} else
+		copy_user_highpage(dst, src, va, vma);
+>>>>>>> 512ca3c... stock
 }
 
 /*
@@ -2835,7 +2881,10 @@ gotten:
 		new_page = alloc_zeroed_user_highpage_movable(vma, address);
 		if (!new_page)
 			goto oom;
+<<<<<<< HEAD
 		uksm_cow_pte(vma, orig_pte);
+=======
+>>>>>>> 512ca3c... stock
 	} else {
 		new_page = alloc_page_vma(GFP_HIGHUSER_MOVABLE, vma, address);
 		if (!new_page)
@@ -2861,11 +2910,16 @@ gotten:
 				dec_mm_counter_fast(mm, MM_FILEPAGES);
 				inc_mm_counter_fast(mm, MM_ANONPAGES);
 			}
+<<<<<<< HEAD
 			uksm_bugon_zeropage(orig_pte);
 		} else {
 			uksm_unmap_zero_page(orig_pte);
 			inc_mm_counter_fast(mm, MM_ANONPAGES);
 		}
+=======
+		} else
+			inc_mm_counter_fast(mm, MM_ANONPAGES);
+>>>>>>> 512ca3c... stock
 		flush_cache_page(vma, address, pte_pfn(orig_pte));
 		entry = mk_pte(new_page, vma->vm_page_prot);
 		entry = maybe_mkwrite(pte_mkdirty(entry), vma);
@@ -3277,7 +3331,11 @@ static int do_anonymous_page(struct mm_struct *mm, struct vm_area_struct *vma,
 
 	/* Check if we need to add a guard page to the stack */
 	if (check_stack_guard_page(vma, address) < 0)
+<<<<<<< HEAD
 		return VM_FAULT_SIGSEGV;
+=======
+		return VM_FAULT_SIGBUS;
+>>>>>>> 512ca3c... stock
 
 	/* Use the zero-page for reads */
 	if (!(flags & FAULT_FLAG_WRITE)) {
@@ -3874,6 +3932,7 @@ retry:
 	if (unlikely(pmd_none(*pmd)) &&
 	    unlikely(__pte_alloc(mm, vma, pmd, address)))
 		return VM_FAULT_OOM;
+<<<<<<< HEAD
 	/*
 	 * If a huge pmd materialized under us just retry later.  Use
 	 * pmd_trans_unstable() instead of pmd_trans_huge() to ensure the pmd
@@ -3886,6 +3945,10 @@ retry:
 	 * provides.
 	 */
 	if (unlikely(pmd_trans_unstable(pmd)))
+=======
+	/* if an huge pmd materialized from under us just retry later */
+	if (unlikely(pmd_trans_huge(*pmd)))
+>>>>>>> 512ca3c... stock
 		return 0;
 	/*
 	 * A regular pmd is established and it can't morph into a huge pmd
@@ -4144,7 +4207,11 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
 	if (follow_phys(vma, addr, write, &prot, &phys_addr))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
+=======
+	maddr = ioremap_prot(phys_addr, PAGE_SIZE, prot);
+>>>>>>> 512ca3c... stock
 	if (write)
 		memcpy_toio(maddr + offset, buf, len);
 	else

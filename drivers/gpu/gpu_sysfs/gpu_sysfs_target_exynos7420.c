@@ -25,6 +25,7 @@
  * Device ATTR functions. Will be called when read from sysfs.
  * *********************************************************************
  * */
+<<<<<<< HEAD
 extern unsigned int gpu_min_override;
 extern unsigned int gpu_max_override;
 extern unsigned int gpu_max_override_screen_off;
@@ -58,10 +59,44 @@ ssize_t gpu_max_clock_write(struct device *dev, struct device_attribute *attr, c
 	
 	gpu_max_override = freq;
 	return count;
+=======
+ssize_t gpu_min_clock_show(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	char   	input_buffer[INPUT_BUFFER_SIZE_256];
+	int		status = 0;	
+	char 	output_str[INPUT_BUFFER_SIZE_16] = {0};
+
+	status = open_file_and_read_buffer(GPU_FREQ_TABLE, input_buffer, INPUT_BUFFER_SIZE_256);
+
+	if (status != SRUK_TRUE)
+	{
+		return sprintf(buf, "-1");
+	}
+
+	/* ******************* */
+	/* Parse input to find 
+	 * Minimum Clock. This is 
+	 * target specific. 
+	 * */
+	/* ******************* */
+	{
+		int len = strlen(input_buffer);
+		char *end_of_string = input_buffer + (len -1);
+		while(*end_of_string != ' ') 
+		{
+			end_of_string--;
+		}
+		strcpy(output_str, end_of_string);
+	}
+	/* ******************* */
+
+	return sprintf(buf, "%s", output_str);
+>>>>>>> 512ca3c... stock
 }
 
 ssize_t gpu_max_clock_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	return sprintf(buf, "%u\n", gpu_max_override);
 }
 
@@ -81,6 +116,38 @@ ssize_t gpu_max_clock_screen_off_write(struct device *dev, struct device_attribu
 ssize_t gpu_max_clock_screen_off_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
 	return sprintf(buf, "%u\n", gpu_max_override_screen_off);
+=======
+	char   	input_buffer[INPUT_BUFFER_SIZE_256];
+	int		status = 0;	
+	char 	output_str[INPUT_BUFFER_SIZE_16] = {0};
+	int 	i = 1; /* GPU Freq has one space at the start. Target specific. */
+
+	status = open_file_and_read_buffer(GPU_FREQ_TABLE, input_buffer, INPUT_BUFFER_SIZE_256);
+
+	if (status != SRUK_TRUE)
+	{
+		return sprintf(buf, "-1");
+	}
+
+	/* ******************* */
+	/* Parse input to find 
+	 * Minimum Clock. This is 
+	 * target specific. 
+	 * */
+	/* ******************* */
+	{
+		char *start_of_string = input_buffer + i; 
+		while(*start_of_string != ' ') 
+		{
+			i++;
+			start_of_string++;
+		}
+		strncpy(output_str, input_buffer, i);
+	}
+	/* ******************* */
+
+	return sprintf(buf, "%s\n", output_str);
+>>>>>>> 512ca3c... stock
 }
 
 ssize_t gpu_busy_show(struct device *dev, struct device_attribute *attr, char *buf)
@@ -347,4 +414,8 @@ ssize_t fps_write(struct device *dev, struct device_attribute *attr, const char 
 	/* Return success status. */		
 	return count;
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 512ca3c... stock

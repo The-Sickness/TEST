@@ -26,7 +26,10 @@
 #include <linux/reboot.h>
 #include <linux/delay.h>
 #include <linux/cpu.h>
+<<<<<<< HEAD
 #include <linux/ipa.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <linux/pm_qos.h>
 #include <linux/kobject.h>
 #include <linux/sysfs.h>
@@ -38,8 +41,11 @@
 #include <linux/muic/muic_notifier.h>
 #endif
 
+<<<<<<< HEAD
 #include <linux/sysfs_helpers.h>
 
+=======
+>>>>>>> 512ca3c... stock
 #include <asm/smp_plat.h>
 #include <asm/cputype.h>
 
@@ -61,13 +67,19 @@
 #define POWER_COEFF_15P		57 /* percore param */
 #define POWER_COEFF_7P		11 /* percore  param */
 #elif defined(CONFIG_SOC_EXYNOS7420)
+<<<<<<< HEAD
 #define POWER_COEFF_15P		59 /* percore param */
 #define POWER_COEFF_7P		17 /* percore  param */
+=======
+#define POWER_COEFF_15P		46 /* percore param */
+#define POWER_COEFF_7P		13 /* percore  param */
+>>>>>>> 512ca3c... stock
 #else
 #define POWER_COEFF_15P		48 /* percore param */
 #define POWER_COEFF_7P		9 /* percore  param */
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_SOC_EXYNOS7420
 #define CL0_MAX_VOLT		1175000
 #define CL1_MAX_VOLT		1125000
@@ -105,6 +117,8 @@
 #error "Please define core frequency ranges for current SoC."
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 #define VOLT_RANGE_STEP		25000
 #define CLUSTER_ID(cl)		(cl ? ID_CL1 : ID_CL0)
 
@@ -1156,7 +1170,10 @@ static struct notifier_block exynos_tmu_nb = {
 static int exynos_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
 	unsigned int cur = get_cur_cluster(policy->cpu);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> 512ca3c... stock
 
 	pr_debug("%s: cpu[%d]\n", __func__, policy->cpu);
 
@@ -1174,6 +1191,7 @@ static int exynos_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		cpumask_copy(policy->cpus, &cluster_cpus[CL_ZERO]);
 		cpumask_copy(policy->related_cpus, &cluster_cpus[CL_ZERO]);
 	}
+<<<<<<< HEAD
 	
 	ret = cpufreq_frequency_table_cpuinfo(policy, exynos_info[cur]->freq_table);
 	
@@ -1183,6 +1201,10 @@ static int exynos_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	}
 
 	return ret;
+=======
+
+	return cpufreq_frequency_table_cpuinfo(policy, exynos_info[cur]->freq_table);
+>>>>>>> 512ca3c... stock
 }
 
 static struct cpufreq_driver exynos_driver = {
@@ -1467,6 +1489,7 @@ inline ssize_t store_core_freq(const char *buf, size_t count,
 	return count;
 }
 
+<<<<<<< HEAD
 static size_t get_freq_table_size(struct cpufreq_frequency_table *freq_table)
 {
 	size_t tbl_sz = 0;
@@ -1555,6 +1578,33 @@ static ssize_t store_volt_table(struct kobject *kobj, struct attribute *attr,
 
 	mutex_unlock(&cpufreq_lock);
 
+=======
+inline ssize_t set_boot_low_freq(const char *buf, size_t count)
+{
+	int input;
+	unsigned int set_freq = 0;
+
+	if (!sscanf(buf, "%8d", &input))
+		return -EINVAL;
+
+	if (exynos_info[CL_ONE]->low_boot_cpu_max_qos)
+		set_freq = exynos_info[CL_ONE]->low_boot_cpu_max_qos;
+	else
+		set_freq = PM_QOS_DEFAULT_VALUE;
+
+	if (input) {
+		/* only big core limit, default 1800s */
+		pr_info("%s: low boot freq[%d], cl[%d]\n", __func__,
+					set_freq, CL_ONE);
+		pm_qos_update_request_timeout(&boot_max_qos[CL_ONE],
+					set_freq, 1800 * USEC_PER_SEC);
+	} else {
+		pr_info("%s: release low boot freq\n", __func__);
+		pm_qos_update_request(&boot_max_qos[CL_ONE],
+					PM_QOS_DEFAULT_VALUE);
+	}
+
+>>>>>>> 512ca3c... stock
 	return count;
 }
 
@@ -1588,6 +1638,7 @@ static ssize_t store_cluster1_max_freq(struct kobject *kobj, struct attribute *a
 	return store_core_freq(buf, count, CL_ONE, true);
 }
 
+<<<<<<< HEAD
 static ssize_t show_cluster1_volt_table(struct kobject *kobj,
 				struct attribute *attr, char *buf)
 {
@@ -1600,6 +1651,8 @@ static ssize_t store_cluster1_volt_table(struct kobject *kobj, struct attribute 
 	return store_volt_table(kobj, attr, buf, count, CL_ONE);
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static ssize_t show_cluster0_freq_table(struct kobject *kobj,
 			     struct attribute *attr, char *buf)
 {
@@ -1636,6 +1689,7 @@ static ssize_t store_cluster0_max_freq(struct kobject *kobj, struct attribute *a
 	return store_core_freq(buf, count, CL_ZERO, true);
 }
 
+<<<<<<< HEAD
 static ssize_t show_cluster0_volt_table(struct kobject *kobj,
 				struct attribute *attr, char *buf)
 {
@@ -1646,26 +1700,46 @@ static ssize_t store_cluster0_volt_table(struct kobject *kobj, struct attribute 
 					const char *buf, size_t count)
 {
 	return store_volt_table(kobj, attr, buf, count, CL_ZERO);
+=======
+static ssize_t store_boot_low_freq(struct kobject *kobj, struct attribute *attr,
+					const char *buf, size_t count)
+{
+	return set_boot_low_freq(buf, count);
+>>>>>>> 512ca3c... stock
 }
 
 define_one_global_ro(cluster1_freq_table);
 define_one_global_rw(cluster1_min_freq);
 define_one_global_rw(cluster1_max_freq);
+<<<<<<< HEAD
 define_one_global_rw(cluster1_volt_table);
 define_one_global_ro(cluster0_freq_table);
 define_one_global_rw(cluster0_min_freq);
 define_one_global_rw(cluster0_max_freq);
 define_one_global_rw(cluster0_volt_table);
+=======
+define_one_global_ro(cluster0_freq_table);
+define_one_global_rw(cluster0_min_freq);
+define_one_global_rw(cluster0_max_freq);
+define_one_global_rw(boot_low_freq);
+>>>>>>> 512ca3c... stock
 
 static struct attribute *mp_attributes[] = {
 	&cluster1_freq_table.attr,
 	&cluster1_min_freq.attr,
 	&cluster1_max_freq.attr,
+<<<<<<< HEAD
 	&cluster1_volt_table.attr,
 	&cluster0_freq_table.attr,
 	&cluster0_min_freq.attr,
 	&cluster0_max_freq.attr,
 	&cluster0_volt_table.attr,
+=======
+	&cluster0_freq_table.attr,
+	&cluster0_min_freq.attr,
+	&cluster0_max_freq.attr,
+	&boot_low_freq.attr,
+>>>>>>> 512ca3c... stock
 	NULL
 };
 
@@ -1886,10 +1960,13 @@ static int exynos_cluster0_min_qos_handler(struct notifier_block *b, unsigned lo
 	threshold_freq = cpufreq_interactive_get_hispeed_freq(0);
 	if (!threshold_freq)
 		threshold_freq = 1000000;	/* 1.0GHz */
+<<<<<<< HEAD
 #elif defined(CONFIG_CPU_FREQ_GOV_CAFACTIVE)
 	threshold_freq = cpufreq_cafactive_get_hispeed_freq(0);
 	if (!threshold_freq)
 		threshold_freq = 1000000;	/* 1.0GHz */
+=======
+>>>>>>> 512ca3c... stock
 #else
 	threshold_freq = 1000000;	/* 1.0GHz */
 #endif
@@ -2302,7 +2379,11 @@ err_init:
 	return ret;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE) || defined(CONFIG_CPU_FREQ_DEFAULT_GOV_CAFACTIVE)
+=======
+#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE
+>>>>>>> 512ca3c... stock
 device_initcall(exynos_cpufreq_init);
 #else
 late_initcall(exynos_cpufreq_init);

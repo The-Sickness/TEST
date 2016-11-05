@@ -2041,7 +2041,10 @@ out_async:
 	}
 
 out_fw:
+<<<<<<< HEAD
 	regmap_async_complete(regmap);
+=======
+>>>>>>> 512ca3c... stock
 	release_firmware(firmware);
 	wm_adsp_buf_free(&buf_list);
 out:

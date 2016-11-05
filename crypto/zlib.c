@@ -78,7 +78,11 @@ static void zlib_exit(struct crypto_tfm *tfm)
 }
 
 
+<<<<<<< HEAD
 static int zlib_compress_setup(struct crypto_pcomp *tfm, const void *params,
+=======
+static int zlib_compress_setup(struct crypto_pcomp *tfm, void *params,
+>>>>>>> 512ca3c... stock
 			       unsigned int len)
 {
 	struct zlib_ctx *ctx = crypto_tfm_ctx(crypto_pcomp_tfm(tfm));
@@ -209,7 +213,11 @@ static int zlib_compress_final(struct crypto_pcomp *tfm,
 }
 
 
+<<<<<<< HEAD
 static int zlib_decompress_setup(struct crypto_pcomp *tfm, const void *params,
+=======
+static int zlib_decompress_setup(struct crypto_pcomp *tfm, void *params,
+>>>>>>> 512ca3c... stock
 				 unsigned int len)
 {
 	struct zlib_ctx *ctx = crypto_tfm_ctx(crypto_pcomp_tfm(tfm));
@@ -378,4 +386,7 @@ module_exit(zlib_mod_fini);
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Zlib Compression Algorithm");
 MODULE_AUTHOR("Sony Corporation");
+<<<<<<< HEAD
 MODULE_ALIAS_CRYPTO("zlib");
+=======
+>>>>>>> 512ca3c... stock

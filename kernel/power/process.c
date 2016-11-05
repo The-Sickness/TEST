@@ -116,6 +116,7 @@ static int try_to_freeze_tasks(bool user_only)
 	return todo ? -EBUSY : 0;
 }
 
+<<<<<<< HEAD
 static bool __check_frozen_processes(void)
 {
 	struct task_struct *g, *p;
@@ -127,16 +128,35 @@ static bool __check_frozen_processes(void)
 	return true;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * Returns true if all freezable tasks (except for current) are frozen already
  */
 static bool check_frozen_processes(void)
 {
+<<<<<<< HEAD
 	bool ret;
 
 	read_lock(&tasklist_lock);
 	ret = __check_frozen_processes();
 	read_unlock(&tasklist_lock);
+=======
+	struct task_struct *g, *p;
+	bool ret = true;
+
+	read_lock(&tasklist_lock);
+	for_each_process_thread(g, p) {
+		if (p != current && !freezer_should_skip(p) &&
+		    !frozen(p)) {
+			ret = false;
+			goto done;
+		}
+	}
+done:
+	read_unlock(&tasklist_lock);
+
+>>>>>>> 512ca3c... stock
 	return ret;
 }
 
@@ -157,7 +177,10 @@ int freeze_processes(void)
 	if (!pm_freezing)
 		atomic_inc(&system_freezing_cnt);
 
+<<<<<<< HEAD
 	pm_wakeup_clear();
+=======
+>>>>>>> 512ca3c... stock
 	printk("Freezing user space processes ... ");
 	pm_freezing = true;
 	oom_kills_saved = oom_kills_count();
@@ -172,6 +195,7 @@ int freeze_processes(void)
 		 * on the way out so we have to double check for race.
 		 */
 		if (oom_kills_count() != oom_kills_saved &&
+<<<<<<< HEAD
 		    !check_frozen_processes()) {
 			__usermodehelper_set_disable_depth(UMH_ENABLED);
 			printk("OOM in progress.");
@@ -180,6 +204,17 @@ int freeze_processes(void)
 			printk("done.");
 		}
 	}
+=======
+				!check_frozen_processes()) {
+			__usermodehelper_set_disable_depth(UMH_ENABLED);
+			printk("OOM in progress.");
+			error = -EBUSY;
+			goto done;
+		}
+		printk("done.");
+	}
+done:
+>>>>>>> 512ca3c... stock
 	printk("\n");
 	BUG_ON(in_atomic());
 

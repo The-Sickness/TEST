@@ -114,6 +114,7 @@ active_logs=%u         Support configuring the number of active logs. In the
                        Default number is 6.
 disable_ext_identify   Disable the extension list configured by mkfs, so f2fs
                        does not aware of cold files such as media files.
+<<<<<<< HEAD
 inline_xattr           Enable the inline xattrs feature.
 inline_data            Enable the inline data feature: New created small(<~3.4k)
                        files can be written into inode block.
@@ -143,6 +144,8 @@ noinline_data          Disable the inline data feature, inline data feature is
                        enabled by default.
 data_flush             Enable data flushing before checkpoint in order to
                        persist data of regular and symlink.
+=======
+>>>>>>> 512ca3c... stock
 
 ================================================================================
 DEBUGFS ENTRIES

@@ -315,6 +315,7 @@ config KSM
 	  See Documentation/vm/ksm.txt for more information: KSM is inactive
 	  until a program has madvised that an area is MADV_MERGEABLE, and
 	  root has set /sys/kernel/mm/ksm/run to 1 (if CONFIG_SYSFS is set).
+<<<<<<< HEAD
 choice
 	prompt "Choose UKSM/KSM strategy"
 	default UKSM
@@ -341,6 +342,8 @@ config KSM_LEGACY
 	help
 	The legacy KSM implementation from Redhat.
 endchoice
+=======
+>>>>>>> 512ca3c... stock
 
 config DEFAULT_MMAP_MIN_ADDR
         int "Low address space to protect from user allocation"
@@ -633,6 +636,7 @@ config MIN_DIRTY_THRESH_PAGES
 	  It is only effective when dirty_ratio is used. (Setting dirty_bytes
 	  disables this option.)
 	  Do not use it if you unsure.
+<<<<<<< HEAD
 
 config PROCESS_RECLAIM
 	bool "Enable process reclaim"
@@ -660,3 +664,5 @@ config DYNAMIC_PAGE_WRITEBACK
  	  when the system is suspended and when the system has been resumed.
  
  	  If unsure, say N to disable this feature
+=======
+>>>>>>> 512ca3c... stock

@@ -70,6 +70,7 @@ config CPU_FREQ_DEFAULT_GOV_POWERSAVE
 	  the frequency statically to the lowest frequency supported by
 	  the CPU.
 
+<<<<<<< HEAD
 config CPU_FREQ_DEFAULT_GOV_CONSERVATIVEX
 	bool "conservativex"
 	select CPU_FREQ_GOV_CONSERVATIVEX
@@ -119,6 +120,8 @@ config CPU_FREQ_DEFAULT_GOV_WAVE
 	help
 
 
+=======
+>>>>>>> 512ca3c... stock
 config CPU_FREQ_DEFAULT_GOV_USERSPACE
 	bool "userspace"
 	select CPU_FREQ_GOV_USERSPACE
@@ -152,6 +155,7 @@ config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
 	  governor. If unsure have a look at the help section of the
 	  driver. Fallback governor will be the performance governor.
 
+<<<<<<< HEAD
 config CPU_FREQ_DEFAULT_GOV_KTOONSERVATIVE
 	bool "ktoonservative"
 	select CPU_FREQ_GOV_KTOONSERVATIVE
@@ -164,6 +168,8 @@ config CPU_FREQ_DEFAULT_GOV_KTOONSERVATIVE
 	  driver. Fallback governor will be the performance governor.  This
 	  governor adds the capability of hotpluging.
 
+=======
+>>>>>>> 512ca3c... stock
 config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	bool "interactive"
 	select CPU_FREQ_GOV_INTERACTIVE
@@ -173,6 +179,7 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	  loading your cpufreq low-level hardware driver, using the
 	  'interactive' governor for latency-sensitive workloads.
 
+<<<<<<< HEAD
 config CPU_FREQ_DEFAULT_GOV_DANCEDANCE
             bool "dancedance"
             select CPU_FREQ_GOV_DANCEDANCE
@@ -258,6 +265,8 @@ config CPU_FREQ_DEFAULT_GOV_IMPULSE
 	  loading your cpufreq low-level hardware driver, using the
 	  'impulse' governor for latency-sensitive workloads.
 
+=======
+>>>>>>> 512ca3c... stock
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -340,6 +349,7 @@ config MODE_AUTO_CHANGE
 	help
 		automatic governor parameter change by MODE
 
+<<<<<<< HEAD
 config CPU_FREQ_GOV_CAFACTIVE
 	tristate "'cafactive' cpufreq policy governor"
 	help
@@ -351,6 +361,8 @@ config CPU_FREQ_GOV_CAFACTIVE
 
 	  If in doubt, say N.
 
+=======
+>>>>>>> 512ca3c... stock
 config CPU_FREQ_GOV_CONSERVATIVE
 	tristate "'conservative' cpufreq governor"
 	depends on CPU_FREQ
@@ -375,6 +387,7 @@ config CPU_FREQ_GOV_CONSERVATIVE
 
 	  If in doubt, say N.
 
+<<<<<<< HEAD
 config CPU_FREQ_DEFAULT_GOV_BIOSHOCK
 	bool "BioShock"
 	select CPU_FREQ_GOV_BIOSHOCK
@@ -523,6 +536,8 @@ config CPU_FREQ_GOV_INTEREXTREM
 
 	  If in doubt, say N.
 	  
+=======
+>>>>>>> 512ca3c... stock
 config GENERIC_CPUFREQ_CPU0
 	tristate "Generic CPU0 cpufreq driver"
 	depends on HAVE_CLK && REGULATOR && PM_OPP && OF
@@ -534,6 +549,7 @@ config GENERIC_CPUFREQ_CPU0
 
 	  If in doubt, say N.
 
+<<<<<<< HEAD
 config CPU_FREQ_GOV_BIOSHOCK
 	tristate "'bioshock' cpufreq bioshock"
 	depends on CPU_FREQ
@@ -572,6 +588,8 @@ config EXYNOS7420_CPU_OVERCLOCK
 	help
 	   Sets Apollo and Atlas clusters to max cpu frequenz
 
+=======
+>>>>>>> 512ca3c... stock
 menu "x86 CPU frequency scaling drivers"
 depends on X86
 source "drivers/cpufreq/Kconfig.x86"

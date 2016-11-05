@@ -134,7 +134,10 @@ struct i2c_hid {
 						   * descriptor. */
 	unsigned int		bufsize;	/* i2c buffer size */
 	char			*inbuf;		/* Input buffer */
+<<<<<<< HEAD
 	char			*rawbuf;	/* Raw Input buffer */
+=======
+>>>>>>> 512ca3c... stock
 	char			*cmdbuf;	/* Command buffer */
 	char			*argsbuf;	/* Command arguments buffer */
 
@@ -343,9 +346,12 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
 	int ret, ret_size;
 	int size = le16_to_cpu(ihid->hdesc.wMaxInputLength);
 
+<<<<<<< HEAD
 	if (size > ihid->bufsize)
 		size = ihid->bufsize;
 
+=======
+>>>>>>> 512ca3c... stock
 	ret = i2c_master_recv(ihid->client, ihid->inbuf, size);
 	if (ret != size) {
 		if (ret < 0)
@@ -475,11 +481,17 @@ static void i2c_hid_find_max_report(struct hid_device *hid, unsigned int type,
 static void i2c_hid_free_buffers(struct i2c_hid *ihid)
 {
 	kfree(ihid->inbuf);
+<<<<<<< HEAD
 	kfree(ihid->rawbuf);
 	kfree(ihid->argsbuf);
 	kfree(ihid->cmdbuf);
 	ihid->inbuf = NULL;
 	ihid->rawbuf = NULL;
+=======
+	kfree(ihid->argsbuf);
+	kfree(ihid->cmdbuf);
+	ihid->inbuf = NULL;
+>>>>>>> 512ca3c... stock
 	ihid->cmdbuf = NULL;
 	ihid->argsbuf = NULL;
 	ihid->bufsize = 0;
@@ -495,11 +507,18 @@ static int i2c_hid_alloc_buffers(struct i2c_hid *ihid, size_t report_size)
 		       report_size; /* report */
 
 	ihid->inbuf = kzalloc(report_size, GFP_KERNEL);
+<<<<<<< HEAD
 	ihid->rawbuf = kzalloc(report_size, GFP_KERNEL);
 	ihid->argsbuf = kzalloc(args_len, GFP_KERNEL);
 	ihid->cmdbuf = kzalloc(sizeof(union command) + args_len, GFP_KERNEL);
 
 	if (!ihid->inbuf || !ihid->rawbuf || !ihid->argsbuf || !ihid->cmdbuf) {
+=======
+	ihid->argsbuf = kzalloc(args_len, GFP_KERNEL);
+	ihid->cmdbuf = kzalloc(sizeof(union command) + args_len, GFP_KERNEL);
+
+	if (!ihid->inbuf || !ihid->argsbuf || !ihid->cmdbuf) {
+>>>>>>> 512ca3c... stock
 		i2c_hid_free_buffers(ihid);
 		return -ENOMEM;
 	}
@@ -526,12 +545,20 @@ static int i2c_hid_get_raw_report(struct hid_device *hid,
 
 	ret = i2c_hid_get_report(client,
 			report_type == HID_FEATURE_REPORT ? 0x03 : 0x01,
+<<<<<<< HEAD
 			report_number, ihid->rawbuf, ask_count);
+=======
+			report_number, ihid->inbuf, ask_count);
+>>>>>>> 512ca3c... stock
 
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret_count = ihid->rawbuf[0] | (ihid->rawbuf[1] << 8);
+=======
+	ret_count = ihid->inbuf[0] | (ihid->inbuf[1] << 8);
+>>>>>>> 512ca3c... stock
 
 	if (ret_count <= 2)
 		return 0;
@@ -540,7 +567,11 @@ static int i2c_hid_get_raw_report(struct hid_device *hid,
 
 	/* The query buffer contains the size, dropping it in the reply */
 	count = min(count, ret_count - 2);
+<<<<<<< HEAD
 	memcpy(buf, ihid->rawbuf + 2, count);
+=======
+	memcpy(buf, ihid->inbuf + 2, count);
+>>>>>>> 512ca3c... stock
 
 	return count;
 }

@@ -55,6 +55,7 @@
 
 #include <uapi/linux/timex.h>
 
+<<<<<<< HEAD
 #ifndef random_get_entropy
 /*
  * The random_get_entropy() function is used by the /dev/random driver
@@ -69,6 +70,8 @@
 #define random_get_entropy()	get_cycles()
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 #define ADJ_ADJTIME		0x8000	/* switch between adjtime/adjtimex modes */
 #define ADJ_OFFSET_SINGLESHOT	0x0001	/* old-fashioned adjtime */
 #define ADJ_OFFSET_READONLY	0x2000	/* read-only adjtime */

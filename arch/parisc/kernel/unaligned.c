@@ -666,7 +666,11 @@ void handle_unaligned(struct pt_regs *regs)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (ret == 0 && modify && R1(regs->iir))
+=======
+	if (modify && R1(regs->iir))
+>>>>>>> 512ca3c... stock
 		regs->gr[R1(regs->iir)] = newbase;
 
 
@@ -677,6 +681,7 @@ void handle_unaligned(struct pt_regs *regs)
 
 	if (ret)
 	{
+<<<<<<< HEAD
 		/*
 		 * The unaligned handler failed.
 		 * If we were called by __get_user() or __put_user() jump
@@ -685,6 +690,8 @@ void handle_unaligned(struct pt_regs *regs)
 		if (!user_mode(regs) && fixup_exception(regs))
 			return;
 
+=======
+>>>>>>> 512ca3c... stock
 		printk(KERN_CRIT "Unaligned handler failed, ret = %d\n", ret);
 		die_if_kernel("Unaligned data reference", regs, 28);
 

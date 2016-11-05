@@ -429,7 +429,11 @@ mali_error hwcnt_dump(struct kbase_context *kctx)
 	err = kbase_instr_hwcnt_dump(kbdev->hwcnt.kctx);
 
 	if (err != MALI_ERROR_NONE) {
+<<<<<<< HEAD
 	//	GPU_LOG(DVFS_INFO, DUMMY, 0u, 0u, "kbase_instr_hwcnt_dump error in %s %d \n", __FUNCTION__, err);
+=======
+		GPU_LOG(DVFS_INFO, DUMMY, 0u, 0u, "kbase_instr_hwcnt_dump error in %s %d \n", __FUNCTION__, err);
+>>>>>>> 512ca3c... stock
 		goto out;
 	}
 
@@ -563,8 +567,11 @@ mali_error hwcnt_setup(struct kbase_context *kctx, struct kbase_uk_hwcnt_setup *
 	kbdev = kctx->kbdev;
 	KBASE_DEBUG_ASSERT(NULL != kbdev);
 
+<<<<<<< HEAD
 	return MALI_ERROR_NONE;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (NULL == setup) {
 		/* Bad parameter - abort */
 		goto out;

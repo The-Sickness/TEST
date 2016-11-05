@@ -184,7 +184,11 @@ static void hid_io_error(struct hid_device *hid)
 	if (time_after(jiffies, usbhid->stop_retry)) {
 
 		/* Retries failed, so do a port reset unless we lack bandwidth*/
+<<<<<<< HEAD
 		if (!test_bit(HID_NO_BANDWIDTH, &usbhid->iofl)
+=======
+		if (test_bit(HID_NO_BANDWIDTH, &usbhid->iofl)
+>>>>>>> 512ca3c... stock
 		     && !test_and_set_bit(HID_RESET_PENDING, &usbhid->iofl)) {
 
 			schedule_work(&usbhid->reset_work);
@@ -521,6 +525,11 @@ static void hid_ctrl(struct urb *urb)
 	struct usbhid_device *usbhid = hid->driver_data;
 	int unplug = 0, status = urb->status;
 
+<<<<<<< HEAD
+=======
+	spin_lock(&usbhid->lock);
+
+>>>>>>> 512ca3c... stock
 	switch (status) {
 	case 0:			/* success */
 		if (usbhid->ctrl[usbhid->ctrltail].dir == USB_DIR_IN)
@@ -540,8 +549,11 @@ static void hid_ctrl(struct urb *urb)
 		hid_warn(urb->dev, "ctrl urb status %d received\n", status);
 	}
 
+<<<<<<< HEAD
 	spin_lock(&usbhid->lock);
 
+=======
+>>>>>>> 512ca3c... stock
 	if (unplug) {
 		usbhid->ctrltail = usbhid->ctrlhead;
 	} else {

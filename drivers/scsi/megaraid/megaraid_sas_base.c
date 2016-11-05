@@ -933,7 +933,11 @@ megasas_issue_blocked_abort_cmd(struct megasas_instance *instance,
 	abort_fr->abort_mfi_phys_addr_hi = 0;
 
 	cmd->sync_cmd = 1;
+<<<<<<< HEAD
 	cmd->cmd_status = ENODATA;
+=======
+	cmd->cmd_status = 0xFF;
+>>>>>>> 512ca3c... stock
 
 	instance->instancet->issue_dcmd(instance, cmd);
 
@@ -3470,7 +3474,11 @@ static int megasas_init_fw(struct megasas_instance *instance)
 	/* Find first memory bar */
 	bar_list = pci_select_bars(instance->pdev, IORESOURCE_MEM);
 	instance->bar = find_first_bit(&bar_list, sizeof(unsigned long));
+<<<<<<< HEAD
 	if (pci_request_selected_regions(instance->pdev, 1<<instance->bar, 
+=======
+	if (pci_request_selected_regions(instance->pdev, instance->bar,
+>>>>>>> 512ca3c... stock
 					 "megasas: LSI")) {
 		printk(KERN_DEBUG "megasas: IO memory region busy!\n");
 		return -EBUSY;
@@ -3602,7 +3610,11 @@ static int megasas_init_fw(struct megasas_instance *instance)
 	}
 
 	instance->max_sectors_per_req = instance->max_num_sge *
+<<<<<<< HEAD
 						SGE_BUFFER_SIZE / 512;
+=======
+						PAGE_SIZE / 512;
+>>>>>>> 512ca3c... stock
 	if (tmp_sectors && (instance->max_sectors_per_req > tmp_sectors))
 		instance->max_sectors_per_req = tmp_sectors;
 
@@ -3640,7 +3652,11 @@ fail_ready_state:
 	iounmap(instance->reg_set);
 
       fail_ioremap:
+<<<<<<< HEAD
 	pci_release_selected_regions(instance->pdev, 1<<instance->bar); 
+=======
+	pci_release_selected_regions(instance->pdev, instance->bar);
+>>>>>>> 512ca3c... stock
 
 	return -EINVAL;
 }
@@ -3661,7 +3677,11 @@ static void megasas_release_mfi(struct megasas_instance *instance)
 
 	iounmap(instance->reg_set);
 
+<<<<<<< HEAD
 	pci_release_selected_regions(instance->pdev, 1<<instance->bar); 
+=======
+	pci_release_selected_regions(instance->pdev, instance->bar);
+>>>>>>> 512ca3c... stock
 }
 
 /**
@@ -5051,9 +5071,12 @@ static int megasas_mgmt_compat_ioctl_fw(struct file *file, unsigned long arg)
 	int i;
 	int error = 0;
 	compat_uptr_t ptr;
+<<<<<<< HEAD
 	unsigned long local_raw_ptr;
 	u32 local_sense_off;
 	u32 local_sense_len;
+=======
+>>>>>>> 512ca3c... stock
 
 	if (clear_user(ioc, sizeof(*ioc)))
 		return -EFAULT;
@@ -5071,6 +5094,7 @@ static int megasas_mgmt_compat_ioctl_fw(struct file *file, unsigned long arg)
 	 * sense_len is not null, so prepare the 64bit value under
 	 * the same condition.
 	 */
+<<<<<<< HEAD
 	if (get_user(local_raw_ptr, ioc->frame.raw) ||
 		get_user(local_sense_off, &ioc->sense_off) ||
 		get_user(local_sense_len, &ioc->sense_len))
@@ -5080,6 +5104,11 @@ static int megasas_mgmt_compat_ioctl_fw(struct file *file, unsigned long arg)
 	if (local_sense_len) {
 		void __user **sense_ioc_ptr =
 			(void __user **)((u8*)local_raw_ptr + local_sense_off);
+=======
+	if (ioc->sense_len) {
+		void __user **sense_ioc_ptr =
+			(void __user **)(ioc->frame.raw + ioc->sense_off);
+>>>>>>> 512ca3c... stock
 		compat_uptr_t *sense_cioc_ptr =
 			(compat_uptr_t *)(cioc->frame.raw + cioc->sense_off);
 		if (get_user(ptr, sense_cioc_ptr) ||

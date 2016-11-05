@@ -522,7 +522,11 @@ static ssize_t
 sg_new_read(Sg_fd * sfp, char __user *buf, size_t count, Sg_request * srp)
 {
 	sg_io_hdr_t *hp = &srp->header;
+<<<<<<< HEAD
 	int err = 0, err2;
+=======
+	int err = 0;
+>>>>>>> 512ca3c... stock
 	int len;
 
 	if (count < SZ_SG_IO_HDR) {
@@ -551,8 +555,13 @@ sg_new_read(Sg_fd * sfp, char __user *buf, size_t count, Sg_request * srp)
 		goto err_out;
 	}
 err_out:
+<<<<<<< HEAD
 	err2 = sg_finish_rem_req(srp);
 	return err ? : err2 ? : count;
+=======
+	err = sg_finish_rem_req(srp);
+	return (0 == err) ? count : err;
+>>>>>>> 512ca3c... stock
 }
 
 static ssize_t
@@ -1258,7 +1267,11 @@ sg_mmap(struct file *filp, struct vm_area_struct *vma)
 	}
 
 	sfp->mmap_called = 1;
+<<<<<<< HEAD
 	vma->vm_flags |= VM_IO | VM_DONTEXPAND | VM_DONTDUMP;
+=======
+	vma->vm_flags |= VM_DONTEXPAND | VM_DONTDUMP;
+>>>>>>> 512ca3c... stock
 	vma->vm_private_data = sfp;
 	vma->vm_ops = &sg_mmap_vm_ops;
 	return 0;
@@ -1694,9 +1707,12 @@ static int sg_start_req(Sg_request *srp, unsigned char *cmd)
 			md->from_user = 0;
 	}
 
+<<<<<<< HEAD
 	if (unlikely(iov_count > UIO_MAXIOV))
 		return -EINVAL;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (iov_count) {
 		int len, size = sizeof(struct sg_iovec) * iov_count;
 		struct iovec *iov;

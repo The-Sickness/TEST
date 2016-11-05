@@ -2,7 +2,10 @@
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/cpufreq.h>
+<<<<<<< HEAD
 #include <linux/cpufreq_kt.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <linux/cpu.h>
 #include <linux/jiffies.h>
 #include <linux/kernel_stat.h>
@@ -18,8 +21,11 @@
 #include <linux/sort.h>
 #include <linux/reboot.h>
 #include <linux/debugfs.h>
+<<<<<<< HEAD
 #include <linux/sysfs.h>
 #include <linux/exynos-interface.h>
+=======
+>>>>>>> 512ca3c... stock
 
 #include <linux/fs.h>
 #include <asm/segment.h>
@@ -30,7 +36,11 @@
 #include <linux/suspend.h>
 #include <linux/exynos-ss.h>
 
+<<<<<<< HEAD
 //#define DM_HOTPLUG_DEBUG
+=======
+#define DM_HOTPLUG_DEBUG
+>>>>>>> 512ca3c... stock
 
 #if defined(CONFIG_SOC_EXYNOS5430)
 #define NORMALMIN_FREQ	1000000
@@ -40,12 +50,15 @@
 #define POLLING_MSEC	100
 #define DEFAULT_LOW_STAY_THRSHD	0
 
+<<<<<<< HEAD
 #define MIN_NUM_ONLINE_CPU	1
 #define MAX_NUM_ONLINE_CPU	NR_CPUS
 
 unsigned int min_num_cpu;
 unsigned int max_num_cpu;
 
+=======
+>>>>>>> 512ca3c... stock
 struct cpu_load_info {
 	cputime64_t cpu_idle;
 	cputime64_t cpu_iowait;
@@ -79,7 +92,11 @@ static bool do_disable_hotplug = false;
 static bool do_hotplug_out = false;
 static int cluster1_hotplugged = 0;
 static int cluster0_hotplug_in = 0;
+<<<<<<< HEAD
 #define DEFAULT_NR_RUN_THRESHD	200
+=======
+#define DEFAULT_NR_RUN_THRESHD	5
+>>>>>>> 512ca3c... stock
 #define DEFAULT_NR_RUN_RANGE	2
 static unsigned int nr_running_threshold = DEFAULT_NR_RUN_THRESHD;
 static unsigned int nr_running_range = DEFAULT_NR_RUN_RANGE;
@@ -346,6 +363,7 @@ static ssize_t store_dm_hotplug_delay(struct kobject *kobj, struct attribute *at
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t show_cpucore_table(struct kobject *kobj,
 			     struct attribute *attr, char *buf)
 {
@@ -431,6 +449,8 @@ static ssize_t store_cpucore_max_num_limit(struct kobject *kobj,
 	return count;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static struct global_attr enable_dm_hotplug =
 		__ATTR(enable_dm_hotplug, S_IRUGO | S_IWUSR,
 			show_enable_dm_hotplug, store_enable_dm_hotplug);
@@ -452,6 +472,7 @@ static struct global_attr dm_hotplug_stay_threshold =
 static struct global_attr dm_hotplug_delay =
 		__ATTR(dm_hotplug_delay, S_IRUGO | S_IWUSR,
 			show_dm_hotplug_delay, store_dm_hotplug_delay);
+<<<<<<< HEAD
 
 static struct sysfs_attr cpucore_table =
 		__ATTR(cpucore_table, S_IRUGO,
@@ -466,6 +487,8 @@ static struct sysfs_attr cpucore_max_num_limit =
 		__ATTR(cpucore_max_num_limit, S_IRUGO | S_IWUSR,
 			show_cpucore_max_num_limit,
 			store_cpucore_max_num_limit);
+=======
+>>>>>>> 512ca3c... stock
 #endif
 
 static inline u64 get_cpu_idle_time_jiffy(unsigned int cpu, u64 *wall)
@@ -616,9 +639,12 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 #endif
 	int tmp_nr_sleep_prepare_cpus = 0;
 
+<<<<<<< HEAD
 	if (ktoonservative_is_active && ktoonservative_hp_active)
 		return 0;
 
+=======
+>>>>>>> 512ca3c... stock
 	if (exynos_dm_hotplug_disabled())
 		return 0;
 
@@ -652,7 +678,11 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 			}
 		}
 		else if (cmd == CMD_CLUST1_OUT && !in_low_power_mode) {
+<<<<<<< HEAD
 			for (i = max_num_cpu - 1; i >= NR_CLUST0_CPUS; i--) {
+=======
+			for (i = setup_max_cpus - 1; i >= NR_CLUST0_CPUS; i--) {
+>>>>>>> 512ca3c... stock
 				if (cpu_online(i)) {
 					ret = cpu_down(i);
 					if (ret)
@@ -675,7 +705,11 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 				if (cluster0_hotplug_in)
 					hotplug_out_limit = NR_CLUST0_CPUS - 2;
 
+<<<<<<< HEAD
 				for (i = max_num_cpu - 1; i > hotplug_out_limit; i--) {
+=======
+				for (i = setup_max_cpus - 1; i > hotplug_out_limit; i--) {
+>>>>>>> 512ca3c... stock
 					if (cpu_online(i)) {
 						ret = cpu_down(i);
 						if (ret)
@@ -692,7 +726,11 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 			if (in_low_power_mode)
 				goto blk_out;
 
+<<<<<<< HEAD
 			for (i = NR_CLUST0_CPUS; i < max_num_cpu; i++) {
+=======
+			for (i = NR_CLUST0_CPUS; i < setup_max_cpus; i++) {
+>>>>>>> 512ca3c... stock
 				if (!cpu_online(i)) {
 					ret = cpu_up(i);
 					if (ret)
@@ -719,7 +757,11 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 				}
 			} else {
 				if (lcd_is_on) {
+<<<<<<< HEAD
 					for (i = NR_CLUST0_CPUS; i < max_num_cpu; i++) {
+=======
+					for (i = NR_CLUST0_CPUS; i < setup_max_cpus; i++) {
+>>>>>>> 512ca3c... stock
 						if (do_hotplug_out)
 							goto blk_out;
 
@@ -741,7 +783,11 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 						}
 					}
 				} else {
+<<<<<<< HEAD
 					for (i = 1; i < max_num_cpu; i++) {
+=======
+					for (i = 1; i < setup_max_cpus; i++) {
+>>>>>>> 512ca3c... stock
 						if (do_hotplug_out && i >= NR_CLUST0_CPUS)
 							goto blk_out;
 
@@ -760,7 +806,11 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 		if (do_disable_hotplug)
 			goto blk_out;
 
+<<<<<<< HEAD
 		for (i = max_num_cpu - 1; i > 0; i--) {
+=======
+		for (i = setup_max_cpus - 1; i > 0; i--) {
+>>>>>>> 512ca3c... stock
 			if (cpu_online(i)) {
 				ret = cpu_down(i);
 				if (ret)
@@ -771,7 +821,11 @@ static int __ref __cpu_hotplug(bool out_flag, enum hotplug_cmd cmd)
 		if (in_suspend_prepared)
 			goto blk_out;
 
+<<<<<<< HEAD
 		for (i = 1; i < max_num_cpu; i++) {
+=======
+		for (i = 1; i < setup_max_cpus; i++) {
+>>>>>>> 512ca3c... stock
 			if (!cpu_online(i)) {
 				ret = cpu_up(i);
 				if (ret)
@@ -1021,7 +1075,11 @@ static struct notifier_block exynos_dm_hotplug_reboot_nb = {
 static void update_nr_running_count(void)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	cur_nr_running = (avg_nr_running() * 100) >> FSHIFT;
+=======
+	cur_nr_running = nr_running();
+>>>>>>> 512ca3c... stock
 
 	if (cur_nr_running >= nr_running_threshold) {
 		if (nr_running_count < nr_running_range)
@@ -1065,10 +1123,13 @@ static enum hotplug_cmd diagnose_condition(void)
 	normal_min_freq = cpufreq_interactive_get_hispeed_freq(0);
 	if (!normal_min_freq)
 		normal_min_freq = NORMALMIN_FREQ;
+<<<<<<< HEAD
 #elif defined(CONFIG_CPU_FREQ_GOV_CAFACTIVE)
 	normal_min_freq = cpufreq_cafactive_get_hispeed_freq(0);
 	if (!normal_min_freq)
 		normal_min_freq = NORMALMIN_FREQ;
+=======
+>>>>>>> 512ca3c... stock
 #else
 	normal_min_freq = NORMALMIN_FREQ;
 #endif
@@ -1287,8 +1348,11 @@ const static struct file_operations cputime_fops = {
 static int __init dm_cpu_hotplug_init(void)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	min_num_cpu = 0;
 	max_num_cpu = NR_CPUS;
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_ARM_EXYNOS_MP_CPUFREQ
 	struct cpufreq_policy *policy;
 #endif
@@ -1341,6 +1405,7 @@ static int __init dm_cpu_hotplug_init(void)
 			__func__);
 		goto err_dm_hotplug_delay;
 	}
+<<<<<<< HEAD
 
 	ret = sysfs_create_file(power_kobj, &cpucore_table.attr);
 	if (ret)
@@ -1354,6 +1419,8 @@ static int __init dm_cpu_hotplug_init(void)
 	if (ret)
 		goto err;
 
+=======
+>>>>>>> 512ca3c... stock
 #endif
 
 #ifdef CONFIG_ARM_EXYNOS_MP_CPUFREQ
@@ -1431,9 +1498,12 @@ err_cluster0_core_hotplug_in:
 	sysfs_remove_file(power_kobj, &enable_dm_hotplug.attr);
 err_enable_dm_hotplug:
 #endif
+<<<<<<< HEAD
 err:
 	pr_err("%s: failed to create sysfs interface\n", __func__);
 
+=======
+>>>>>>> 512ca3c... stock
 	fb_unregister_client(&fb_block);
 #ifndef CONFIG_HOTPLUG_THREAD_STOP
 	kthread_stop(dm_hotplug_task);

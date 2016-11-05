@@ -12,8 +12,11 @@ enum {
 	ARM_SEC_CORE,
 	ARM_SEC_EXIT,
 	ARM_SEC_DEVEXIT,
+<<<<<<< HEAD
 	ARM_SEC_HOT,
 	ARM_SEC_UNLIKELY,
+=======
+>>>>>>> 512ca3c... stock
 	ARM_SEC_MAX,
 };
 

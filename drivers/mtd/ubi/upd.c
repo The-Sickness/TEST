@@ -133,10 +133,13 @@ int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
 	ubi_assert(!vol->updating && !vol->changing_leb);
 	vol->updating = 1;
 
+<<<<<<< HEAD
 	vol->upd_buf = vmalloc(ubi->leb_size);
 	if (!vol->upd_buf)
 		return -ENOMEM;
 
+=======
+>>>>>>> 512ca3c... stock
 	err = set_update_marker(ubi, vol);
 	if (err)
 		return err;
@@ -156,12 +159,22 @@ int ubi_start_update(struct ubi_device *ubi, struct ubi_volume *vol,
 		err = clear_update_marker(ubi, vol, 0);
 		if (err)
 			return err;
+<<<<<<< HEAD
 
 		vfree(vol->upd_buf);
+=======
+>>>>>>> 512ca3c... stock
 		vol->updating = 0;
 		return 0;
 	}
 
+<<<<<<< HEAD
+=======
+	vol->upd_buf = vmalloc(ubi->leb_size);
+	if (!vol->upd_buf)
+		return -ENOMEM;
+
+>>>>>>> 512ca3c... stock
 	vol->upd_ebs = div_u64(bytes + vol->usable_leb_size - 1,
 			       vol->usable_leb_size);
 	vol->upd_bytes = bytes;
@@ -193,7 +206,11 @@ int ubi_start_leb_change(struct ubi_device *ubi, struct ubi_volume *vol,
 	vol->changing_leb = 1;
 	vol->ch_lnum = req->lnum;
 
+<<<<<<< HEAD
 	vol->upd_buf = vmalloc(ALIGN((int)req->bytes, ubi->min_io_size));
+=======
+	vol->upd_buf = vmalloc(req->bytes);
+>>>>>>> 512ca3c... stock
 	if (!vol->upd_buf)
 		return -ENOMEM;
 

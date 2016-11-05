@@ -138,10 +138,15 @@ void panic(const char *fmt, ...)
 #if defined(CONFIG_SOC_EXYNOS5422) || defined(CONFIG_SOC_EXYNOS5430)
 	show_exynos_cmu();
 #endif
+<<<<<<< HEAD
 
 #if defined(CONFIG_SCHED_DEBUG)	
 	sysrq_sched_debug_show();
 #endif
+=======
+	sysrq_sched_debug_show();
+
+>>>>>>> 512ca3c... stock
 	/*
 	 * If we have crashed and we have a crash kernel loaded let it handle
 	 * everything else.
@@ -165,8 +170,11 @@ void panic(const char *fmt, ...)
 	exynos_ss_post_panic();
 
 	bust_spinlocks(0);
+<<<<<<< HEAD
 	
 	console_flush_on_panic();
+=======
+>>>>>>> 512ca3c... stock
 
 	if (!panic_blink)
 		panic_blink = no_blink;

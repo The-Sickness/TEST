@@ -17,9 +17,17 @@
 #include <asm/page.h>
 #include <asm/pgtable.h>
 #include <asm/mtrr.h>
+<<<<<<< HEAD
 #include <asm/sections.h>
 #include <asm/suspend.h>
 
+=======
+#include <asm/suspend.h>
+
+/* References to section boundaries */
+extern const void __nosave_begin, __nosave_end;
+
+>>>>>>> 512ca3c... stock
 /* Defined in hibernate_asm_64.S */
 extern int restore_image(void);
 

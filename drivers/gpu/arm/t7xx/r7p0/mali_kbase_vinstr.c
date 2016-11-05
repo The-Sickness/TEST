@@ -240,10 +240,16 @@ static size_t kbasep_vinstr_dump_size(struct kbase_vinstr_context *vinstr_ctx)
 		u32 nr_blocks = fls64(core_mask);
 
 		/* JM and tiler counter blocks are always present */
+<<<<<<< HEAD
 		/* MALI_SEC_INTEGRATION */
 		dump_size = (2 + nr_l2 + nr_blocks) *
 				NR_CNT_PER_BLOCK *
 				NR_BYTES_PER_CNT * 2;
+=======
+		dump_size = (2 + nr_l2 + nr_blocks) *
+				NR_CNT_PER_BLOCK *
+				NR_BYTES_PER_CNT;
+>>>>>>> 512ca3c... stock
 	}
 	return dump_size;
 }
@@ -314,13 +320,21 @@ static int kbasep_vinstr_create_kctx(struct kbase_vinstr_context *vinstr_ctx)
 		kbasep_vinstr_unmap_kernel_dump_buffer(vinstr_ctx);
 		kbase_destroy_context(vinstr_ctx->kctx);
 		vinstr_ctx->kctx = NULL;
+<<<<<<< HEAD
+=======
+		GPU_LOG(DVFS_WARNING, DUMMY, 0u, 0u, "skip enable in attach hwcnt %d \n", err);
+>>>>>>> 512ca3c... stock
 		return err;
 	}
 
 #ifdef MALI_SEC_HWCNT
 	/* SEC_HWCNT doesn't use vinstr_ctx thread. it use legacy hwcnt vinstr_ctx */
+<<<<<<< HEAD
 	if (vinstr_ctx->kbdev->hwcnt.is_hwcnt_attach == true)
 		return 0;
+=======
+	return 0;
+>>>>>>> 512ca3c... stock
 #endif
 
 	vinstr_ctx->thread = kthread_run(
@@ -1477,12 +1491,23 @@ struct kbase_vinstr_context *kbase_vinstr_init(struct kbase_device *kbdev)
 	vinstr_ctx->kbdev = kbdev;
 	vinstr_ctx->thread = NULL;
 
+<<<<<<< HEAD
 	atomic_set(&vinstr_ctx->request_pending, 0);
 	init_waitqueue_head(&vinstr_ctx->waitq);
 #ifdef MALI_SEC_HWCNT
 	kbdev->hwcnt.is_hwcnt_attach = false;
 	kbdev->hwcnt.is_hwcnt_force_stop = false;
 #endif
+=======
+#ifdef MALI_SEC_HWCNT
+	kbdev->hwcnt.is_hwcnt_attach = false;
+	kbdev->hwcnt.is_hwcnt_force_stop = false;
+	kbdev->hwcnt.timeout = (unsigned int)msecs_to_jiffies(100);
+#endif
+
+	atomic_set(&vinstr_ctx->request_pending, 0);
+	init_waitqueue_head(&vinstr_ctx->waitq);
+>>>>>>> 512ca3c... stock
 	return vinstr_ctx;
 }
 
@@ -1707,7 +1732,11 @@ void kbasep_vinstr_detach_client_sec(struct kbase_vinstr_client *cli)
 {
 	kbasep_vinstr_detach_client(cli);
 }
+<<<<<<< HEAD
 void kbase_vinstr_enable(struct kbase_vinstr_context *ctx)
+=======
+int kbase_vinstr_enable(struct kbase_vinstr_context *ctx)
+>>>>>>> 512ca3c... stock
 {
 	struct kbase_uk_hwcnt_setup setup;
 	struct exynos_context *platform;
@@ -1720,7 +1749,11 @@ void kbase_vinstr_enable(struct kbase_vinstr_context *ctx)
 	setup.shader_bm = platform->hwcnt_choose_shader;
 	setup.mmu_l2_bm = platform->hwcnt_choose_mmu_l2;
 
+<<<<<<< HEAD
 	kbase_instr_hwcnt_enable_internal(ctx->kbdev, ctx->kctx, &setup);
+=======
+	return kbase_instr_hwcnt_enable_internal(ctx->kbdev, ctx->kctx, &setup);
+>>>>>>> 512ca3c... stock
 }
 
 void kbase_vinstr_disable(struct kbase_vinstr_context *ctx)

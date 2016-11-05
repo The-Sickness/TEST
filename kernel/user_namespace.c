@@ -24,7 +24,10 @@
 #include <linux/fs_struct.h>
 
 static struct kmem_cache *user_ns_cachep __read_mostly;
+<<<<<<< HEAD
 static DEFINE_MUTEX(userns_state_mutex);
+=======
+>>>>>>> 512ca3c... stock
 
 static bool new_idmap_permitted(const struct file *file,
 				struct user_namespace *ns, int cap_setid,
@@ -100,11 +103,14 @@ int create_user_ns(struct cred *new)
 	ns->owner = owner;
 	ns->group = group;
 
+<<<<<<< HEAD
 	/* Inherit USERNS_SETGROUPS_ALLOWED from our parent */
 	mutex_lock(&userns_state_mutex);
 	ns->flags = parent_ns->flags;
 	mutex_unlock(&userns_state_mutex);
 
+=======
+>>>>>>> 512ca3c... stock
 	set_cred_user_ns(new, ns);
 
 	update_mnt_policy(ns);
@@ -583,6 +589,12 @@ static bool mappings_overlap(struct uid_gid_map *new_map, struct uid_gid_extent 
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+
+static DEFINE_MUTEX(id_map_mutex);
+
+>>>>>>> 512ca3c... stock
 static ssize_t map_write(struct file *file, const char __user *buf,
 			 size_t count, loff_t *ppos,
 			 int cap_setid,
@@ -599,7 +611,11 @@ static ssize_t map_write(struct file *file, const char __user *buf,
 	ssize_t ret = -EINVAL;
 
 	/*
+<<<<<<< HEAD
 	 * The userns_state_mutex serializes all writes to any given map.
+=======
+	 * The id_map_mutex serializes all writes to any given map.
+>>>>>>> 512ca3c... stock
 	 *
 	 * Any map is only ever written once.
 	 *
@@ -617,7 +633,11 @@ static ssize_t map_write(struct file *file, const char __user *buf,
 	 * order and smp_rmb() is guaranteed that we don't have crazy
 	 * architectures returning stale data.
 	 */
+<<<<<<< HEAD
 	mutex_lock(&userns_state_mutex);
+=======
+	mutex_lock(&id_map_mutex);
+>>>>>>> 512ca3c... stock
 
 	ret = -EPERM;
 	/* Only allow one successful write to the map */
@@ -744,7 +764,11 @@ static ssize_t map_write(struct file *file, const char __user *buf,
 	*ppos = count;
 	ret = count;
 out:
+<<<<<<< HEAD
 	mutex_unlock(&userns_state_mutex);
+=======
+	mutex_unlock(&id_map_mutex);
+>>>>>>> 512ca3c... stock
 	if (page)
 		free_page(page);
 	return ret;
@@ -846,6 +870,7 @@ bool userns_may_setgroups(const struct user_namespace *ns)
 	return allowed;
 }
 
+<<<<<<< HEAD
 int proc_setgroups_show(struct seq_file *seq, void *v)
 {
 	struct user_namespace *ns = seq->private;
@@ -940,6 +965,8 @@ bool userns_may_setgroups(const struct user_namespace *ns)
 	return allowed;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static void *userns_get(struct task_struct *task)
 {
 	struct user_namespace *user_ns;

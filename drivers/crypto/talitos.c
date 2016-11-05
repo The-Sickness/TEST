@@ -935,8 +935,12 @@ static int sg_to_link_tbl(struct scatterlist *sg, int sg_count,
 		sg_count--;
 		link_tbl_ptr--;
 	}
+<<<<<<< HEAD
 	link_tbl_ptr->len = cpu_to_be16(be16_to_cpu(link_tbl_ptr->len)
 					+ cryptlen);
+=======
+	be16_add_cpu(&link_tbl_ptr->len, cryptlen);
+>>>>>>> 512ca3c... stock
 
 	/* tag end of link table */
 	link_tbl_ptr->j_extent = DESC_PTR_LNKTBL_RETURN;
@@ -2622,7 +2626,10 @@ static struct talitos_crypto_alg *talitos_alg_alloc(struct device *dev,
 		break;
 	default:
 		dev_err(dev, "unknown algorithm type %d\n", t_alg->algt.type);
+<<<<<<< HEAD
 		kfree(t_alg);
+=======
+>>>>>>> 512ca3c... stock
 		return ERR_PTR(-EINVAL);
 	}
 

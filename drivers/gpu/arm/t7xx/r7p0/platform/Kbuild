@@ -17,5 +17,9 @@
 ifeq ($(CONFIG_MALI_PLATFORM_THIRDPARTY),y)
 # remove begin and end quotes from the Kconfig string type
 	platform_name := $(shell echo $(CONFIG_MALI_PLATFORM_THIRDPARTY_NAME))
+<<<<<<< HEAD
+=======
+	#obj-y += $(platform_name)/
+>>>>>>> 512ca3c... stock
 	obj-y += exynos/
 endif

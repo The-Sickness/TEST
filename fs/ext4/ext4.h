@@ -26,7 +26,10 @@
 #include <linux/seqlock.h>
 #include <linux/mutex.h>
 #include <linux/timer.h>
+<<<<<<< HEAD
 #include <linux/version.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <linux/wait.h>
 #include <linux/blockgroup_lock.h>
 #include <linux/percpu_counter.h>
@@ -590,7 +593,10 @@ enum {
 #define EXT4_FREE_BLOCKS_NO_QUOT_UPDATE	0x0008
 #define EXT4_FREE_BLOCKS_NOFREE_FIRST_CLUSTER	0x0010
 #define EXT4_FREE_BLOCKS_NOFREE_LAST_CLUSTER	0x0020
+<<<<<<< HEAD
 #define EXT4_FREE_BLOCKS_RESERVE		0x0040
+=======
+>>>>>>> 512ca3c... stock
 
 /*
  * Flags used by ext4_discard_partial_page_buffers
@@ -729,6 +735,7 @@ struct move_extent {
 	<= (EXT4_GOOD_OLD_INODE_SIZE +			\
 	    (einode)->i_extra_isize))			\
 
+<<<<<<< HEAD
 /*
  * We use an encoding that preserves the times for extra epoch "00":
  *
@@ -755,10 +762,18 @@ static inline __le32 ext4_encode_extra_time(struct timespec *time)
 	u32 extra = sizeof(time->tv_sec) > 4 ?
 		((time->tv_sec - (s32)time->tv_sec) >> 32) & EXT4_EPOCH_MASK : 0;
 	return cpu_to_le32(extra | (time->tv_nsec << EXT4_EPOCH_BITS));
+=======
+static inline __le32 ext4_encode_extra_time(struct timespec *time)
+{
+       return cpu_to_le32((sizeof(time->tv_sec) > 4 ?
+			   (time->tv_sec >> 32) & EXT4_EPOCH_MASK : 0) |
+                          ((time->tv_nsec << EXT4_EPOCH_BITS) & EXT4_NSEC_MASK));
+>>>>>>> 512ca3c... stock
 }
 
 static inline void ext4_decode_extra_time(struct timespec *time, __le32 extra)
 {
+<<<<<<< HEAD
 	if (unlikely(sizeof(time->tv_sec) > 4 &&
 			(extra & cpu_to_le32(EXT4_EPOCH_MASK)))) {
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4,20,0)
@@ -778,6 +793,12 @@ static inline void ext4_decode_extra_time(struct timespec *time, __le32 extra)
 #endif
 	}
 	time->tv_nsec = (le32_to_cpu(extra) & EXT4_NSEC_MASK) >> EXT4_EPOCH_BITS;
+=======
+       if (sizeof(time->tv_sec) > 4)
+	       time->tv_sec |= (__u64)(le32_to_cpu(extra) & EXT4_EPOCH_MASK)
+			       << 32;
+       time->tv_nsec = (le32_to_cpu(extra) & EXT4_NSEC_MASK) >> EXT4_EPOCH_BITS;
+>>>>>>> 512ca3c... stock
 }
 
 #define EXT4_INODE_SET_XTIME(xtime, inode, raw_inode)			       \

@@ -1584,9 +1584,12 @@ SYSCALL_DEFINE2(umount, char __user *, name, int, flags)
 		goto dput_and_out;
 	if (!check_mnt(mnt))
 		goto dput_and_out;
+<<<<<<< HEAD
 	retval = -EPERM;
 	if (flags & MNT_FORCE && !capable(CAP_SYS_ADMIN))
 		goto dput_and_out;
+=======
+>>>>>>> 512ca3c... stock
 
 	retval = do_umount(mnt, flags);
 dput_and_out:
@@ -2090,6 +2093,7 @@ static int do_remount(struct path *path, int flags, int mnt_flags,
 	if ((mnt->mnt.mnt_flags & MNT_LOCK_NODEV) &&
 #endif
 	    !(mnt_flags & MNT_NODEV)) {
+<<<<<<< HEAD
 		/* Was the nodev implicitly added in mount? */
 		if ((mnt->mnt_ns->user_ns != &init_user_ns) &&
 		    !(sb->s_type->fs_flags & FS_USERNS_DEV_MOUNT)) {
@@ -2097,6 +2101,9 @@ static int do_remount(struct path *path, int flags, int mnt_flags,
 		} else {
 			return -EPERM;
 		}
+=======
+		return -EPERM;
+>>>>>>> 512ca3c... stock
 	}
 #ifdef CONFIG_RKP_NS_PROT
 	if ((mnt->mnt->mnt_flags & MNT_LOCK_NOSUID) &&
@@ -2627,6 +2634,7 @@ long do_mount(const char *dev_name, const char *dir_name,
 	if (data_page)
 		((char *)data_page)[PAGE_SIZE - 1] = 0;
 
+<<<<<<< HEAD
 #ifdef CONFIG_RESTRICT_ROOTFS_SLAVE
 	/* Check if this is an attempt to mark "/" as recursive-slave. */
 	if (strcmp(dir_name, "/") == 0 && flags == (MS_SLAVE | MS_REC)) {
@@ -2657,6 +2665,8 @@ long do_mount(const char *dev_name, const char *dir_name,
 	}
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 	/* ... and get the mountpoint */
 	retval = kern_path(dir_name, LOOKUP_FOLLOW, &path);
 	if (retval)

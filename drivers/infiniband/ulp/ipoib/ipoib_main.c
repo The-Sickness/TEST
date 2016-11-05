@@ -887,9 +887,13 @@ struct ipoib_neigh *ipoib_neigh_get(struct net_device *dev, u8 *daddr)
 				neigh = NULL;
 				goto out_unlock;
 			}
+<<<<<<< HEAD
 
 			if (likely(skb_queue_len(&neigh->queue) < IPOIB_MAX_PATH_REC_QUEUE))
 				neigh->alive = jiffies;
+=======
+			neigh->alive = jiffies;
+>>>>>>> 512ca3c... stock
 			goto out_unlock;
 		}
 	}

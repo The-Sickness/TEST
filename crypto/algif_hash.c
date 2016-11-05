@@ -51,8 +51,12 @@ static int hash_sendmsg(struct kiocb *unused, struct socket *sock,
 
 	lock_sock(sk);
 	if (!ctx->more) {
+<<<<<<< HEAD
 		err = af_alg_wait_for_completion(crypto_ahash_init(&ctx->req),
 						&ctx->completion);
+=======
+		err = crypto_ahash_init(&ctx->req);
+>>>>>>> 512ca3c... stock
 		if (err)
 			goto unlock;
 	}
@@ -132,7 +136,10 @@ static ssize_t hash_sendpage(struct socket *sock, struct page *page,
 	} else {
 		if (!ctx->more) {
 			err = crypto_ahash_init(&ctx->req);
+<<<<<<< HEAD
 			err = af_alg_wait_for_completion(err, &ctx->completion);
+=======
+>>>>>>> 512ca3c... stock
 			if (err)
 				goto unlock;
 		}
@@ -194,6 +201,7 @@ static int hash_accept(struct socket *sock, struct socket *newsock, int flags)
 	struct sock *sk2;
 	struct alg_sock *ask2;
 	struct hash_ctx *ctx2;
+<<<<<<< HEAD
 	bool more;
 	int err;
 
@@ -202,6 +210,11 @@ static int hash_accept(struct socket *sock, struct socket *newsock, int flags)
 	err = more ? crypto_ahash_export(req, state) : 0;
 	release_sock(sk);
 
+=======
+	int err;
+
+	err = crypto_ahash_export(req, state);
+>>>>>>> 512ca3c... stock
 	if (err)
 		return err;
 
@@ -212,10 +225,14 @@ static int hash_accept(struct socket *sock, struct socket *newsock, int flags)
 	sk2 = newsock->sk;
 	ask2 = alg_sk(sk2);
 	ctx2 = ask2->private;
+<<<<<<< HEAD
 	ctx2->more = more;
 
 	if (!more)
 		return err;
+=======
+	ctx2->more = 1;
+>>>>>>> 512ca3c... stock
 
 	err = crypto_ahash_import(&ctx2->req, state);
 	if (err) {

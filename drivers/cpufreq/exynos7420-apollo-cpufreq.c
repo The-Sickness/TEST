@@ -16,7 +16,10 @@
 #include <linux/slab.h>
 #include <linux/cpufreq.h>
 #include <linux/clk-private.h>
+<<<<<<< HEAD
 #include <linux/clocker.h>
+=======
+>>>>>>> 512ca3c... stock
 
 #include <mach/map.h>
 #include <mach/regs-clock.h>
@@ -73,12 +76,21 @@ static struct apll_freq exynos7420_apll_freq_CA53[] = {
 	 * PLL M, P, S values are NOT used, Instead CCF clk_set_rate is used
 	 */
 	APLL_FREQ(2000, 0, 0, 2, 5, 5, 5, 5, 0, 1, 4, 0,   0, 0, 0),  /* ARM L0: 2.0GHz   */
+<<<<<<< HEAD
 	APLL_FREQ(1900, 0, 0, 2, 5, 5, 5, 5, 0, 1, 4, 0,   0, 0, 0),  /* ARM L1: 1.9GHz  */
 	APLL_FREQ(1800, 0, 0, 2, 5, 5, 5, 5, 0, 1, 4, 0, 150, 2, 0),  /* ARM L2: 1.8GHz  */
 	APLL_FREQ(1704, 0, 0, 2, 5, 5, 5, 5, 0, 1, 4, 0, 142, 2, 0),  /* ARM L3: 1.7GHz   */
 	APLL_FREQ(1600, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 200, 3, 0),  /* ARM L4: 1.6GHz   */
 	APLL_FREQ(1500, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 250, 4, 0),  /* ARM L5: 1.5GHz  */
 	APLL_FREQ(1400, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 175, 3, 0),  /* ARM L6: 1.4GHz  */
+=======
+	APLL_FREQ(1900, 0, 0, 2, 5, 5, 5, 5, 0, 1, 4, 0,   0, 0, 0),  /* ARM L1: 1.9GMHz  */
+	APLL_FREQ(1800, 0, 0, 2, 5, 5, 5, 5, 0, 1, 4, 0, 150, 2, 0),  /* ARM L2: 1.8GMHz  */
+	APLL_FREQ(1704, 0, 0, 2, 5, 5, 5, 5, 0, 1, 4, 0, 142, 2, 0),  /* ARM L3: 1.7GHz   */
+	APLL_FREQ(1600, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 200, 3, 0),  /* ARM L4: 1.6GHz   */
+	APLL_FREQ(1500, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 250, 4, 0),  /* ARM L5: 1.5GMHz  */
+	APLL_FREQ(1400, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 175, 3, 0),  /* ARM L6: 1.4GMHz  */
+>>>>>>> 512ca3c... stock
 	APLL_FREQ(1296, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 108, 2, 0),  /* ARM L7: 1.3GHz   */
 	APLL_FREQ(1200, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0, 100, 2, 0),  /* ARM L8: 1.2GHz   */
 	APLL_FREQ(1104, 0, 0, 2, 5, 5, 5, 5, 0, 1, 3, 0,  92, 2, 0),  /* ARM L9: 1.1GHz   */
@@ -302,11 +314,18 @@ static void __init set_volt_table_CA53(void)
 	case 12 :
 		max_support_idx_CA53 = L7; break;	/* 1.3GHz */
 	default :
+<<<<<<< HEAD
 		max_support_idx_CA53 = EXYNOS7420_CPU_MAX_FREQ_LITTLE;
 	}
 
 	min_support_idx_CA53 = EXYNOS7420_CPU_MIN_FREQ_LITTLE;
 
+=======
+		max_support_idx_CA53 = L5;	/* 1.5GHz */
+	}
+
+	min_support_idx_CA53 = L16;	/* 400MHz */
+>>>>>>> 512ca3c... stock
 	pr_info("CPUFREQ of CA53 max_freq : L%d %u khz\n", max_support_idx_CA53,
 		exynos7420_freq_table_CA53[max_support_idx_CA53].frequency);
 	pr_info("CPUFREQ of CA53 min_freq : L%d %u khz\n", min_support_idx_CA53,
@@ -371,6 +390,7 @@ int __init exynos_cpufreq_cluster0_init(struct exynos_dvfs_info *info)
 	info->max_support_idx = max_support_idx_CA53;
 	info->min_support_idx = min_support_idx_CA53;
 	info->boost_freq = exynos7420_freq_table_CA53[L10].frequency;
+<<<<<<< HEAD
 	/* booting frequency */
 	#ifdef EXYNOS7420_CPU_OVERCLOCK
 		/* booting frequency is 1.5GHz */
@@ -381,6 +401,11 @@ int __init exynos_cpufreq_cluster0_init(struct exynos_dvfs_info *info)
 		info->boot_cpu_min_qos = exynos7420_freq_table_CA53[L6].frequency;
 		info->boot_cpu_max_qos = exynos7420_freq_table_CA53[L6].frequency;
 	#endif
+=======
+	/* booting frequency is 1.4GHz */
+	info->boot_cpu_min_qos = exynos7420_freq_table_CA53[L6].frequency;
+	info->boot_cpu_max_qos = exynos7420_freq_table_CA53[L6].frequency;
+>>>>>>> 512ca3c... stock
 #if defined(CONFIG_PMU_COREMEM_RATIO)
 	info->region_bus_table = exynos7420_region_bus_table_CA53;
 #else

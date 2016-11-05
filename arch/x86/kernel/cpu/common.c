@@ -144,8 +144,11 @@ EXPORT_PER_CPU_SYMBOL_GPL(gdt_page);
 
 static int __init x86_xsave_setup(char *s)
 {
+<<<<<<< HEAD
 	if (strlen(s))
 		return 0;
+=======
+>>>>>>> 512ca3c... stock
 	setup_clear_cpu_cap(X86_FEATURE_XSAVE);
 	setup_clear_cpu_cap(X86_FEATURE_XSAVEOPT);
 	setup_clear_cpu_cap(X86_FEATURE_AVX);
@@ -280,9 +283,16 @@ __setup("nosmap", setup_disable_smap);
 
 static __always_inline void setup_smap(struct cpuinfo_x86 *c)
 {
+<<<<<<< HEAD
 	unsigned long eflags = native_save_fl();
 
 	/* This should have been cleared long ago */
+=======
+	unsigned long eflags;
+
+	/* This should have been cleared long ago */
+	raw_local_save_flags(eflags);
+>>>>>>> 512ca3c... stock
 	BUG_ON(eflags & X86_EFLAGS_AC);
 
 	if (cpu_has(c, X86_FEATURE_SMAP)) {

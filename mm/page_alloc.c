@@ -2075,7 +2075,11 @@ void warn_alloc_failed(gfp_t gfp_mask, int order, const char *fmt, ...)
 	 * of allowed nodes.
 	 */
 	if (!(gfp_mask & __GFP_NOMEMALLOC))
+<<<<<<< HEAD
 		if (test_thread_flag_relaxed(TIF_MEMDIE) ||
+=======
+		if (test_thread_flag(TIF_MEMDIE) ||
+>>>>>>> 512ca3c... stock
 		    (current->flags & (PF_MEMALLOC | PF_EXITING)))
 			filter &= ~SHOW_MEM_FILTER_NODES;
 	if (in_interrupt() || !(gfp_mask & __GFP_WAIT))
@@ -2422,7 +2426,11 @@ gfp_to_alloc_flags(gfp_t gfp_mask)
 			alloc_flags |= ALLOC_NO_WATERMARKS;
 		else if (!in_interrupt() &&
 				((current->flags & PF_MEMALLOC) ||
+<<<<<<< HEAD
 				 unlikely(test_thread_flag_relaxed(TIF_MEMDIE))))
+=======
+				 unlikely(test_thread_flag(TIF_MEMDIE))))
+>>>>>>> 512ca3c... stock
 			alloc_flags |= ALLOC_NO_WATERMARKS;
 	}
 #ifdef CONFIG_CMA
@@ -2530,7 +2538,11 @@ rebalance:
 		goto nopage;
 
 	/* Avoid allocations with no watermarks from looping endlessly */
+<<<<<<< HEAD
 	if (test_thread_flag_relaxed(TIF_MEMDIE) && !(gfp_mask & __GFP_NOFAIL))
+=======
+	if (test_thread_flag(TIF_MEMDIE) && !(gfp_mask & __GFP_NOFAIL))
+>>>>>>> 512ca3c... stock
 		goto nopage;
 
 	/*
@@ -4249,7 +4261,11 @@ int __meminit init_currently_empty_zone(struct zone *zone,
 int __meminit __early_pfn_to_nid(unsigned long pfn)
 {
 	unsigned long start_pfn, end_pfn;
+<<<<<<< HEAD
 	int nid;
+=======
+	int i, nid;
+>>>>>>> 512ca3c... stock
 	/*
 	 * NOTE: The following SMP-unsafe globals are only used early in boot
 	 * when the kernel is running single-threaded.
@@ -4260,6 +4276,7 @@ int __meminit __early_pfn_to_nid(unsigned long pfn)
 	if (last_start_pfn <= pfn && pfn < last_end_pfn)
 		return last_nid;
 
+<<<<<<< HEAD
 	nid = memblock_search_pfn_nid(pfn, &start_pfn, &end_pfn);
 	if (nid != -1) {
 		last_start_pfn = start_pfn;
@@ -4268,6 +4285,17 @@ int __meminit __early_pfn_to_nid(unsigned long pfn)
 	}
 
 	return nid;
+=======
+	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid)
+		if (start_pfn <= pfn && pfn < end_pfn) {
+			last_start_pfn = start_pfn;
+			last_end_pfn = end_pfn;
+			last_nid = nid;
+			return nid;
+		}
+	/* This is a memory hole */
+	return -1;
+>>>>>>> 512ca3c... stock
 }
 #endif /* CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID */
 

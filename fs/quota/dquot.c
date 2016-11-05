@@ -1102,6 +1102,7 @@ static void dquot_claim_reserved_space(struct dquot *dquot, qsize_t number)
 	dquot->dq_dqb.dqb_rsvspace -= number;
 }
 
+<<<<<<< HEAD
 static void dquot_reclaim_reserved_space(struct dquot *dquot, qsize_t number)
 {
 	if (WARN_ON_ONCE(dquot->dq_dqb.dqb_curspace < number))
@@ -1110,6 +1111,8 @@ static void dquot_reclaim_reserved_space(struct dquot *dquot, qsize_t number)
 	dquot->dq_dqb.dqb_curspace -= number;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static inline
 void dquot_free_reserved_space(struct dquot *dquot, qsize_t number)
 {
@@ -1544,6 +1547,7 @@ void inode_claim_rsv_space(struct inode *inode, qsize_t number)
 }
 EXPORT_SYMBOL(inode_claim_rsv_space);
 
+<<<<<<< HEAD
 void inode_reclaim_rsv_space(struct inode *inode, qsize_t number)
 {
 	spin_lock(&inode->i_lock);
@@ -1553,6 +1557,8 @@ void inode_reclaim_rsv_space(struct inode *inode, qsize_t number)
 }
 EXPORT_SYMBOL(inode_reclaim_rsv_space);
 
+=======
+>>>>>>> 512ca3c... stock
 void inode_sub_rsv_space(struct inode *inode, qsize_t number)
 {
 	spin_lock(&inode->i_lock);
@@ -1727,6 +1733,7 @@ int dquot_claim_space_nodirty(struct inode *inode, qsize_t number)
 EXPORT_SYMBOL(dquot_claim_space_nodirty);
 
 /*
+<<<<<<< HEAD
  * Convert allocated space back to in-memory reserved quotas
  */
 void dquot_reclaim_space_nodirty(struct inode *inode, qsize_t number)
@@ -1756,6 +1763,8 @@ void dquot_reclaim_space_nodirty(struct inode *inode, qsize_t number)
 EXPORT_SYMBOL(dquot_reclaim_space_nodirty);
 
 /*
+=======
+>>>>>>> 512ca3c... stock
  * This operation can block, but only after everything is updated
  */
 void __dquot_free_space(struct inode *inode, qsize_t number, int flags)

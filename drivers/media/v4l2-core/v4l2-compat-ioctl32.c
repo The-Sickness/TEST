@@ -264,7 +264,11 @@ static int put_v4l2_create32(struct v4l2_create_buffers *kp, struct v4l2_create_
 
 struct v4l2_standard32 {
 	__u32		     index;
+<<<<<<< HEAD
 	compat_u64	     id;
+=======
+	__u32		     id[2]; /* __u64 would get the alignment wrong */
+>>>>>>> 512ca3c... stock
 	__u8		     name[24];
 	struct v4l2_fract    frameperiod; /* Frames, not fields */
 	__u32		     framelines;
@@ -284,7 +288,11 @@ static int put_v4l2_standard32(struct v4l2_standard *kp, struct v4l2_standard32 
 {
 	if (!access_ok(VERIFY_WRITE, up, sizeof(struct v4l2_standard32)) ||
 		put_user(kp->index, &up->index) ||
+<<<<<<< HEAD
 		put_user(kp->id, &up->id) ||
+=======
+		copy_to_user(up->id, &kp->id, sizeof(__u64)) ||
+>>>>>>> 512ca3c... stock
 		copy_to_user(up->name, kp->name, 24) ||
 		copy_to_user(&up->frameperiod, &kp->frameperiod, sizeof(kp->frameperiod)) ||
 		put_user(kp->framelines, &up->framelines) ||
@@ -580,10 +588,17 @@ struct v4l2_input32 {
 	__u32	     type;		/*  Type of input */
 	__u32	     audioset;		/*  Associated audios (bitfield) */
 	__u32        tuner;             /*  Associated tuner */
+<<<<<<< HEAD
 	compat_u64   std;
 	__u32	     status;
 	__u32	     reserved[4];
 };
+=======
+	v4l2_std_id  std;
+	__u32	     status;
+	__u32	     reserved[4];
+} __attribute__ ((packed));
+>>>>>>> 512ca3c... stock
 
 /* The 64-bit v4l2_input struct has extra padding at the end of the struct.
    Otherwise it is identical to the 32-bit version. */
@@ -723,7 +738,10 @@ static int put_v4l2_ext_controls32(struct v4l2_ext_controls *kp, struct v4l2_ext
 struct v4l2_event32 {
 	__u32				type;
 	union {
+<<<<<<< HEAD
 		compat_s64		value64;
+=======
+>>>>>>> 512ca3c... stock
 		__u8			data[64];
 	} u;
 	__u32				pending;

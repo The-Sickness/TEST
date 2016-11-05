@@ -152,8 +152,13 @@ static void tick_sched_handle(struct tick_sched *ts, struct pt_regs *regs)
 }
 
 #ifdef CONFIG_NO_HZ_FULL
+<<<<<<< HEAD
 static cpumask_var_t tick_nohz_full_mask;
 bool tick_nohz_full_running;
+=======
+static cpumask_var_t nohz_full_mask;
+bool have_nohz_full_mask;
+>>>>>>> 512ca3c... stock
 
 static bool can_stop_full_tick(void)
 {
@@ -182,12 +187,15 @@ static bool can_stop_full_tick(void)
 	 */
 	if (!sched_clock_stable) {
 		trace_tick_stop(0, "unstable sched clock\n");
+<<<<<<< HEAD
 		/*
 		 * Don't allow the user to think they can get
 		 * full NO_HZ with this machine.
 		 */
 		WARN_ONCE(tick_nohz_full_running,
 			  "NO_HZ FULL will not work with unstable sched clock");
+=======
+>>>>>>> 512ca3c... stock
 		return false;
 	}
 #endif
@@ -243,11 +251,19 @@ static void nohz_full_kick_ipi(void *info)
  */
 void tick_nohz_full_kick_all(void)
 {
+<<<<<<< HEAD
 	if (!tick_nohz_full_running)
 		return;
 
 	preempt_disable();
 	smp_call_function_many(tick_nohz_full_mask,
+=======
+	if (!have_nohz_full_mask)
+		return;
+
+	preempt_disable();
+	smp_call_function_many(nohz_full_mask,
+>>>>>>> 512ca3c... stock
 			       nohz_full_kick_ipi, NULL, false);
 	preempt_enable();
 }
@@ -275,10 +291,17 @@ out:
 
 int tick_nohz_full_cpu(int cpu)
 {
+<<<<<<< HEAD
 	if (!tick_nohz_full_running)
 		return 0;
 
 	return cpumask_test_cpu(cpu, tick_nohz_full_mask);
+=======
+	if (!have_nohz_full_mask)
+		return 0;
+
+	return cpumask_test_cpu(cpu, nohz_full_mask);
+>>>>>>> 512ca3c... stock
 }
 
 /* Parse the boot-time nohz CPU list from the kernel parameters. */
@@ -286,18 +309,31 @@ static int __init tick_nohz_full_setup(char *str)
 {
 	int cpu;
 
+<<<<<<< HEAD
 	alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
 	if (cpulist_parse(str, tick_nohz_full_mask) < 0) {
+=======
+	alloc_bootmem_cpumask_var(&nohz_full_mask);
+	if (cpulist_parse(str, nohz_full_mask) < 0) {
+>>>>>>> 512ca3c... stock
 		pr_warning("NOHZ: Incorrect nohz_full cpumask\n");
 		return 1;
 	}
 
 	cpu = smp_processor_id();
+<<<<<<< HEAD
 	if (cpumask_test_cpu(cpu, tick_nohz_full_mask)) {
 		pr_warning("NO_HZ: Clearing %d from nohz_full range for timekeeping\n", cpu);
 		cpumask_clear_cpu(cpu, tick_nohz_full_mask);
 	}
 	tick_nohz_full_running = true;
+=======
+	if (cpumask_test_cpu(cpu, nohz_full_mask)) {
+		pr_warning("NO_HZ: Clearing %d from nohz_full range for timekeeping\n", cpu);
+		cpumask_clear_cpu(cpu, nohz_full_mask);
+	}
+	have_nohz_full_mask = true;
+>>>>>>> 512ca3c... stock
 
 	return 1;
 }
@@ -315,7 +351,11 @@ static int __cpuinit tick_nohz_cpu_down_callback(struct notifier_block *nfb,
 		 * If we handle the timekeeping duty for full dynticks CPUs,
 		 * we can't safely shutdown that CPU.
 		 */
+<<<<<<< HEAD
 		if (tick_nohz_full_running && tick_do_timer_cpu == cpu)
+=======
+		if (have_nohz_full_mask && tick_do_timer_cpu == cpu)
+>>>>>>> 512ca3c... stock
 			return NOTIFY_BAD;
 		break;
 	}
@@ -334,32 +374,66 @@ static int tick_nohz_init_all(void)
 	int err = -1;
 
 #ifdef CONFIG_NO_HZ_FULL_ALL
+<<<<<<< HEAD
 	if (!alloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL)) {
+=======
+	if (!alloc_cpumask_var(&nohz_full_mask, GFP_KERNEL)) {
+>>>>>>> 512ca3c... stock
 		pr_err("NO_HZ: Can't allocate full dynticks cpumask\n");
 		return err;
 	}
 	err = 0;
+<<<<<<< HEAD
 	cpumask_setall(tick_nohz_full_mask);
 	cpumask_clear_cpu(smp_processor_id(), tick_nohz_full_mask);
 	tick_nohz_full_running = true;
+=======
+	cpumask_setall(nohz_full_mask);
+	cpumask_clear_cpu(smp_processor_id(), nohz_full_mask);
+	have_nohz_full_mask = true;
+>>>>>>> 512ca3c... stock
 #endif
 	return err;
 }
 
 void __init tick_nohz_init(void)
 {
+<<<<<<< HEAD
 
 	if (!tick_nohz_full_running) {
+=======
+	int cpu;
+
+	if (!have_nohz_full_mask) {
+>>>>>>> 512ca3c... stock
 		if (tick_nohz_init_all() < 0)
 			return;
 	}
 
 	cpu_notifier(tick_nohz_cpu_down_callback, 0);
+<<<<<<< HEAD
 	cpulist_scnprintf(nohz_full_buf, sizeof(nohz_full_buf), tick_nohz_full_mask);
 	pr_info("NO_HZ: Full dynticks CPUs: %s.\n", nohz_full_buf);
 }
 #else
 #define tick_nohz_full_running (0)
+=======
+
+	/* Make sure full dynticks CPU are also RCU nocbs */
+	for_each_cpu(cpu, nohz_full_mask) {
+		if (!rcu_is_nocb_cpu(cpu)) {
+			pr_warning("NO_HZ: CPU %d is not RCU nocb: "
+				   "cleared from nohz_full range", cpu);
+			cpumask_clear_cpu(cpu, nohz_full_mask);
+		}
+	}
+
+	cpulist_scnprintf(nohz_full_buf, sizeof(nohz_full_buf), nohz_full_mask);
+	pr_info("NO_HZ: Full dynticks CPUs: %s.\n", nohz_full_buf);
+}
+#else
+#define have_nohz_full_mask (0)
+>>>>>>> 512ca3c... stock
 #endif
 
 /*
@@ -399,9 +473,17 @@ __setup("nohz=", setup_tick_nohz);
  */
 static void tick_nohz_update_jiffies(ktime_t now)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 
 	__this_cpu_write(tick_cpu_sched.idle_waketime, now);
+=======
+	int cpu = smp_processor_id();
+	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+	unsigned long flags;
+
+	ts->idle_waketime = now;
+>>>>>>> 512ca3c... stock
 
 	local_irq_save(flags);
 	tick_do_update_jiffies64(now);
@@ -418,7 +500,11 @@ update_ts_time_stats(int cpu, struct tick_sched *ts, ktime_t now, u64 *last_upda
 {
 	ktime_t delta;
 
+<<<<<<< HEAD
 	if (ts->idle_active && cpu_online(cpu)) {
+=======
+	if (ts->idle_active) {
+>>>>>>> 512ca3c... stock
 		delta = ktime_sub(now, ts->idle_entrytime);
 		if (nr_iowait_cpu(cpu) > 0)
 			ts->iowait_sleeptime = ktime_add(ts->iowait_sleeptime, delta);
@@ -432,15 +518,27 @@ update_ts_time_stats(int cpu, struct tick_sched *ts, ktime_t now, u64 *last_upda
 
 }
 
+<<<<<<< HEAD
 static void tick_nohz_stop_idle(struct tick_sched *ts, ktime_t now)
 {
 	update_ts_time_stats(smp_processor_id(), ts, now, NULL);
+=======
+static void tick_nohz_stop_idle(int cpu, ktime_t now)
+{
+	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+
+	update_ts_time_stats(cpu, ts, now, NULL);
+>>>>>>> 512ca3c... stock
 	ts->idle_active = 0;
 
 	sched_clock_idle_wakeup_event(0);
 }
 
+<<<<<<< HEAD
 static ktime_t tick_nohz_start_idle(struct tick_sched *ts)
+=======
+static ktime_t tick_nohz_start_idle(int cpu, struct tick_sched *ts)
+>>>>>>> 512ca3c... stock
 {
 	ktime_t now = ktime_get();
 
@@ -477,7 +575,11 @@ u64 get_cpu_idle_time_us(int cpu, u64 *last_update_time)
 		update_ts_time_stats(cpu, ts, now, last_update_time);
 		idle = ts->idle_sleeptime;
 	} else {
+<<<<<<< HEAD
 		if (ts->idle_active && !nr_iowait_cpu(cpu) && cpu_online(cpu)) {
+=======
+		if (ts->idle_active && !nr_iowait_cpu(cpu)) {
+>>>>>>> 512ca3c... stock
 			ktime_t delta = ktime_sub(now, ts->idle_entrytime);
 
 			idle = ktime_add(ts->idle_sleeptime, delta);
@@ -518,7 +620,11 @@ u64 get_cpu_iowait_time_us(int cpu, u64 *last_update_time)
 		update_ts_time_stats(cpu, ts, now, last_update_time);
 		iowait = ts->iowait_sleeptime;
 	} else {
+<<<<<<< HEAD
 		if (ts->idle_active && nr_iowait_cpu(cpu) > 0 && cpu_online(cpu)) {
+=======
+		if (ts->idle_active && nr_iowait_cpu(cpu) > 0) {
+>>>>>>> 512ca3c... stock
 			ktime_t delta = ktime_sub(now, ts->idle_entrytime);
 
 			iowait = ktime_add(ts->iowait_sleeptime, delta);
@@ -736,7 +842,11 @@ static bool can_stop_idle_tick(int cpu, struct tick_sched *ts)
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (tick_nohz_full_running) {
+=======
+	if (have_nohz_full_mask) {
+>>>>>>> 512ca3c... stock
 		/*
 		 * Keep the tick alive to guarantee timekeeping progression
 		 * if there are full dynticks CPUs around
@@ -759,7 +869,11 @@ static void __tick_nohz_idle_enter(struct tick_sched *ts)
 	ktime_t now, expires;
 	int cpu = smp_processor_id();
 
+<<<<<<< HEAD
 	now = tick_nohz_start_idle(ts);
+=======
+	now = tick_nohz_start_idle(cpu, ts);
+>>>>>>> 512ca3c... stock
 
 	if (can_stop_idle_tick(cpu, ts)) {
 		int was_stopped = ts->tick_stopped;
@@ -921,7 +1035,12 @@ static void tick_nohz_account_idle_ticks(struct tick_sched *ts)
  */
 void tick_nohz_idle_exit(void)
 {
+<<<<<<< HEAD
 	struct tick_sched *ts = &__get_cpu_var(tick_cpu_sched);
+=======
+	int cpu = smp_processor_id();
+	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+>>>>>>> 512ca3c... stock
 	ktime_t now;
 
 	local_irq_disable();
@@ -934,7 +1053,11 @@ void tick_nohz_idle_exit(void)
 		now = ktime_get();
 
 	if (ts->idle_active)
+<<<<<<< HEAD
 		tick_nohz_stop_idle(ts, now);
+=======
+		tick_nohz_stop_idle(cpu, now);
+>>>>>>> 512ca3c... stock
 
 	if (ts->tick_stopped) {
 		tick_nohz_restart_sched_tick(ts, now);
@@ -1018,10 +1141,19 @@ static void tick_nohz_switch_to_nohz(void)
  * timer and do not touch the other magic bits which need to be done
  * when idle is left.
  */
+<<<<<<< HEAD
 static void tick_nohz_kick_tick(struct tick_sched *ts, ktime_t now)
 {
 #if 0
 	/* Switch back to 2.6.27 behaviour */
+=======
+static void tick_nohz_kick_tick(int cpu, ktime_t now)
+{
+#if 0
+	/* Switch back to 2.6.27 behaviour */
+
+	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+>>>>>>> 512ca3c... stock
 	ktime_t delta;
 
 	/*
@@ -1036,36 +1168,60 @@ static void tick_nohz_kick_tick(struct tick_sched *ts, ktime_t now)
 #endif
 }
 
+<<<<<<< HEAD
 static inline void tick_check_nohz_this_cpu(void)
 {
 	struct tick_sched *ts = &__get_cpu_var(tick_cpu_sched);
+=======
+static inline void tick_check_nohz(int cpu)
+{
+	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+>>>>>>> 512ca3c... stock
 	ktime_t now;
 
 	if (!ts->idle_active && !ts->tick_stopped)
 		return;
 	now = ktime_get();
 	if (ts->idle_active)
+<<<<<<< HEAD
 		tick_nohz_stop_idle(ts, now);
 	if (ts->tick_stopped) {
 		tick_nohz_update_jiffies(now);
 		tick_nohz_kick_tick(ts, now);
+=======
+		tick_nohz_stop_idle(cpu, now);
+	if (ts->tick_stopped) {
+		tick_nohz_update_jiffies(now);
+		tick_nohz_kick_tick(cpu, now);
+>>>>>>> 512ca3c... stock
 	}
 }
 
 #else
 
 static inline void tick_nohz_switch_to_nohz(void) { }
+<<<<<<< HEAD
 static inline void tick_check_nohz_this_cpu(void) { }
+=======
+static inline void tick_check_nohz(int cpu) { }
+>>>>>>> 512ca3c... stock
 
 #endif /* CONFIG_NO_HZ_COMMON */
 
 /*
  * Called from irq_enter to notify about the possible interruption of idle()
  */
+<<<<<<< HEAD
 void tick_check_idle(void)
 {
 	tick_check_oneshot_broadcast_this_cpu();
 	tick_check_nohz_this_cpu();
+=======
+void tick_check_idle(int cpu)
+{
+	tick_check_oneshot_broadcast(cpu);
+	tick_check_nohz(cpu);
+>>>>>>> 512ca3c... stock
 }
 
 /*

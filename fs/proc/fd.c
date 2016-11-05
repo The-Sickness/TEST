@@ -267,7 +267,10 @@ static int proc_readfd_common(struct file * filp, void * dirent,
 						     (void *)(unsigned long)fd);
 				if (rv < 0)
 					goto out_fd_loop;
+<<<<<<< HEAD
 				cond_resched();
+=======
+>>>>>>> 512ca3c... stock
 				rcu_read_lock();
 			}
 			rcu_read_unlock();

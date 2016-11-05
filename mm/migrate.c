@@ -30,7 +30,10 @@
 #include <linux/mempolicy.h>
 #include <linux/vmalloc.h>
 #include <linux/security.h>
+<<<<<<< HEAD
 #include <linux/backing-dev.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <linux/memcontrol.h>
 #include <linux/syscalls.h>
 #include <linux/hugetlb.h>
@@ -308,12 +311,19 @@ static inline bool buffer_migrate_lock_buffers(struct buffer_head *head,
  * 2 for pages with a mapping
  * 3 for pages with a mapping and PagePrivate/PagePrivate2 set.
  */
+<<<<<<< HEAD
 int migrate_page_move_mapping(struct address_space *mapping,
 		struct page *newpage, struct page *page,
 		struct buffer_head *head, enum migrate_mode mode)
 {
 	struct zone *oldzone, *newzone;
 	int dirty;
+=======
+static int migrate_page_move_mapping(struct address_space *mapping,
+		struct page *newpage, struct page *page,
+		struct buffer_head *head, enum migrate_mode mode)
+{
+>>>>>>> 512ca3c... stock
 	int expected_count = 0;
 	void **pslot;
 
@@ -324,9 +334,12 @@ int migrate_page_move_mapping(struct address_space *mapping,
 		return MIGRATEPAGE_SUCCESS;
 	}
 
+<<<<<<< HEAD
 	oldzone = page_zone(page);
 	newzone = page_zone(newpage);
 
+=======
+>>>>>>> 512ca3c... stock
 	spin_lock_irq(&mapping->tree_lock);
 
 	pslot = radix_tree_lookup_slot(&mapping->page_tree,
@@ -367,6 +380,7 @@ int migrate_page_move_mapping(struct address_space *mapping,
 		set_page_private(newpage, page_private(page));
 	}
 
+<<<<<<< HEAD
 	/* Move dirty while page refs frozen and newpage not yet exposed */
 	dirty = PageDirty(page);
 	if (dirty) {
@@ -374,6 +388,8 @@ int migrate_page_move_mapping(struct address_space *mapping,
 		SetPageDirty(newpage);
 	}
 
+=======
+>>>>>>> 512ca3c... stock
 	radix_tree_replace_slot(pslot, newpage);
 
 	/*
@@ -383,9 +399,12 @@ int migrate_page_move_mapping(struct address_space *mapping,
 	 */
 	page_unfreeze_refs(page, expected_count - 1);
 
+<<<<<<< HEAD
 	spin_unlock(&mapping->tree_lock);
 	/* Leave irq disabled to prevent preemption while updating stats */
 
+=======
+>>>>>>> 512ca3c... stock
 	/*
 	 * If moved to a different zone then also account
 	 * the page for that zone. Other VM counters will be
@@ -396,6 +415,7 @@ int migrate_page_move_mapping(struct address_space *mapping,
 	 * via NR_FILE_PAGES and NR_ANON_PAGES if they
 	 * are mapped to swap space.
 	 */
+<<<<<<< HEAD
 	if (newzone != oldzone) {
 		__dec_zone_state(oldzone, NR_FILE_PAGES);
 		__inc_zone_state(newzone, NR_FILE_PAGES);
@@ -413,6 +433,18 @@ int migrate_page_move_mapping(struct address_space *mapping,
 	return MIGRATEPAGE_SUCCESS;
 }
 EXPORT_SYMBOL(migrate_page_move_mapping);
+=======
+	__dec_zone_page_state(page, NR_FILE_PAGES);
+	__inc_zone_page_state(newpage, NR_FILE_PAGES);
+	if (!PageSwapCache(page) && PageSwapBacked(page)) {
+		__dec_zone_page_state(page, NR_SHMEM);
+		__inc_zone_page_state(newpage, NR_SHMEM);
+	}
+	spin_unlock_irq(&mapping->tree_lock);
+
+	return MIGRATEPAGE_SUCCESS;
+}
+>>>>>>> 512ca3c... stock
 
 /*
  * The expected number of remaining references is the same as that
@@ -483,9 +515,26 @@ void migrate_page_copy(struct page *newpage, struct page *page)
 	if (PageMappedToDisk(page))
 		SetPageMappedToDisk(newpage);
 
+<<<<<<< HEAD
 	/* Move dirty on pages not done by migrate_page_move_mapping() */
 	if (PageDirty(page))
 		SetPageDirty(newpage);
+=======
+	if (PageDirty(page)) {
+		clear_page_dirty_for_io(page);
+		/*
+		 * Want to mark the page and the radix tree as dirty, and
+		 * redo the accounting that clear_page_dirty_for_io undid,
+		 * but we can't use set_page_dirty because that function
+		 * is actually a signal that all of the page has become dirty.
+		 * Whereas only part of our page may be dirty.
+		 */
+		if (PageSwapBacked(page))
+			SetPageDirty(newpage);
+		else
+			__set_page_dirty_nobuffers(newpage);
+ 	}
+>>>>>>> 512ca3c... stock
 
 	mlock_migrate_page(newpage, page);
 	ksm_migrate_page(newpage, page);
@@ -504,7 +553,10 @@ void migrate_page_copy(struct page *newpage, struct page *page)
 	if (PageWriteback(newpage))
 		end_page_writeback(newpage);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(migrate_page_copy);
+=======
+>>>>>>> 512ca3c... stock
 
 /************************************************************
  *                    Migration functions

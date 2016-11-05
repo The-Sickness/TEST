@@ -101,8 +101,12 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 	int array_size = ARRAY_SIZE(lowmem_adj);
 	int other_free = global_page_state(NR_FREE_PAGES);
 	int other_file = global_page_state(NR_FILE_PAGES) -
+<<<<<<< HEAD
 						global_page_state(NR_SHMEM) -
  						total_swapcache_pages();
+=======
+						global_page_state(NR_SHMEM);
+>>>>>>> 512ca3c... stock
 	struct reclaim_state *reclaim_state = current->reclaim_state;
 
 #ifdef CONFIG_ZSWAP
@@ -204,8 +208,13 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 			     min_score_adj,
 			     other_free * (long)(PAGE_SIZE / 1024));
 		lowmem_deathpending_timeout = jiffies + HZ;
+<<<<<<< HEAD
 		set_tsk_thread_flag(selected, TIF_MEMDIE);
                 send_sig(SIGKILL, selected, 0);
+=======
+		send_sig(SIGKILL, selected, 0);
+		set_tsk_thread_flag(selected, TIF_MEMDIE);
+>>>>>>> 512ca3c... stock
 		rem -= selected_tasksize;
 		rcu_read_unlock();
 		lowmem_lmkcount++;

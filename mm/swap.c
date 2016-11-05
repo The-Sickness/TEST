@@ -79,6 +79,7 @@ static void __put_compound_page(struct page *page)
 
 static void put_compound_page(struct page *page)
 {
+<<<<<<< HEAD
 	/*
 	 * hugetlbfs pages cannot be split from under us.  If this is a
 	 * hugetlbfs page, check refcount on head page and release the page if
@@ -91,6 +92,8 @@ static void put_compound_page(struct page *page)
 		return;
 	}
 
+=======
+>>>>>>> 512ca3c... stock
 	if (unlikely(PageTail(page))) {
 		/* __split_huge_page_refcount can run under us */
 		struct page *page_head = compound_head(page);
@@ -231,6 +234,7 @@ bool __get_page_tail(struct page *page)
 	 */
 	unsigned long flags;
 	bool got = false;
+<<<<<<< HEAD
 	struct page *page_head;
 
 	/*
@@ -245,6 +249,10 @@ bool __get_page_tail(struct page *page)
 	}
 
 	page_head = compound_trans_head(page);
+=======
+	struct page *page_head = compound_head(page);
+
+>>>>>>> 512ca3c... stock
 	if (likely(page != page_head && get_page_unless_zero(page_head))) {
 		/* Ref to put_compound_page() comment. */
 		if (PageSlab(page_head) || PageHeadHuge(page_head)) {
@@ -288,7 +296,10 @@ bool __get_page_tail(struct page *page)
 		if (unlikely(!got))
 			put_page(page_head);
 	}
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> 512ca3c... stock
 	return got;
 }
 EXPORT_SYMBOL(__get_page_tail);

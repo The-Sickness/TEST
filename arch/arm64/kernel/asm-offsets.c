@@ -28,7 +28,10 @@
 #include <asm/suspend.h>
 #include <asm/vdso_datapage.h>
 #include <linux/kbuild.h>
+<<<<<<< HEAD
 #include <linux/arm-smccc.h>
+=======
+>>>>>>> 512ca3c... stock
 
 int main(void)
 {
@@ -152,7 +155,10 @@ int main(void)
   DEFINE(SLEEP_SAVE_SP_PHYS,	offsetof(struct sleep_save_sp, save_ptr_stash_phys));
   DEFINE(SLEEP_SAVE_SP_VIRT,	offsetof(struct sleep_save_sp, save_ptr_stash));
 #endif
+<<<<<<< HEAD
   DEFINE(ARM_SMCCC_RES_X0_OFFS,	offsetof(struct arm_smccc_res, a0));
   DEFINE(ARM_SMCCC_RES_X2_OFFS,	offsetof(struct arm_smccc_res, a2));
+=======
+>>>>>>> 512ca3c... stock
   return 0;
 }

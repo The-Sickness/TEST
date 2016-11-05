@@ -46,8 +46,11 @@
 #include <linux/uaccess.h>
 #include <linux/regmap.h>
 #include <linux/sec_sysfs.h>
+<<<<<<< HEAD
 #include <linux/time.h>
 #include <linux/syscalls.h>
+=======
+>>>>>>> 512ca3c... stock
 
 #define SEC_LED_SPECIFIC
 
@@ -120,6 +123,7 @@ static u8 led_lowpower_mode = 0x0;
 
 unsigned int octa_color = 0x0;
 
+<<<<<<< HEAD
 unsigned int  led_enable_fade = 0;
 unsigned int led_fade_time_up = 800;
 unsigned int led_fade_time_down = 800;
@@ -132,6 +136,8 @@ struct device *GBLdev = NULL;
 static struct delayed_work check_led_time;
 static bool is_work_active = false;
 
+=======
+>>>>>>> 512ca3c... stock
 enum max77843_led_color {
 	WHITE,
 	RED,
@@ -334,6 +340,7 @@ static int max77843_rgb_ramp(struct device *dev, int ramp_up, int ramp_down)
 
 	pr_info("leds-max77843-rgb: %s\n", __func__);
 
+<<<<<<< HEAD
 	if (ramp_up <= led_fade_time_up) {
 		ramp_up /= 100;
 	} else {
@@ -345,6 +352,19 @@ static int max77843_rgb_ramp(struct device *dev, int ramp_up, int ramp_down)
 		ramp_down /= 100;
 	} else {
 		ramp_down = (ramp_down - led_fade_time_down) * 2 + led_fade_time_down;
+=======
+	if (ramp_up <= 800) {
+		ramp_up /= 100;
+	} else {
+		ramp_up = (ramp_up - 800) * 2 + 800;
+		ramp_up /= 100;
+	}
+
+	if (ramp_down <= 800) {
+		ramp_down /= 100;
+	} else {
+		ramp_down = (ramp_down - 800) * 2 + 800;
+>>>>>>> 512ca3c... stock
 		ramp_down /= 100;
 	}
 
@@ -593,6 +613,7 @@ static ssize_t store_max77843_rgb_brightness(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 static bool check_restrictions(void)
 {
 	struct timeval curtime;
@@ -637,6 +658,8 @@ skipitall:
 	return ret;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static ssize_t store_max77843_rgb_pattern(struct device *dev,
 					struct device_attribute *devattr,
 					const char *buf, size_t count)
@@ -651,17 +674,24 @@ static ssize_t store_max77843_rgb_pattern(struct device *dev,
 		dev_err(dev, "fail to get led_pattern mode.\n");
 		return count;
 	}
+<<<<<<< HEAD
 	GBLdev = dev;
 	
+=======
+
+>>>>>>> 512ca3c... stock
 	/* Set all LEDs Off */
 	max77843_rgb_reset(dev);
 	if (mode == PATTERN_OFF)
 		return count;
 
+<<<<<<< HEAD
 
 	if (!check_restrictions())
 		return count;
 		
+=======
+>>>>>>> 512ca3c... stock
 	/* Set to low power consumption mode */
 	if (led_lowpower_mode == 1)
 		led_dynamic_current = low_powermode_current;
@@ -680,6 +710,7 @@ static ssize_t store_max77843_rgb_pattern(struct device *dev,
 		max77843_rgb_set_state(&max77843_rgb->led[RED], led_dynamic_current, LED_BLINK);
 		break;
 	case MISSED_NOTI:
+<<<<<<< HEAD
 		if (led_enable_fade)
 		{
 			max77843_rgb_ramp(dev, led_fade_time_up, led_fade_time_down);
@@ -689,6 +720,9 @@ static ssize_t store_max77843_rgb_pattern(struct device *dev,
 		{
 			max77843_rgb_blink(dev, 500, 5000);
 		}
+=======
+		max77843_rgb_blink(dev, 500, 5000);
+>>>>>>> 512ca3c... stock
 		max77843_rgb_set_state(&max77843_rgb->led[BLUE], led_dynamic_current, LED_BLINK);
 		break;
 	case LOW_BATTERY:
@@ -987,6 +1021,7 @@ static ssize_t led_blink_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t led_fade_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
 {
@@ -1171,11 +1206,14 @@ static ssize_t led_block_leds_time_stop_store(struct device *dev,
 	return count;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /* permission for sysfs node */
 static DEVICE_ATTR(delay_on, 0640, led_delay_on_show, led_delay_on_store);
 static DEVICE_ATTR(delay_off, 0640, led_delay_off_show, led_delay_off_store);
 static DEVICE_ATTR(blink, 0640, NULL, led_blink_store);
 
+<<<<<<< HEAD
 //Fade LED code
 static DEVICE_ATTR(led_fade, 0664, led_fade_show, led_fade_store);
 static DEVICE_ATTR(led_fade_time_up, 0664, led_fade_time_up_show, led_fade_time_up_store);
@@ -1185,6 +1223,8 @@ static DEVICE_ATTR(led_debug_enable, 0664, led_debug_enable_show, led_debug_enab
 static DEVICE_ATTR(led_block_leds_time_start, 0664, led_block_leds_time_start_show, led_block_leds_time_start_store);
 static DEVICE_ATTR(led_block_leds_time_stop, 0664, led_block_leds_time_stop_show, led_block_leds_time_stop_store);
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef SEC_LED_SPECIFIC
 /* below nodes is SAMSUNG specific nodes */
 static DEVICE_ATTR(led_r, 0660, NULL, store_led_r);
@@ -1218,6 +1258,7 @@ static struct attribute *sec_led_attributes[] = {
 	&dev_attr_led_blink.attr,
 	&dev_attr_led_brightness.attr,
 	&dev_attr_led_lowpower.attr,
+<<<<<<< HEAD
 	&dev_attr_led_fade.attr,
 	&dev_attr_led_fade_time_up.attr,
 	&dev_attr_led_fade_time_down.attr,
@@ -1225,6 +1266,8 @@ static struct attribute *sec_led_attributes[] = {
 	&dev_attr_led_debug_enable.attr,
 	&dev_attr_led_block_leds_time_start.attr,
 	&dev_attr_led_block_leds_time_stop.attr,
+=======
+>>>>>>> 512ca3c... stock
 	NULL,
 };
 
@@ -1374,6 +1417,7 @@ static struct platform_driver max77843_fled_driver = {
 	.remove		= __devexit_p(max77843_rgb_remove),
 };
 
+<<<<<<< HEAD
 static void check_led_timer(struct work_struct *work)
 {
 	check_restrictions();
@@ -1385,6 +1429,11 @@ static int __init max77843_rgb_init(void)
 {
 	pr_info("leds-max77843-rgb: %s\n", __func__);
 	INIT_DELAYED_WORK(&check_led_time, check_led_timer);
+=======
+static int __init max77843_rgb_init(void)
+{
+	pr_info("leds-max77843-rgb: %s\n", __func__);
+>>>>>>> 512ca3c... stock
 	return platform_driver_register(&max77843_fled_driver);
 }
 module_init(max77843_rgb_init);

@@ -639,7 +639,10 @@ static struct sock *sctp_v6_create_accept_sk(struct sock *sk,
 	struct sock *newsk;
 	struct ipv6_pinfo *newnp, *np = inet6_sk(sk);
 	struct sctp6_sock *newsctp6sk;
+<<<<<<< HEAD
 	struct ipv6_txoptions *opt;
+=======
+>>>>>>> 512ca3c... stock
 
 	newsk = sk_alloc(sock_net(sk), PF_INET6, GFP_KERNEL, sk->sk_prot);
 	if (!newsk)
@@ -659,6 +662,7 @@ static struct sock *sctp_v6_create_accept_sk(struct sock *sk,
 
 	memcpy(newnp, np, sizeof(struct ipv6_pinfo));
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	opt = rcu_dereference(np->opt);
 	if (opt)
@@ -666,6 +670,8 @@ static struct sock *sctp_v6_create_accept_sk(struct sock *sk,
 	RCU_INIT_POINTER(newnp->opt, opt);
 	rcu_read_unlock();
 
+=======
+>>>>>>> 512ca3c... stock
 	/* Initialize sk's sport, dport, rcv_saddr and daddr for getsockname()
 	 * and getpeername().
 	 */

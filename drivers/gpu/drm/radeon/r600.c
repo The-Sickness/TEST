@@ -3459,9 +3459,12 @@ int r600_init(struct radeon_device *rdev)
 		rdev->accel_working = false;
 	}
 
+<<<<<<< HEAD
 	/* posting read */
 	RREG32(R_000E50_SRBM_STATUS);
 
+=======
+>>>>>>> 512ca3c... stock
 	return 0;
 }
 

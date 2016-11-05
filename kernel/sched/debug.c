@@ -159,12 +159,20 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
 
 	read_lock_irqsave(&tasklist_lock, flags);
 
+<<<<<<< HEAD
 	for_each_process_thread(g, p) {
+=======
+	do_each_thread(g, p) {
+>>>>>>> 512ca3c... stock
 		if (!p->on_rq || task_cpu(p) != rq_cpu)
 			continue;
 
 		print_task(m, rq, p);
+<<<<<<< HEAD
 	}
+=======
+	} while_each_thread(g, p);
+>>>>>>> 512ca3c... stock
 
 	read_unlock_irqrestore(&tasklist_lock, flags);
 }
@@ -212,9 +220,15 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 	SEQ_printf(m, "  .%-30s: %ld\n", "load", cfs_rq->load.weight);
 #ifdef CONFIG_FAIR_GROUP_SCHED
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
 	SEQ_printf(m, "  .%-30s: %ld\n", "runnable_load_avg",
 			cfs_rq->runnable_load_avg);
 	SEQ_printf(m, "  .%-30s: %ld\n", "blocked_load_avg",
+=======
+	SEQ_printf(m, "  .%-30s: %lld\n", "runnable_load_avg",
+			cfs_rq->runnable_load_avg);
+	SEQ_printf(m, "  .%-30s: %lld\n", "blocked_load_avg",
+>>>>>>> 512ca3c... stock
 			cfs_rq->blocked_load_avg);
 	SEQ_printf(m, "  .%-30s: %lld\n", "tg_load_avg",
 			(unsigned long long)atomic64_read(&cfs_rq->tg->load_avg));
@@ -227,6 +241,7 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 	SEQ_printf(m, "  .%-30s: %d\n", "tg->usage_avg",
 			atomic_read(&cfs_rq->tg->usage_avg));
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_CFS_BANDWIDTH
 	SEQ_printf(m, "  .%-30s: %d\n", "tg->cfs_bandwidth.timer_active",
 			cfs_rq->tg->cfs_bandwidth.timer_active);
@@ -235,6 +250,8 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 	SEQ_printf(m, "  .%-30s: %d\n", "throttle_count",
 			cfs_rq->throttle_count);
 #endif
+=======
+>>>>>>> 512ca3c... stock
 
 	print_cfs_group_stats(m, cpu, cfs_rq->tg);
 #endif
@@ -292,10 +309,13 @@ do {									\
 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", #x, SPLIT_NS(rq->x))
 
 	P(nr_running);
+<<<<<<< HEAD
 	do_avg_nr_running(rq);
 	SEQ_printf(m, " .%-30s: %d.%03d \n", "ave_nr_running",
 		rq->ave_nr_running / FIXED_1,
 		((rq->ave_nr_running % FIXED_1) * 1000) / FIXED_1);
+=======
+>>>>>>> 512ca3c... stock
 	SEQ_printf(m, "  .%-30s: %lu\n", "load",
 		   rq->load.weight);
 	P(nr_switches);
@@ -553,11 +573,14 @@ void proc_sched_show_task(struct task_struct *p, struct seq_file *m)
 	P(se.statistics.nr_wakeups_passive);
 	P(se.statistics.nr_wakeups_idle);
 
+<<<<<<< HEAD
 #if defined(CONFIG_SMP) && defined(CONFIG_FAIR_GROUP_SCHED)
 	P(se.avg.runnable_avg_sum);
 	P(se.avg.runnable_avg_period);
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 	{
 		u64 avg_atom, avg_per_cpu;
 

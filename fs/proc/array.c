@@ -398,7 +398,11 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
 
 	state = *get_task_state(task);
 	vsize = eip = esp = 0;
+<<<<<<< HEAD
 	permitted = ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS | PTRACE_MODE_NOAUDIT);
+=======
+	permitted = ptrace_may_access(task, PTRACE_MODE_READ | PTRACE_MODE_NOAUDIT);
+>>>>>>> 512ca3c... stock
 	mm = get_task_mm(task);
 	if (mm) {
 		vsize = task_vsize(mm);

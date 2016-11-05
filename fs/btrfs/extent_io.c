@@ -4080,11 +4080,16 @@ int extent_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
 		}
 		ret = fiemap_fill_next_extent(fieinfo, em_start, disko,
 					      em_len, flags);
+<<<<<<< HEAD
 		if (ret) {
 			if (ret == 1)
 				ret = 0;
 			goto out_free;
 		}
+=======
+		if (ret)
+			goto out_free;
+>>>>>>> 512ca3c... stock
 	}
 out_free:
 	free_extent_map(em);

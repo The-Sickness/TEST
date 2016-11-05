@@ -6,8 +6,11 @@
 #include <sys/types.h>
 #include <sys/mount.h>
 #include <sys/wait.h>
+<<<<<<< HEAD
 #include <sys/vfs.h>
 #include <sys/statvfs.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -34,6 +37,7 @@
 # define CLONE_NEWPID 0x20000000
 #endif
 
+<<<<<<< HEAD
 #ifndef MS_REC
 # define MS_REC 16384
 #endif
@@ -42,6 +46,13 @@
 #endif
 #ifndef MS_STRICTATIME
 # define MS_STRICTATIME (1 << 24)
+=======
+#ifndef MS_RELATIME
+#define MS_RELATIME (1 << 21)
+#endif
+#ifndef MS_STRICTATIME
+#define MS_STRICTATIME (1 << 24)
+>>>>>>> 512ca3c... stock
 #endif
 
 static void die(char *fmt, ...)
@@ -53,14 +64,26 @@ static void die(char *fmt, ...)
 	exit(EXIT_FAILURE);
 }
 
+<<<<<<< HEAD
 static void vmaybe_write_file(bool enoent_ok, char *filename, char *fmt, va_list ap)
+=======
+static void write_file(char *filename, char *fmt, ...)
+>>>>>>> 512ca3c... stock
 {
 	char buf[4096];
 	int fd;
 	ssize_t written;
 	int buf_len;
+<<<<<<< HEAD
 
 	buf_len = vsnprintf(buf, sizeof(buf), fmt, ap);
+=======
+	va_list ap;
+
+	va_start(ap, fmt);
+	buf_len = vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+>>>>>>> 512ca3c... stock
 	if (buf_len < 0) {
 		die("vsnprintf failed: %s\n",
 		    strerror(errno));
@@ -71,8 +94,11 @@ static void vmaybe_write_file(bool enoent_ok, char *filename, char *fmt, va_list
 
 	fd = open(filename, O_WRONLY);
 	if (fd < 0) {
+<<<<<<< HEAD
 		if ((errno == ENOENT) && enoent_ok)
 			return;
+=======
+>>>>>>> 512ca3c... stock
 		die("open of %s failed: %s\n",
 		    filename, strerror(errno));
 	}
@@ -91,6 +117,7 @@ static void vmaybe_write_file(bool enoent_ok, char *filename, char *fmt, va_list
 	}
 }
 
+<<<<<<< HEAD
 static void maybe_write_file(char *filename, char *fmt, ...)
 {
 	va_list ap;
@@ -150,6 +177,8 @@ static int read_mnt_flags(const char *path)
 	return mnt_flags;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static void create_and_enter_userns(void)
 {
 	uid_t uid;
@@ -163,10 +192,20 @@ static void create_and_enter_userns(void)
 			strerror(errno));
 	}
 
+<<<<<<< HEAD
 	maybe_write_file("/proc/self/setgroups", "deny");
 	write_file("/proc/self/uid_map", "0 %d 1", uid);
 	write_file("/proc/self/gid_map", "0 %d 1", gid);
 
+=======
+	write_file("/proc/self/uid_map", "0 %d 1", uid);
+	write_file("/proc/self/gid_map", "0 %d 1", gid);
+
+	if (setgroups(0, NULL) != 0) {
+		die("setgroups failed: %s\n",
+			strerror(errno));
+	}
+>>>>>>> 512ca3c... stock
 	if (setgid(0) != 0) {
 		die ("setgid(0) failed %s\n",
 			strerror(errno));
@@ -178,8 +217,12 @@ static void create_and_enter_userns(void)
 }
 
 static
+<<<<<<< HEAD
 bool test_unpriv_remount(const char *fstype, const char *mount_options,
 			 int mount_flags, int remount_flags, int invalid_flags)
+=======
+bool test_unpriv_remount(int mount_flags, int remount_flags, int invalid_flags)
+>>>>>>> 512ca3c... stock
 {
 	pid_t child;
 
@@ -212,11 +255,17 @@ bool test_unpriv_remount(const char *fstype, const char *mount_options,
 			strerror(errno));
 	}
 
+<<<<<<< HEAD
 	if (mount("testing", "/tmp", fstype, mount_flags, mount_options) != 0) {
 		die("mount of %s with options '%s' on /tmp failed: %s\n",
 		    fstype,
 		    mount_options? mount_options : "",
 		    strerror(errno));
+=======
+	if (mount("testing", "/tmp", "ramfs", mount_flags, NULL) != 0) {
+		die("mount of /tmp failed: %s\n",
+			strerror(errno));
+>>>>>>> 512ca3c... stock
 	}
 
 	create_and_enter_userns();
@@ -244,11 +293,16 @@ bool test_unpriv_remount(const char *fstype, const char *mount_options,
 
 static bool test_unpriv_remount_simple(int mount_flags)
 {
+<<<<<<< HEAD
 	return test_unpriv_remount("ramfs", NULL, mount_flags, mount_flags, 0);
+=======
+	return test_unpriv_remount(mount_flags, mount_flags, 0);
+>>>>>>> 512ca3c... stock
 }
 
 static bool test_unpriv_remount_atime(int mount_flags, int invalid_flags)
 {
+<<<<<<< HEAD
 	return test_unpriv_remount("ramfs", NULL, mount_flags, mount_flags,
 				   invalid_flags);
 }
@@ -313,10 +367,14 @@ static bool test_priv_mount_unpriv_remount(void)
 			dest_path, orig_path);
 	}
 	exit(EXIT_SUCCESS);
+=======
+	return test_unpriv_remount(mount_flags, mount_flags, invalid_flags);
+>>>>>>> 512ca3c... stock
 }
 
 int main(int argc, char **argv)
 {
+<<<<<<< HEAD
 	if (!test_unpriv_remount_simple(MS_RDONLY)) {
 		die("MS_RDONLY malfunctions\n");
 	}
@@ -366,5 +424,54 @@ int main(int argc, char **argv)
 	if (!test_priv_mount_unpriv_remount()) {
 		die("Mount flags unexpectedly changed after remount\n");
 	}
+=======
+	if (!test_unpriv_remount_simple(MS_RDONLY|MS_NODEV)) {
+		die("MS_RDONLY malfunctions\n");
+	}
+	if (!test_unpriv_remount_simple(MS_NODEV)) {
+		die("MS_NODEV malfunctions\n");
+	}
+	if (!test_unpriv_remount_simple(MS_NOSUID|MS_NODEV)) {
+		die("MS_NOSUID malfunctions\n");
+	}
+	if (!test_unpriv_remount_simple(MS_NOEXEC|MS_NODEV)) {
+		die("MS_NOEXEC malfunctions\n");
+	}
+	if (!test_unpriv_remount_atime(MS_RELATIME|MS_NODEV,
+				       MS_NOATIME|MS_NODEV))
+	{
+		die("MS_RELATIME malfunctions\n");
+	}
+	if (!test_unpriv_remount_atime(MS_STRICTATIME|MS_NODEV,
+				       MS_NOATIME|MS_NODEV))
+	{
+		die("MS_STRICTATIME malfunctions\n");
+	}
+	if (!test_unpriv_remount_atime(MS_NOATIME|MS_NODEV,
+				       MS_STRICTATIME|MS_NODEV))
+	{
+		die("MS_RELATIME malfunctions\n");
+	}
+	if (!test_unpriv_remount_atime(MS_RELATIME|MS_NODIRATIME|MS_NODEV,
+				       MS_NOATIME|MS_NODEV))
+	{
+		die("MS_RELATIME malfunctions\n");
+	}
+	if (!test_unpriv_remount_atime(MS_STRICTATIME|MS_NODIRATIME|MS_NODEV,
+				       MS_NOATIME|MS_NODEV))
+	{
+		die("MS_RELATIME malfunctions\n");
+	}
+	if (!test_unpriv_remount_atime(MS_NOATIME|MS_NODIRATIME|MS_NODEV,
+				       MS_STRICTATIME|MS_NODEV))
+	{
+		die("MS_RELATIME malfunctions\n");
+	}
+	if (!test_unpriv_remount(MS_STRICTATIME|MS_NODEV, MS_NODEV,
+				 MS_NOATIME|MS_NODEV))
+	{
+		die("Default atime malfunctions\n");
+	}
+>>>>>>> 512ca3c... stock
 	return EXIT_SUCCESS;
 }

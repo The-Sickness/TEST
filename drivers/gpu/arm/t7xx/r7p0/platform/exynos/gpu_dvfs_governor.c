@@ -18,6 +18,7 @@
 #include <mali_kbase.h>
 
 #include <mach/asv-exynos.h>
+<<<<<<< HEAD
 #ifdef CONFIG_MALI_DVFS
 #ifdef CONFIG_PWRCAL
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 0)
@@ -29,6 +30,8 @@
 #endif
 #endif
 #endif
+=======
+>>>>>>> 512ca3c... stock
 
 #include "mali_kbase_platform.h"
 #include "gpu_dvfs_handler.h"
@@ -264,6 +267,7 @@ int gpu_dvfs_decide_next_freq(struct kbase_device *kbdev, int utilization)
 
 	return platform->table[platform->step].clock;
 }
+<<<<<<< HEAD
 
 static int gpu_dvfs_update_asv_table(struct exynos_context *platform)
 {
@@ -311,6 +315,15 @@ static int gpu_dvfs_update_asv_table(struct exynos_context *platform)
 		}
 	}
 #else
+=======
+#endif /* CONFIG_MALI_DVFS */
+
+static int gpu_dvfs_update_asv_table(struct exynos_context *platform)
+{
+	int i, voltage, dvfs_table_size;
+	gpu_dvfs_info *dvfs_table;
+
+>>>>>>> 512ca3c... stock
 	DVFS_ASSERT(platform);
 
 	dvfs_table = platform->table;
@@ -326,10 +339,15 @@ static int gpu_dvfs_update_asv_table(struct exynos_context *platform)
 			dvfs_table[i].voltage = voltage;
 		GPU_LOG(DVFS_WARNING, DUMMY, 0u, 0u, "G3D %dKhz ASV is %duV\n", dvfs_table[i].clock*1000, dvfs_table[i].voltage);
 	}
+<<<<<<< HEAD
 #endif
 	return 0;
 }
 #endif /* CONFIG_MALI_DVFS */
+=======
+	return 0;
+}
+>>>>>>> 512ca3c... stock
 
 int gpu_dvfs_governor_setting(struct exynos_context *platform, int governor_type)
 {
@@ -392,8 +410,11 @@ int gpu_dvfs_governor_init(struct kbase_device *kbdev)
 		return -1;
 	}
 
+<<<<<<< HEAD
 	//share table_size among governors, as every single governor has same table_size.
 	platform->save_cpu_max_freq = kmalloc(sizeof(int) * platform->table_size, GFP_KERNEL);
+=======
+>>>>>>> 512ca3c... stock
 	gpu_dvfs_update_asv_table(platform);
 	gpu_dvfs_decide_max_clock(platform);
 #if defined(CONFIG_MALI_DVFS) && defined(CONFIG_CPU_THERMAL_IPA)

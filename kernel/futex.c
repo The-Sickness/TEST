@@ -945,11 +945,17 @@ static void __unqueue_futex(struct futex_q *q)
 
 /*
  * The hash bucket lock must be held when this is called.
+<<<<<<< HEAD
  * Afterwards, the futex_q must not be accessed. Callers
  * must ensure to later call wake_up_q() for the actual
  * wakeups to occur.
  */
 static void mark_wake_futex(struct wake_q_head *wake_q, struct futex_q *q)
+=======
+ * Afterwards, the futex_q must not be accessed.
+ */
+static void wake_futex(struct futex_q *q)
+>>>>>>> 512ca3c... stock
 {
 	struct task_struct *p = q->task;
 
@@ -957,10 +963,21 @@ static void mark_wake_futex(struct wake_q_head *wake_q, struct futex_q *q)
 		return;
 
 	/*
+<<<<<<< HEAD
 	 * Queue the task for later wakeup for after we've released
 	 * the hb->lock. wake_q_add() grabs reference to p.
 	 */
 	wake_q_add(wake_q, p);
+=======
+	 * We set q->lock_ptr = NULL _before_ we wake up the task. If
+	 * a non-futex wake up happens on another CPU then the task
+	 * might exit and p would dereference a non-existing task
+	 * struct. Prevent this by holding a reference on p across the
+	 * wake up.
+	 */
+	get_task_struct(p);
+
+>>>>>>> 512ca3c... stock
 	__unqueue_futex(q);
 	/*
 	 * The waiting task can free the futex_q as soon as
@@ -970,6 +987,12 @@ static void mark_wake_futex(struct wake_q_head *wake_q, struct futex_q *q)
 	 */
 	smp_wmb();
 	q->lock_ptr = NULL;
+<<<<<<< HEAD
+=======
+
+	wake_up_state(p, TASK_NORMAL);
+	put_task_struct(p);
+>>>>>>> 512ca3c... stock
 }
 
 static int wake_futex_pi(u32 __user *uaddr, u32 uval, struct futex_q *this)
@@ -1084,7 +1107,10 @@ futex_wake(u32 __user *uaddr, unsigned int flags, int nr_wake, u32 bitset)
 	struct plist_head *head;
 	union futex_key key = FUTEX_KEY_INIT;
 	int ret;
+<<<<<<< HEAD
 	WAKE_Q(wake_q);
+=======
+>>>>>>> 512ca3c... stock
 
 	if (!bitset)
 		return -EINVAL;
@@ -1108,14 +1134,21 @@ futex_wake(u32 __user *uaddr, unsigned int flags, int nr_wake, u32 bitset)
 			if (!(this->bitset & bitset))
 				continue;
 
+<<<<<<< HEAD
 			mark_wake_futex(&wake_q, this);
+=======
+			wake_futex(this);
+>>>>>>> 512ca3c... stock
 			if (++ret >= nr_wake)
 				break;
 		}
 	}
 
 	spin_unlock(&hb->lock);
+<<<<<<< HEAD
 	wake_up_q(&wake_q);
+=======
+>>>>>>> 512ca3c... stock
 	put_futex_key(&key);
 out:
 	return ret;
@@ -1134,7 +1167,10 @@ futex_wake_op(u32 __user *uaddr1, unsigned int flags, u32 __user *uaddr2,
 	struct plist_head *head;
 	struct futex_q *this, *next;
 	int ret, op_ret;
+<<<<<<< HEAD
 	WAKE_Q(wake_q);
+=======
+>>>>>>> 512ca3c... stock
 
 retry:
 	ret = get_futex_key(uaddr1, flags & FLAGS_SHARED, &key1, VERIFY_READ);
@@ -1188,7 +1224,11 @@ retry_private:
 				ret = -EINVAL;
 				goto out_unlock;
 			}
+<<<<<<< HEAD
 			mark_wake_futex(&wake_q, this);
+=======
+			wake_futex(this);
+>>>>>>> 512ca3c... stock
 			if (++ret >= nr_wake)
 				break;
 		}
@@ -1204,7 +1244,11 @@ retry_private:
 					ret = -EINVAL;
 					goto out_unlock;
 				}
+<<<<<<< HEAD
 				mark_wake_futex(&wake_q, this);
+=======
+				wake_futex(this);
+>>>>>>> 512ca3c... stock
 				if (++op_ret >= nr_wake2)
 					break;
 			}
@@ -1214,7 +1258,10 @@ retry_private:
 
 out_unlock:
 	double_unlock_hb(hb1, hb2);
+<<<<<<< HEAD
 	wake_up_q(&wake_q);
+=======
+>>>>>>> 512ca3c... stock
 out_put_keys:
 	put_futex_key(&key2);
 out_put_key1:
@@ -1373,7 +1420,10 @@ static int futex_requeue(u32 __user *uaddr1, unsigned int flags,
 	struct futex_hash_bucket *hb1, *hb2;
 	struct plist_head *head1;
 	struct futex_q *this, *next;
+<<<<<<< HEAD
 	WAKE_Q(wake_q);
+=======
+>>>>>>> 512ca3c... stock
 
 	if (requeue_pi) {
 		/*
@@ -1547,7 +1597,11 @@ retry_private:
 		 * woken by futex_unlock_pi().
 		 */
 		if (++task_count <= nr_wake && !requeue_pi) {
+<<<<<<< HEAD
 			mark_wake_futex(&wake_q, this);
+=======
+			wake_futex(this);
+>>>>>>> 512ca3c... stock
 			continue;
 		}
 
@@ -1586,7 +1640,10 @@ retry_private:
 
 out_unlock:
 	double_unlock_hb(hb1, hb2);
+<<<<<<< HEAD
 	wake_up_q(&wake_q);
+=======
+>>>>>>> 512ca3c... stock
 
 	/*
 	 * drop_futex_key_refs() must be called outside the spinlocks. During
@@ -2496,11 +2553,14 @@ static int futex_wait_requeue_pi(u32 __user *uaddr, unsigned int flags,
 		if (q.pi_state && (q.pi_state->owner != current)) {
 			spin_lock(q.lock_ptr);
 			ret = fixup_pi_state_owner(uaddr2, &q, current);
+<<<<<<< HEAD
 			/*
 			 * Drop the reference to the pi state which
 			 * the requeue_pi() code acquired for us.
 			 */
 			free_pi_state(q.pi_state);
+=======
+>>>>>>> 512ca3c... stock
 			spin_unlock(q.lock_ptr);
 		}
 	} else {
@@ -2627,7 +2687,11 @@ SYSCALL_DEFINE3(get_robust_list, int, pid,
 	}
 
 	ret = -EPERM;
+<<<<<<< HEAD
 	if (!ptrace_may_access(p, PTRACE_MODE_READ_REALCREDS))
+=======
+	if (!ptrace_may_access(p, PTRACE_MODE_READ))
+>>>>>>> 512ca3c... stock
 		goto err_unlock;
 
 	head = p->robust_list;

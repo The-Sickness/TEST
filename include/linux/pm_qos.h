@@ -82,7 +82,11 @@ enum dev_pm_qos_req_type {
 struct dev_pm_qos_request {
 	enum dev_pm_qos_req_type type;
 	union {
+<<<<<<< HEAD
 		struct pm_qos_request lat;
+=======
+		struct plist_node pnode;
+>>>>>>> 512ca3c... stock
 		struct pm_qos_flags_request flr;
 	} data;
 	struct device *dev;
@@ -133,9 +137,14 @@ static inline int dev_pm_qos_request_active(struct dev_pm_qos_request *req)
 	return req->dev != NULL;
 }
 
+<<<<<<< HEAD
 int pm_qos_update_target(struct pm_qos_constraints *c,
 				struct pm_qos_request *req,
 				enum pm_qos_req_action action, int value);
+=======
+int pm_qos_update_target(struct pm_qos_constraints *c, struct plist_node *node,
+			 enum pm_qos_req_action action, int value);
+>>>>>>> 512ca3c... stock
 int pm_qos_update_constraints(int pm_qos_class,
 			struct pm_qos_constraints *constraints);
 bool pm_qos_update_flags(struct pm_qos_flags *pqf,
@@ -230,7 +239,11 @@ int dev_pm_qos_update_flags(struct device *dev, s32 mask, bool set);
 
 static inline s32 dev_pm_qos_requested_latency(struct device *dev)
 {
+<<<<<<< HEAD
 	return dev->power.qos->latency_req->data.lat.node.prio;
+=======
+	return dev->power.qos->latency_req->data.pnode.prio;
+>>>>>>> 512ca3c... stock
 }
 
 static inline s32 dev_pm_qos_requested_flags(struct device *dev)

@@ -1480,19 +1480,25 @@ static int arm_iommu_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
 	unsigned long uaddr = vma->vm_start;
 	unsigned long usize = vma->vm_end - vma->vm_start;
 	struct page **pages = __iommu_get_pages(cpu_addr, attrs);
+<<<<<<< HEAD
 	unsigned long nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
 	unsigned long off = vma->vm_pgoff;
+=======
+>>>>>>> 512ca3c... stock
 
 	vma->vm_page_prot = __get_dma_pgprot(attrs, vma->vm_page_prot);
 
 	if (!pages)
 		return -ENXIO;
 
+<<<<<<< HEAD
 	if (off >= nr_pages || (usize >> PAGE_SHIFT) > nr_pages - off)
 		return -ENXIO;
 
 	pages += off;
 
+=======
+>>>>>>> 512ca3c... stock
 	do {
 		int ret = vm_insert_page(vma, uaddr, *pages++);
 		if (ret) {

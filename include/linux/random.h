@@ -6,6 +6,7 @@
 #ifndef _LINUX_RANDOM_H
 #define _LINUX_RANDOM_H
 
+<<<<<<< HEAD
 #include <linux/list.h>
 #include <uapi/linux/random.h>
 
@@ -14,6 +15,10 @@ struct random_ready_callback {
 	void (*func)(struct random_ready_callback *rdy);
 	struct module *owner;
 };
+=======
+#include <uapi/linux/random.h>
+
+>>>>>>> 512ca3c... stock
 
 extern void add_device_randomness(const void *, unsigned int);
 extern void add_input_randomness(unsigned int type, unsigned int code,
@@ -21,8 +26,11 @@ extern void add_input_randomness(unsigned int type, unsigned int code,
 extern void add_interrupt_randomness(int irq, int irq_flags);
 
 extern void get_random_bytes(void *buf, int nbytes);
+<<<<<<< HEAD
 extern int add_random_ready_callback(struct random_ready_callback *rdy);
 extern void del_random_ready_callback(struct random_ready_callback *rdy);
+=======
+>>>>>>> 512ca3c... stock
 extern void get_random_bytes_arch(void *buf, int nbytes);
 void generate_random_uuid(unsigned char uuid_out[16]);
 extern int random_int_secret_init(void);
@@ -35,6 +43,7 @@ unsigned int get_random_int(void);
 unsigned long randomize_range(unsigned long start, unsigned long end, unsigned long len);
 
 u32 prandom_u32(void);
+<<<<<<< HEAD
 void prandom_bytes(void *buf, size_t nbytes);
 void prandom_seed(u32 seed);
 void prandom_reseed_late(void);
@@ -62,6 +71,13 @@ static inline u32 prandom_u32_max(u32 ep_ro)
 {
 	return (u32)(((u64) prandom_u32() * ep_ro) >> 32);
 }
+=======
+void prandom_bytes(void *buf, int nbytes);
+void prandom_seed(u32 seed);
+
+u32 prandom_u32_state(struct rnd_state *);
+void prandom_bytes_state(struct rnd_state *state, void *buf, int nbytes);
+>>>>>>> 512ca3c... stock
 
 /*
  * Handle minimum values for seeds
@@ -80,10 +96,16 @@ static inline void prandom_seed_state(struct rnd_state *state, u64 seed)
 {
 	u32 i = (seed >> 32) ^ (seed << 10) ^ seed;
 
+<<<<<<< HEAD
 	state->s1 = __seed(i,   2U);
 	state->s2 = __seed(i,   8U);
 	state->s3 = __seed(i,  16U);
 	state->s4 = __seed(i, 128U);
+=======
+	state->s1 = __seed(i, 2);
+	state->s2 = __seed(i, 8);
+	state->s3 = __seed(i, 16);
+>>>>>>> 512ca3c... stock
 }
 
 #ifdef CONFIG_ARCH_RANDOM
@@ -97,6 +119,7 @@ static inline int arch_get_random_int(unsigned int *v)
 {
 	return 0;
 }
+<<<<<<< HEAD
 static inline int arch_has_random(void)
 {
 	return 0;
@@ -113,6 +136,8 @@ static inline int arch_has_random_seed(void)
 {
 	return 0;
 }
+=======
+>>>>>>> 512ca3c... stock
 #endif
 
 /* Pseudo random number generator from numerical recipes. */

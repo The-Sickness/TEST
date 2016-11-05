@@ -17,8 +17,11 @@
 #include <linux/rbtree.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include "power.h"
 
+=======
+>>>>>>> 512ca3c... stock
 static DEFINE_MUTEX(wakelocks_lock);
 
 struct wakelock {

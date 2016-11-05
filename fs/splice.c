@@ -949,7 +949,10 @@ ssize_t __splice_from_pipe(struct pipe_inode_info *pipe, struct splice_desc *sd,
 
 	splice_from_pipe_begin(sd);
 	do {
+<<<<<<< HEAD
 		cond_resched();
+=======
+>>>>>>> 512ca3c... stock
 		ret = splice_from_pipe_next(pipe, sd);
 		if (ret > 0)
 			ret = splice_from_pipe_feed(pipe, sd, actor);
@@ -1013,17 +1016,26 @@ generic_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
 	struct address_space *mapping = out->f_mapping;
 	struct inode *inode = mapping->host;
 	struct splice_desc sd = {
+<<<<<<< HEAD
 		.flags = flags,
+=======
+		.total_len = len,
+		.flags = flags,
+		.pos = *ppos,
+>>>>>>> 512ca3c... stock
 		.u.file = out,
 	};
 	ssize_t ret;
 
+<<<<<<< HEAD
 	ret = generic_write_checks(out, ppos, &len, S_ISBLK(inode->i_mode));
 	if (ret)
 		return ret;
 	sd.total_len = len;
 	sd.pos = *ppos;
 
+=======
+>>>>>>> 512ca3c... stock
 	pipe_lock(pipe);
 
 	splice_from_pipe_begin(&sd);
@@ -1190,7 +1202,11 @@ ssize_t splice_direct_to_actor(struct file *in, struct splice_desc *sd,
 	long ret, bytes;
 	umode_t i_mode;
 	size_t len;
+<<<<<<< HEAD
 	int i, flags, more;
+=======
+	int i, flags;
+>>>>>>> 512ca3c... stock
 
 	/*
 	 * We require the input being a regular file, as we don't want to
@@ -1233,7 +1249,10 @@ ssize_t splice_direct_to_actor(struct file *in, struct splice_desc *sd,
 	 * Don't block on output, we have to drain the direct pipe.
 	 */
 	sd->flags &= ~SPLICE_F_NONBLOCK;
+<<<<<<< HEAD
 	more = sd->flags & SPLICE_F_MORE;
+=======
+>>>>>>> 512ca3c... stock
 
 	while (len) {
 		size_t read_len;
@@ -1247,6 +1266,7 @@ ssize_t splice_direct_to_actor(struct file *in, struct splice_desc *sd,
 		sd->total_len = read_len;
 
 		/*
+<<<<<<< HEAD
 		 * If more data is pending, set SPLICE_F_MORE
 		 * If this is the last data and SPLICE_F_MORE was not set
 		 * initially, clears it.
@@ -1256,6 +1276,8 @@ ssize_t splice_direct_to_actor(struct file *in, struct splice_desc *sd,
 		else if (!more)
 			sd->flags &= ~SPLICE_F_MORE;
 		/*
+=======
+>>>>>>> 512ca3c... stock
 		 * NOTE: nonblocking mode only applies to the input. We
 		 * must not do the output in nonblocking mode as then we
 		 * could get stuck data in the internal pipe:

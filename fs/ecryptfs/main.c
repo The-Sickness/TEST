@@ -794,7 +794,10 @@ static struct dentry *ecryptfs_mount(struct file_system_type *fs_type, int flags
 {
 	struct super_block *s, *lower_sb;
 	struct ecryptfs_sb_info *sbi;
+<<<<<<< HEAD
 	struct ecryptfs_mount_crypt_stat *mount_crypt_stat;
+=======
+>>>>>>> 512ca3c... stock
 	struct ecryptfs_dentry_info *root_info;
 	const char *err = "Getting sb failed";
 	struct inode *inode;
@@ -817,7 +820,10 @@ static struct dentry *ecryptfs_mount(struct file_system_type *fs_type, int flags
 		err = "Error parsing options";
 		goto out;
 	}
+<<<<<<< HEAD
 	mount_crypt_stat = &sbi->mount_crypt_stat;
+=======
+>>>>>>> 512ca3c... stock
 
 	s = sget(fs_type, NULL, set_anon_super, flags, NULL);
 	if (IS_ERR(s)) {
@@ -869,6 +875,7 @@ static struct dentry *ecryptfs_mount(struct file_system_type *fs_type, int flags
 
 	/**
 	 * Set the POSIX ACL flag based on whether they're enabled in the lower
+<<<<<<< HEAD
 	 * mount.
 	 */
 	s->s_flags = flags & ~MS_POSIXACL;
@@ -882,6 +889,13 @@ static struct dentry *ecryptfs_mount(struct file_system_type *fs_type, int flags
 	if (path.dentry->d_sb->s_flags & MS_RDONLY ||
 	    mount_crypt_stat->flags & ECRYPTFS_ENCRYPTED_VIEW_ENABLED)
 		s->s_flags |= MS_RDONLY;
+=======
+	 * mount. Force a read-only eCryptfs mount if the lower mount is ro.
+	 * Allow a ro eCryptfs mount even when the lower mount is rw.
+	 */
+	s->s_flags = flags & ~MS_POSIXACL;
+	s->s_flags |= path.dentry->d_sb->s_flags & (MS_RDONLY | MS_POSIXACL);
+>>>>>>> 512ca3c... stock
 
 	s->s_maxbytes = path.dentry->d_sb->s_maxbytes;
 	s->s_blocksize = path.dentry->d_sb->s_blocksize;

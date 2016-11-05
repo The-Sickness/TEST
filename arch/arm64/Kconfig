@@ -65,8 +65,11 @@ config ARM64
 	select RTC_LIB
 	select SPARSE_IRQ
 	select SYSCTL_EXCEPTION_TRACE
+<<<<<<< HEAD
 	select HAVE_CONTEXT_TRACKING
 	select HAVE_ARM_SMCCC
+=======
+>>>>>>> 512ca3c... stock
 	help
 	  ARM 64-bit (AArch64) Linux support.
 
@@ -88,10 +91,13 @@ config STACKTRACE_SUPPORT
 config HAVE_LATENCYTOP_SUPPORT
 	def_bool y
 
+<<<<<<< HEAD
 config ILLEGAL_POINTER_VALUE
 	hex
 	default 0xdead000000000000
 
+=======
+>>>>>>> 512ca3c... stock
 config LOCKDEP_SUPPORT
 	def_bool y
 
@@ -242,6 +248,7 @@ endmenu
 
 menu "Kernel Features"
 
+<<<<<<< HEAD
 menu "ARM errata workarounds"
 
 config ARM64_ERRATUM_845719
@@ -268,6 +275,8 @@ config ARM64_ERRATUM_845719
 endmenu
 
 
+=======
+>>>>>>> 512ca3c... stock
 config ARM64_64K_PAGES
 	bool "Enable 64KB pages support"
 	help

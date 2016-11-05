@@ -17,7 +17,11 @@
 enum stat_item {
 	ALLOC_FASTPATH,		/* Allocation from cpu slab */
 	ALLOC_SLOWPATH,		/* Allocation by getting a new cpu slab */
+<<<<<<< HEAD
 	FREE_FASTPATH,		/* Free to cpu slab */
+=======
+	FREE_FASTPATH,		/* Free to cpu slub */
+>>>>>>> 512ca3c... stock
 	FREE_SLOWPATH,		/* Freeing not to cpu slab */
 	FREE_FROZEN,		/* Freeing to frozen slab */
 	FREE_ADD_PARTIAL,	/* Freeing moves slab to partial list */

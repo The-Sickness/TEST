@@ -222,6 +222,10 @@ int dw_spi_mid_init(struct dw_spi *dws)
 	iounmap(clk_reg);
 
 	dws->num_cs = 16;
+<<<<<<< HEAD
+=======
+	dws->fifo_len = 40;	/* FIFO has 40 words buffer */
+>>>>>>> 512ca3c... stock
 
 #ifdef CONFIG_SPI_DW_MID_DMA
 	dws->dma_priv = kzalloc(sizeof(struct mid_dma), GFP_KERNEL);

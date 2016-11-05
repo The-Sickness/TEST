@@ -73,7 +73,11 @@ struct snd_timer_user {
 	struct timespec tstamp;		/* trigger tstamp */
 	wait_queue_head_t qchange_sleep;
 	struct fasync_struct *fasync;
+<<<<<<< HEAD
 	struct mutex ioctl_lock;
+=======
+	struct mutex tread_sem;
+>>>>>>> 512ca3c... stock
 };
 
 /* list of timers */
@@ -215,13 +219,19 @@ static void snd_timer_check_master(struct snd_timer_instance *master)
 		    slave->slave_id == master->slave_id) {
 			list_move_tail(&slave->open_list, &master->slave_list_head);
 			spin_lock_irq(&slave_active_lock);
+<<<<<<< HEAD
 			spin_lock(&master->timer->lock);
+=======
+>>>>>>> 512ca3c... stock
 			slave->master = master;
 			slave->timer = master->timer;
 			if (slave->flags & SNDRV_TIMER_IFLG_RUNNING)
 				list_add_tail(&slave->active_list,
 					      &master->slave_active_head);
+<<<<<<< HEAD
 			spin_unlock(&master->timer->lock);
+=======
+>>>>>>> 512ca3c... stock
 			spin_unlock_irq(&slave_active_lock);
 		}
 	}
@@ -300,7 +310,12 @@ int snd_timer_open(struct snd_timer_instance **ti,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int _snd_timer_stop(struct snd_timer_instance *timeri, int event);
+=======
+static int _snd_timer_stop(struct snd_timer_instance *timeri,
+			   int keep_flag, int event);
+>>>>>>> 512ca3c... stock
 
 /*
  * close a timer instance
@@ -342,6 +357,7 @@ int snd_timer_close(struct snd_timer_instance *timeri)
 		spin_unlock_irq(&timer->lock);
 		mutex_lock(&register_mutex);
 		list_del(&timeri->open_list);
+<<<<<<< HEAD
 		if (list_empty(&timer->open_list_head) &&
 		    timer->hw.close)
 			timer->hw.close(timer);
@@ -358,6 +374,21 @@ int snd_timer_close(struct snd_timer_instance *timeri)
 		}
 		spin_unlock(&timer->lock);
 		spin_unlock_irq(&slave_active_lock);
+=======
+		if (timer && list_empty(&timer->open_list_head) &&
+		    timer->hw.close)
+			timer->hw.close(timer);
+		/* remove slave links */
+		list_for_each_entry_safe(slave, tmp, &timeri->slave_list_head,
+					 open_list) {
+			spin_lock_irq(&slave_active_lock);
+			_snd_timer_stop(slave, 1, SNDRV_TIMER_EVENT_RESOLUTION);
+			list_move_tail(&slave->open_list, &snd_timer_slave_list);
+			slave->master = NULL;
+			slave->timer = NULL;
+			spin_unlock_irq(&slave_active_lock);
+		}
+>>>>>>> 512ca3c... stock
 		mutex_unlock(&register_mutex);
 	}
  out:
@@ -414,7 +445,11 @@ static void snd_timer_notify1(struct snd_timer_instance *ti, int event)
 	spin_lock_irqsave(&timer->lock, flags);
 	list_for_each_entry(ts, &ti->slave_active_head, active_list)
 		if (ts->ccallback)
+<<<<<<< HEAD
 			ts->ccallback(ts, event + 100, &tstamp, resolution);
+=======
+			ts->ccallback(ti, event + 100, &tstamp, resolution);
+>>>>>>> 512ca3c... stock
 	spin_unlock_irqrestore(&timer->lock, flags);
 }
 
@@ -443,6 +478,7 @@ static int snd_timer_start_slave(struct snd_timer_instance *timeri)
 	unsigned long flags;
 
 	spin_lock_irqsave(&slave_active_lock, flags);
+<<<<<<< HEAD
 	if (timeri->flags & SNDRV_TIMER_IFLG_RUNNING) {
 		spin_unlock_irqrestore(&slave_active_lock, flags);
 		return -EBUSY;
@@ -454,6 +490,12 @@ static int snd_timer_start_slave(struct snd_timer_instance *timeri)
 			      &timeri->master->slave_active_head);
 		spin_unlock(&timeri->timer->lock);
 	}
+=======
+	timeri->flags |= SNDRV_TIMER_IFLG_RUNNING;
+	if (timeri->master)
+		list_add_tail(&timeri->active_list,
+			      &timeri->master->slave_active_head);
+>>>>>>> 512ca3c... stock
 	spin_unlock_irqrestore(&slave_active_lock, flags);
 	return 1; /* delayed start */
 }
@@ -471,14 +513,19 @@ int snd_timer_start(struct snd_timer_instance *timeri, unsigned int ticks)
 		return -EINVAL;
 	if (timeri->flags & SNDRV_TIMER_IFLG_SLAVE) {
 		result = snd_timer_start_slave(timeri);
+<<<<<<< HEAD
 		if (result >= 0)
 			snd_timer_notify1(timeri, SNDRV_TIMER_EVENT_START);
+=======
+		snd_timer_notify1(timeri, SNDRV_TIMER_EVENT_START);
+>>>>>>> 512ca3c... stock
 		return result;
 	}
 	timer = timeri->timer;
 	if (timer == NULL)
 		return -EINVAL;
 	spin_lock_irqsave(&timer->lock, flags);
+<<<<<<< HEAD
 	if (timeri->flags & (SNDRV_TIMER_IFLG_RUNNING |
 			     SNDRV_TIMER_IFLG_START)) {
 		result = -EBUSY;
@@ -495,6 +542,18 @@ int snd_timer_start(struct snd_timer_instance *timeri, unsigned int ticks)
 }
 
 static int _snd_timer_stop(struct snd_timer_instance *timeri, int event)
+=======
+	timeri->ticks = timeri->cticks = ticks;
+	timeri->pticks = 0;
+	result = snd_timer_start1(timer, timeri, ticks);
+	spin_unlock_irqrestore(&timer->lock, flags);
+	snd_timer_notify1(timeri, SNDRV_TIMER_EVENT_START);
+	return result;
+}
+
+static int _snd_timer_stop(struct snd_timer_instance * timeri,
+			   int keep_flag, int event)
+>>>>>>> 512ca3c... stock
 {
 	struct snd_timer *timer;
 	unsigned long flags;
@@ -503,6 +562,7 @@ static int _snd_timer_stop(struct snd_timer_instance *timeri, int event)
 		return -ENXIO;
 
 	if (timeri->flags & SNDRV_TIMER_IFLG_SLAVE) {
+<<<<<<< HEAD
 		spin_lock_irqsave(&slave_active_lock, flags);
 		if (!(timeri->flags & SNDRV_TIMER_IFLG_RUNNING)) {
 			spin_unlock_irqrestore(&slave_active_lock, flags);
@@ -516,17 +576,27 @@ static int _snd_timer_stop(struct snd_timer_instance *timeri, int event)
 		if (timeri->timer)
 			spin_unlock(&timeri->timer->lock);
 		spin_unlock_irqrestore(&slave_active_lock, flags);
+=======
+		if (!keep_flag) {
+			spin_lock_irqsave(&slave_active_lock, flags);
+			timeri->flags &= ~SNDRV_TIMER_IFLG_RUNNING;
+			spin_unlock_irqrestore(&slave_active_lock, flags);
+		}
+>>>>>>> 512ca3c... stock
 		goto __end;
 	}
 	timer = timeri->timer;
 	if (!timer)
 		return -EINVAL;
 	spin_lock_irqsave(&timer->lock, flags);
+<<<<<<< HEAD
 	if (!(timeri->flags & (SNDRV_TIMER_IFLG_RUNNING |
 			       SNDRV_TIMER_IFLG_START))) {
 		spin_unlock_irqrestore(&timer->lock, flags);
 		return -EBUSY;
 	}
+=======
+>>>>>>> 512ca3c... stock
 	list_del_init(&timeri->ack_list);
 	list_del_init(&timeri->active_list);
 	if ((timeri->flags & SNDRV_TIMER_IFLG_RUNNING) &&
@@ -541,7 +611,13 @@ static int _snd_timer_stop(struct snd_timer_instance *timeri, int event)
 			}
 		}
 	}
+<<<<<<< HEAD
 	timeri->flags &= ~(SNDRV_TIMER_IFLG_RUNNING | SNDRV_TIMER_IFLG_START);
+=======
+	if (!keep_flag)
+		timeri->flags &=
+			~(SNDRV_TIMER_IFLG_RUNNING | SNDRV_TIMER_IFLG_START);
+>>>>>>> 512ca3c... stock
 	spin_unlock_irqrestore(&timer->lock, flags);
       __end:
 	if (event != SNDRV_TIMER_EVENT_RESOLUTION)
@@ -560,7 +636,11 @@ int snd_timer_stop(struct snd_timer_instance *timeri)
 	unsigned long flags;
 	int err;
 
+<<<<<<< HEAD
 	err = _snd_timer_stop(timeri, SNDRV_TIMER_EVENT_STOP);
+=======
+	err = _snd_timer_stop(timeri, 0, SNDRV_TIMER_EVENT_STOP);
+>>>>>>> 512ca3c... stock
 	if (err < 0)
 		return err;
 	timer = timeri->timer;
@@ -590,15 +670,21 @@ int snd_timer_continue(struct snd_timer_instance *timeri)
 	if (! timer)
 		return -EINVAL;
 	spin_lock_irqsave(&timer->lock, flags);
+<<<<<<< HEAD
 	if (timeri->flags & SNDRV_TIMER_IFLG_RUNNING) {
 		result = -EBUSY;
 		goto unlock;
 	}
+=======
+>>>>>>> 512ca3c... stock
 	if (!timeri->cticks)
 		timeri->cticks = 1;
 	timeri->pticks = 0;
 	result = snd_timer_start1(timer, timeri, timer->sticks);
+<<<<<<< HEAD
  unlock:
+=======
+>>>>>>> 512ca3c... stock
 	spin_unlock_irqrestore(&timer->lock, flags);
 	snd_timer_notify1(timeri, SNDRV_TIMER_EVENT_CONTINUE);
 	return result;
@@ -609,7 +695,11 @@ int snd_timer_continue(struct snd_timer_instance *timeri)
  */
 int snd_timer_pause(struct snd_timer_instance * timeri)
 {
+<<<<<<< HEAD
 	return _snd_timer_stop(timeri, SNDRV_TIMER_EVENT_PAUSE);
+=======
+	return _snd_timer_stop(timeri, 0, SNDRV_TIMER_EVENT_PAUSE);
+>>>>>>> 512ca3c... stock
 }
 
 /*
@@ -726,8 +816,13 @@ void snd_timer_interrupt(struct snd_timer * timer, unsigned long ticks_left)
 			ti->cticks = ti->ticks;
 		} else {
 			ti->flags &= ~SNDRV_TIMER_IFLG_RUNNING;
+<<<<<<< HEAD
 			--timer->running;
 			list_del_init(&ti->active_list);
+=======
+			if (--timer->running)
+				list_del(&ti->active_list);
+>>>>>>> 512ca3c... stock
 		}
 		if ((timer->hw.flags & SNDRV_TIMER_HW_TASKLET) ||
 		    (ti->flags & SNDRV_TIMER_IFLG_FAST))
@@ -1290,7 +1385,11 @@ static int snd_timer_user_open(struct inode *inode, struct file *file)
 		return -ENOMEM;
 	spin_lock_init(&tu->qlock);
 	init_waitqueue_head(&tu->qchange_sleep);
+<<<<<<< HEAD
 	mutex_init(&tu->ioctl_lock);
+=======
+	mutex_init(&tu->tread_sem);
+>>>>>>> 512ca3c... stock
 	tu->ticks = 1;
 	tu->queue_size = 128;
 	tu->queue = kmalloc(tu->queue_size * sizeof(struct snd_timer_read),
@@ -1310,10 +1409,15 @@ static int snd_timer_user_release(struct inode *inode, struct file *file)
 	if (file->private_data) {
 		tu = file->private_data;
 		file->private_data = NULL;
+<<<<<<< HEAD
 		mutex_lock(&tu->ioctl_lock);
 		if (tu->timeri)
 			snd_timer_close(tu->timeri);
 		mutex_unlock(&tu->ioctl_lock);
+=======
+		if (tu->timeri)
+			snd_timer_close(tu->timeri);
+>>>>>>> 512ca3c... stock
 		kfree(tu->queue);
 		kfree(tu->tqueue);
 		kfree(tu);
@@ -1551,6 +1655,10 @@ static int snd_timer_user_tselect(struct file *file,
 	int err = 0;
 
 	tu = file->private_data;
+<<<<<<< HEAD
+=======
+	mutex_lock(&tu->tread_sem);
+>>>>>>> 512ca3c... stock
 	if (tu->timeri) {
 		snd_timer_close(tu->timeri);
 		tu->timeri = NULL;
@@ -1594,6 +1702,10 @@ static int snd_timer_user_tselect(struct file *file,
 	}
 
       __err:
+<<<<<<< HEAD
+=======
+      	mutex_unlock(&tu->tread_sem);
+>>>>>>> 512ca3c... stock
 	return err;
 }
 
@@ -1806,7 +1918,11 @@ enum {
 	SNDRV_TIMER_IOCTL_PAUSE_OLD = _IO('T', 0x23),
 };
 
+<<<<<<< HEAD
 static long __snd_timer_user_ioctl(struct file *file, unsigned int cmd,
+=======
+static long snd_timer_user_ioctl(struct file *file, unsigned int cmd,
+>>>>>>> 512ca3c... stock
 				 unsigned long arg)
 {
 	struct snd_timer_user *tu;
@@ -1823,11 +1939,25 @@ static long __snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 	{
 		int xarg;
 
+<<<<<<< HEAD
 		if (tu->timeri)	/* too late */
 			return -EBUSY;
 		if (get_user(xarg, p))
 			return -EFAULT;
 		tu->tread = xarg ? 1 : 0;
+=======
+		mutex_lock(&tu->tread_sem);
+		if (tu->timeri)	{	/* too late */
+			mutex_unlock(&tu->tread_sem);
+			return -EBUSY;
+		}
+		if (get_user(xarg, p)) {
+			mutex_unlock(&tu->tread_sem);
+			return -EFAULT;
+		}
+		tu->tread = xarg ? 1 : 0;
+		mutex_unlock(&tu->tread_sem);
+>>>>>>> 512ca3c... stock
 		return 0;
 	}
 	case SNDRV_TIMER_IOCTL_GINFO:
@@ -1860,6 +1990,7 @@ static long __snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 	return -ENOTTY;
 }
 
+<<<<<<< HEAD
 static long snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 				 unsigned long arg)
 {
@@ -1872,6 +2003,8 @@ static long snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 	return ret;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static int snd_timer_user_fasync(int fd, struct file * file, int on)
 {
 	struct snd_timer_user *tu;

@@ -152,6 +152,7 @@ static const struct dmi_system_id __initconst i8042_dmi_noloop_table[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		/* Medion Akoya E7225 */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Medion"),
@@ -160,6 +161,8 @@ static const struct dmi_system_id __initconst i8042_dmi_noloop_table[] = {
 		},
 	},
 	{
+=======
+>>>>>>> 512ca3c... stock
 		/* Blue FB5601 */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "blue"),
@@ -258,6 +261,7 @@ static const struct dmi_system_id __initconst i8042_dmi_nomux_table[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		/* Fujitsu Lifebook U745 */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
@@ -265,6 +269,8 @@ static const struct dmi_system_id __initconst i8042_dmi_nomux_table[] = {
 		},
 	},
 	{
+=======
+>>>>>>> 512ca3c... stock
 		/* Fujitsu T70H */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
@@ -423,6 +429,7 @@ static const struct dmi_system_id __initconst i8042_dmi_nomux_table[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		/* Acer Aspire 7738 */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
@@ -430,6 +437,8 @@ static const struct dmi_system_id __initconst i8042_dmi_nomux_table[] = {
 		},
 	},
 	{
+=======
+>>>>>>> 512ca3c... stock
 		/* Gericom Bellagio */
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "Gericom"),
@@ -743,6 +752,7 @@ static const struct dmi_system_id __initconst i8042_dmi_dritek_table[] = {
 	{ }
 };
 
+<<<<<<< HEAD
 /*
  * Some laptops need keyboard reset before probing for the trackpad to get
  * it detected, initialised & finally work.
@@ -772,6 +782,8 @@ static const struct dmi_system_id __initconst i8042_dmi_kbdreset_table[] = {
 	{ }
 };
 
+=======
+>>>>>>> 512ca3c... stock
 #endif /* CONFIG_X86 */
 
 #ifdef CONFIG_PNP
@@ -1052,9 +1064,12 @@ static int __init i8042_platform_init(void)
 	if (dmi_check_system(i8042_dmi_dritek_table))
 		i8042_dritek = true;
 
+<<<<<<< HEAD
 	if (dmi_check_system(i8042_dmi_kbdreset_table))
 		i8042_kbdreset = true;
 
+=======
+>>>>>>> 512ca3c... stock
 	/*
 	 * A20 was already enabled during early kernel init. But some buggy
 	 * BIOSes (in MSI Laptops) require A20 to be enabled using 8042 to

@@ -1924,7 +1924,10 @@ static int journal_unmap_buffer(journal_t *journal, struct buffer_head *bh,
 
 		if (!buffer_dirty(bh)) {
 			/* bdflush has written it.  We can drop it now */
+<<<<<<< HEAD
 			__jbd2_journal_remove_checkpoint(jh);
+=======
+>>>>>>> 512ca3c... stock
 			goto zap_buffer;
 		}
 
@@ -1954,7 +1957,10 @@ static int journal_unmap_buffer(journal_t *journal, struct buffer_head *bh,
 				/* The orphan record's transaction has
 				 * committed.  We can cleanse this buffer */
 				clear_buffer_jbddirty(bh);
+<<<<<<< HEAD
 				__jbd2_journal_remove_checkpoint(jh);
+=======
+>>>>>>> 512ca3c... stock
 				goto zap_buffer;
 			}
 		}

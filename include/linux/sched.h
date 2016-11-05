@@ -2,7 +2,11 @@
 #define _LINUX_SCHED_H
 
 #include <uapi/linux/sched.h>
+<<<<<<< HEAD
 #include <linux/atomic.h>
+=======
+
+>>>>>>> 512ca3c... stock
 
 struct sched_param {
 	int sched_priority;
@@ -63,6 +67,7 @@ struct fs_struct;
 struct perf_event_context;
 struct blk_plug;
 
+<<<<<<< HEAD
 /* This structure is used to share information and statistics with other
  * frameworks. It only shares wake up latency fro the moment but should be
  * extended with other usefull informations
@@ -73,6 +78,8 @@ struct sched_pm {
 
 DECLARE_PER_CPU(struct sched_pm, sched_stat);
 
+=======
+>>>>>>> 512ca3c... stock
 /*
  * List of flags we want to share for kernel threads,
  * if only because they are not used by them anyway.
@@ -94,10 +101,17 @@ extern void get_avenrun(unsigned long *loads, unsigned long offset, int shift);
 
 #define FSHIFT		11		/* nr of bits of precision */
 #define FIXED_1		(1<<FSHIFT)	/* 1.0 as fixed-point */
+<<<<<<< HEAD
 #define LOAD_FREQ	(4*HZ+61)	/* 5 sec intervals */
 #define EXP_1		1896		/* 1/exp(5sec/1min) as fixed-point */
 #define EXP_5		2017		/* 1/exp(5sec/5min) */
 #define EXP_15		2038		/* 1/exp(5sec/15min) */
+=======
+#define LOAD_FREQ	(5*HZ+1)	/* 5 sec intervals */
+#define EXP_1		1884		/* 1/exp(5sec/1min) as fixed-point */
+#define EXP_5		2014		/* 1/exp(5sec/5min) */
+#define EXP_15		2037		/* 1/exp(5sec/15min) */
+>>>>>>> 512ca3c... stock
 
 #define CALC_LOAD(load,exp,n) \
 	load *= exp; \
@@ -111,7 +125,10 @@ extern int nr_processes(void);
 extern unsigned long nr_running(void);
 extern unsigned long nr_iowait(void);
 extern unsigned long nr_iowait_cpu(int cpu);
+<<<<<<< HEAD
 extern unsigned long avg_nr_running(void);
+=======
+>>>>>>> 512ca3c... stock
 extern unsigned long this_cpu_load(void);
 #ifdef CONFIG_SCHED_HMP
 extern unsigned long nr_running_cpu(unsigned int cpu);
@@ -687,8 +704,11 @@ struct user_struct {
 	unsigned long mq_bytes;	/* How many bytes can be allocated to mqueue? */
 #endif
 	unsigned long locked_shm; /* How many pages of mlocked shm ? */
+<<<<<<< HEAD
 	unsigned long unix_inflight;	/* How many files in flight in unix sockets */
 	atomic_long_t pipe_bufs;  /* how many pages are allocated in pipe buffers */
+=======
+>>>>>>> 512ca3c... stock
 
 #ifdef CONFIG_KEYS
 	struct key *uid_keyring;	/* UID specific keyring */
@@ -787,6 +807,7 @@ enum cpu_idle_type {
 #define SCHED_POWER_SCALE	(1L << SCHED_POWER_SHIFT)
 
 /*
+<<<<<<< HEAD
  * Wake-queues are lists of tasks with a pending wakeup, whose
  * callers have already marked the task as woken internally,
  * and can thus carry on. A common use case is being able to
@@ -831,6 +852,8 @@ extern void wake_q_add(struct wake_q_head *head,
 extern void wake_up_q(struct wake_q_head *head);
 
 /*
+=======
+>>>>>>> 512ca3c... stock
  * sched-domains (multiprocessor balancing) declarations:
  */
 #ifdef CONFIG_SMP
@@ -1026,6 +1049,7 @@ struct sched_avg {
 	u32 usage_avg_sum;
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_SCHED_HMP
 /*
  * We want to avoid boosting any processes forked from init (PID 1)
@@ -1034,6 +1058,8 @@ struct sched_avg {
 #define hmp_task_should_forkboost(task) ((task->parent && task->parent->pid > 2))
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_SCHEDSTATS
 struct sched_statistics {
 	u64			wait_start;
@@ -1142,9 +1168,12 @@ struct task_struct {
 #ifdef CONFIG_SMP
 	struct llist_node wake_entry;
 	int on_cpu;
+<<<<<<< HEAD
 	struct task_struct *last_wakee;
 	unsigned long wakee_flips;
 	unsigned long wakee_flip_decay_ts;
+=======
+>>>>>>> 512ca3c... stock
 #endif
 	int on_rq;
 
@@ -1204,7 +1233,10 @@ struct task_struct {
 #ifdef CONFIG_COMPAT_BRK
 	unsigned brk_randomized:1;
 #endif
+<<<<<<< HEAD
 
+=======
+>>>>>>> 512ca3c... stock
 #if defined(SPLIT_RSS_COUNTING)
 	struct task_rss_stat	rss_stat;
 #endif
@@ -1348,8 +1380,11 @@ struct task_struct {
 	/* Protection of the PI data structures: */
 	raw_spinlock_t pi_lock;
 
+<<<<<<< HEAD
 	struct wake_q_node wake_q;
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_RT_MUTEXES
 	/* PI waiters blocked on a rt_mutex held by this task */
 	struct plist_head pi_waiters;
@@ -2332,6 +2367,7 @@ static inline bool thread_group_leader(struct task_struct *p)
  * all we care about is that we have a task with the appropriate
  * pid, we don't actually care if we have the right task.
  */
+<<<<<<< HEAD
 static inline bool has_group_leader_pid(struct task_struct *p)
 {
 	return task_pid(p) == p->signal->leader_pid;
@@ -2341,6 +2377,17 @@ static inline
 bool same_thread_group(struct task_struct *p1, struct task_struct *p2)
 {
 	return p1->signal == p2->signal;
+=======
+static inline int has_group_leader_pid(struct task_struct *p)
+{
+	return p->pid == p->tgid;
+}
+
+static inline
+int same_thread_group(struct task_struct *p1, struct task_struct *p2)
+{
+	return p1->tgid == p2->tgid;
+>>>>>>> 512ca3c... stock
 }
 
 static inline struct task_struct *next_thread(const struct task_struct *p)
@@ -2509,7 +2556,11 @@ static inline int test_and_clear_tsk_thread_flag(struct task_struct *tsk, int fl
 
 static inline int test_tsk_thread_flag(struct task_struct *tsk, int flag)
 {
+<<<<<<< HEAD
 	return test_ti_thread_flag_relaxed(task_thread_info(tsk), flag);
+=======
+	return test_ti_thread_flag(task_thread_info(tsk), flag);
+>>>>>>> 512ca3c... stock
 }
 
 static inline void set_tsk_need_resched(struct task_struct *tsk)

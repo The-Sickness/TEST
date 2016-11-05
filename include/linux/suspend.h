@@ -187,11 +187,14 @@ struct platform_suspend_ops {
 	void (*recover)(void);
 };
 
+<<<<<<< HEAD
 struct platform_freeze_ops {
 	int (*begin)(void);
 	void (*end)(void);
 };
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_SUSPEND
 /**
  * suspend_set_ops - set platform dependent suspend operations
@@ -199,7 +202,10 @@ struct platform_freeze_ops {
  */
 extern void suspend_set_ops(const struct platform_suspend_ops *ops);
 extern int suspend_valid_only_mem(suspend_state_t state);
+<<<<<<< HEAD
 extern void freeze_set_ops(const struct platform_freeze_ops *ops);
+=======
+>>>>>>> 512ca3c... stock
 extern void freeze_wake(void);
 
 /**
@@ -226,7 +232,10 @@ extern int pm_suspend(suspend_state_t state);
 
 static inline void suspend_set_ops(const struct platform_suspend_ops *ops) {}
 static inline int pm_suspend(suspend_state_t state) { return -ENOSYS; }
+<<<<<<< HEAD
 static inline void freeze_set_ops(const struct platform_freeze_ops *ops) {}
+=======
+>>>>>>> 512ca3c... stock
 static inline void freeze_wake(void) {}
 #endif /* !CONFIG_SUSPEND */
 
@@ -367,8 +376,11 @@ extern int unregister_pm_notifier(struct notifier_block *nb);
 extern bool events_check_enabled;
 
 extern bool pm_wakeup_pending(void);
+<<<<<<< HEAD
 extern void pm_system_wakeup(void);
 extern void pm_wakeup_clear(void);
+=======
+>>>>>>> 512ca3c... stock
 extern bool pm_get_wakeup_count(unsigned int *count, bool block);
 extern bool pm_save_wakeup_count(unsigned int count);
 extern void pm_wakep_autosleep_enabled(bool set);
@@ -415,8 +427,11 @@ static inline int unregister_pm_notifier(struct notifier_block *nb)
 #define pm_notifier(fn, pri)	do { (void)(fn); } while (0)
 
 static inline bool pm_wakeup_pending(void) { return false; }
+<<<<<<< HEAD
 static inline void pm_system_wakeup(void) {}
 static inline void pm_wakeup_clear(void) {}
+=======
+>>>>>>> 512ca3c... stock
 
 static inline void lock_system_sleep(void) {}
 static inline void unlock_system_sleep(void) {}

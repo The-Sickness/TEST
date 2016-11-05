@@ -81,10 +81,14 @@ static struct resource code_resource = {
 };
 
 unsigned long memory_start;
+<<<<<<< HEAD
 EXPORT_SYMBOL(memory_start);
 
 unsigned long memory_end;
 EXPORT_SYMBOL(memory_end);
+=======
+unsigned long memory_end;
+>>>>>>> 512ca3c... stock
 
 void __init setup_arch(char **);
 int get_cpuinfo(char *);

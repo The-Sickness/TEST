@@ -145,6 +145,7 @@ loff_t generic_file_llseek(struct file *file, loff_t offset, int whence)
 EXPORT_SYMBOL(generic_file_llseek);
 
 /**
+<<<<<<< HEAD
  * fixed_size_llseek - llseek implementation for fixed-sized devices
  * @file:	file structure to seek on
  * @offset:	file offset to seek to
@@ -165,6 +166,8 @@ loff_t fixed_size_llseek(struct file *file, loff_t offset, int whence, loff_t si
 EXPORT_SYMBOL(fixed_size_llseek);
 
 /**
+=======
+>>>>>>> 512ca3c... stock
  * noop_llseek - No Operation Performed llseek implementation
  * @file:	file structure to seek on
  * @offset:	file offset to seek to

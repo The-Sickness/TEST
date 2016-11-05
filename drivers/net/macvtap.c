@@ -658,15 +658,22 @@ static unsigned long iov_pages(const struct iovec *iv, int offset,
 	return pages;
 }
 
+<<<<<<< HEAD
 /* Neighbour code has some assumptions on HH_DATA_MOD alignment */
 #define MACVTAP_RESERVE HH_DATA_OFF(ETH_HLEN)
 
+=======
+>>>>>>> 512ca3c... stock
 /* Get packet from user space buffer */
 static ssize_t macvtap_get_user(struct macvtap_queue *q, struct msghdr *m,
 				const struct iovec *iv, unsigned long total_len,
 				size_t count, int noblock)
 {
+<<<<<<< HEAD
 	int good_linear = SKB_MAX_HEAD(MACVTAP_RESERVE);
+=======
+	int good_linear = SKB_MAX_HEAD(NET_IP_ALIGN);
+>>>>>>> 512ca3c... stock
 	struct sk_buff *skb;
 	struct macvlan_dev *vlan;
 	unsigned long len = total_len;
@@ -725,7 +732,11 @@ static ssize_t macvtap_get_user(struct macvtap_queue *q, struct msghdr *m,
 			linear = vnet_hdr.hdr_len;
 	}
 
+<<<<<<< HEAD
 	skb = macvtap_alloc_skb(&q->sk, MACVTAP_RESERVE, copylen,
+=======
+	skb = macvtap_alloc_skb(&q->sk, NET_IP_ALIGN, copylen,
+>>>>>>> 512ca3c... stock
 				linear, noblock, &err);
 	if (!skb)
 		goto err;

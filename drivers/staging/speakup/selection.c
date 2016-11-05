@@ -139,9 +139,13 @@ static void __speakup_paste_selection(struct work_struct *work)
 	struct tty_ldisc *ld;
 	DECLARE_WAITQUEUE(wait, current);
 
+<<<<<<< HEAD
 	ld = tty_ldisc_ref(tty);
 	if (!ld)
 		goto tty_unref;
+=======
+	ld = tty_ldisc_ref_wait(tty);
+>>>>>>> 512ca3c... stock
 
 	/* FIXME: this is completely unsafe */
 	add_wait_queue(&vc->paste_wait, &wait);
@@ -160,7 +164,10 @@ static void __speakup_paste_selection(struct work_struct *work)
 	current->state = TASK_RUNNING;
 
 	tty_ldisc_deref(ld);
+<<<<<<< HEAD
 tty_unref:
+=======
+>>>>>>> 512ca3c... stock
 	tty_kref_put(tty);
 }
 

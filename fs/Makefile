@@ -29,7 +29,10 @@ obj-$(CONFIG_SIGNALFD)		+= signalfd.o
 obj-$(CONFIG_TIMERFD)		+= timerfd.o
 obj-$(CONFIG_EVENTFD)		+= eventfd.o
 obj-$(CONFIG_AIO)               += aio.o
+<<<<<<< HEAD
 obj-$(CONFIG_FS_ENCRYPTION)	+= crypto/
+=======
+>>>>>>> 512ca3c... stock
 obj-$(CONFIG_FILE_LOCKING)      += locks.o
 obj-$(CONFIG_COMPAT)		+= compat.o compat_ioctl.o
 obj-$(CONFIG_BINFMT_AOUT)	+= binfmt_aout.o
@@ -130,5 +133,8 @@ obj-$(CONFIG_CEPH_FS)		+= ceph/
 obj-$(CONFIG_PSTORE)		+= pstore/
 obj-$(CONFIG_EFIVAR_FS)		+= efivarfs/
 obj-$(CONFIG_EXFAT_FS)		+= exfat/
+<<<<<<< HEAD
 
 obj-$(CONFIG_DYNAMIC_FSYNC) 	+= dyn_sync_cntrl.o
+=======
+>>>>>>> 512ca3c... stock

@@ -1943,6 +1943,15 @@ rb_set_commit_to_write(struct ring_buffer_per_cpu *cpu_buffer)
 		goto again;
 }
 
+<<<<<<< HEAD
+=======
+static void rb_reset_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
+{
+	cpu_buffer->read_stamp = cpu_buffer->reader_page->page->time_stamp;
+	cpu_buffer->reader_page->read = 0;
+}
+
+>>>>>>> 512ca3c... stock
 static void rb_inc_iter(struct ring_buffer_iter *iter)
 {
 	struct ring_buffer_per_cpu *cpu_buffer = iter->cpu_buffer;
@@ -2639,7 +2648,11 @@ static DEFINE_PER_CPU(unsigned int, current_context);
 
 static __always_inline int trace_recursive_lock(void)
 {
+<<<<<<< HEAD
 	unsigned int val = __this_cpu_read(current_context);
+=======
+	unsigned int val = this_cpu_read(current_context);
+>>>>>>> 512ca3c... stock
 	int bit;
 
 	if (in_interrupt()) {
@@ -2656,17 +2669,29 @@ static __always_inline int trace_recursive_lock(void)
 		return 1;
 
 	val |= (1 << bit);
+<<<<<<< HEAD
 	__this_cpu_write(current_context, val);
+=======
+	this_cpu_write(current_context, val);
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }
 
 static __always_inline void trace_recursive_unlock(void)
 {
+<<<<<<< HEAD
 	unsigned int val = __this_cpu_read(current_context);
 
 	val &= val & (val - 1);
 	__this_cpu_write(current_context, val);
+=======
+	unsigned int val = this_cpu_read(current_context);
+
+	val--;
+	val &= this_cpu_read(current_context);
+	this_cpu_write(current_context, val);
+>>>>>>> 512ca3c... stock
 }
 
 #else
@@ -3580,7 +3605,11 @@ rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
 
 	/* Finally update the reader page to the new head */
 	cpu_buffer->reader_page = reader;
+<<<<<<< HEAD
 	cpu_buffer->reader_page->read = 0;
+=======
+	rb_reset_reader_page(cpu_buffer);
+>>>>>>> 512ca3c... stock
 
 	if (overwrite != cpu_buffer->last_overrun) {
 		cpu_buffer->lost_events = overwrite - cpu_buffer->last_overrun;
@@ -3590,10 +3619,13 @@ rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
 	goto again;
 
  out:
+<<<<<<< HEAD
 	/* Update the read_stamp on the first event */
 	if (reader && reader->read == 0)
 		cpu_buffer->read_stamp = reader->page->time_stamp;
 
+=======
+>>>>>>> 512ca3c... stock
 	arch_spin_unlock(&cpu_buffer->lock);
 	local_irq_restore(flags);
 

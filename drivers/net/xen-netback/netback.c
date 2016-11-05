@@ -814,7 +814,10 @@ static void xen_netbk_rx_action(struct xen_netbk *netbk)
 			xenvif_put(vif);
 		npo.meta_cons += sco->meta_slots_used;
 		dev_kfree_skb(skb);
+<<<<<<< HEAD
 		xenvif_put_rings(vif); 
+=======
+>>>>>>> 512ca3c... stock
 	}
 
 	list_for_each_entry_safe(vif, tmp, &notify, notify_list) {
@@ -1865,9 +1868,12 @@ static int xen_netbk_kthread(void *data)
 
 void xen_netbk_unmap_frontend_rings(struct xenvif *vif)
 {
+<<<<<<< HEAD
 	atomic_dec(&vif->ring_refcnt);
 	wait_event(vif->waiting_to_unmap, atomic_read(&vif->ring_refcnt) == 0);
 
+=======
+>>>>>>> 512ca3c... stock
 	if (vif->tx.sring)
 		xenbus_unmap_ring_vfree(xenvif_to_xenbus_device(vif),
 					vif->tx.sring);
@@ -1886,8 +1892,11 @@ int xen_netbk_map_frontend_rings(struct xenvif *vif,
 
 	int err = -ENOMEM;
 
+<<<<<<< HEAD
 	atomic_set(&vif->ring_refcnt, 1);
 
+=======
+>>>>>>> 512ca3c... stock
 	err = xenbus_map_ring_valloc(xenvif_to_xenbus_device(vif),
 				     tx_ring_ref, &addr);
 	if (err)

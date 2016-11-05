@@ -97,7 +97,11 @@ static inline u32 avc_audit_required(u32 requested,
 		audited = denied = requested;
 	else
 		audited = requested & avd->auditallow;
+<<<<<<< HEAD
 	*deniedp = 0;
+=======
+	*deniedp = denied;
+>>>>>>> 512ca3c... stock
 	return audited;
 }
 
@@ -137,11 +141,19 @@ static inline int avc_audit(u32 ssid, u32 tsid,
 	if (likely(!audited))
 		return 0;
 	return slow_avc_audit(ssid, tsid, tclass,
+<<<<<<< HEAD
 			      requested, audited, 0, result,
 			      a, flags);
 }
 
 #define AVC_STRICT 0
+=======
+			      requested, audited, denied, result,
+			      a, flags);
+}
+
+#define AVC_STRICT 1 /* Ignore permissive mode. */
+>>>>>>> 512ca3c... stock
 #define AVC_OPERATION_CMD 2	/* ignore command when updating operations */
 int avc_has_perm_noaudit(u32 ssid, u32 tsid,
 			 u16 tclass, u32 requested,

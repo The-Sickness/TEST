@@ -169,7 +169,11 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 			   GFP_KERNEL);
 	if (!open_info) {
 		err = -ENOMEM;
+<<<<<<< HEAD
 		goto error_gpadl;
+=======
+		goto error0;
+>>>>>>> 512ca3c... stock
 	}
 
 	init_completion(&open_info->waitevent);
@@ -185,7 +189,11 @@ int vmbus_open(struct vmbus_channel *newchannel, u32 send_ringbuffer_size,
 
 	if (userdatalen > MAX_USER_DEFINED_BYTES) {
 		err = -EINVAL;
+<<<<<<< HEAD
 		goto error_gpadl;
+=======
+		goto error0;
+>>>>>>> 512ca3c... stock
 	}
 
 	if (userdatalen)
@@ -226,9 +234,12 @@ error1:
 	list_del(&open_info->msglistentry);
 	spin_unlock_irqrestore(&vmbus_connection.channelmsg_lock, flags);
 
+<<<<<<< HEAD
 error_gpadl:
 	vmbus_teardown_gpadl(newchannel, newchannel->ringbuffer_gpadlhandle);
 
+=======
+>>>>>>> 512ca3c... stock
 error0:
 	free_pages((unsigned long)out,
 		get_order(send_ringbuffer_size + recv_ringbuffer_size));

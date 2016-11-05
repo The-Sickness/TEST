@@ -150,6 +150,11 @@ odev_release(struct inode *inode, struct file *file)
 	if ((dp = file->private_data) == NULL)
 		return 0;
 
+<<<<<<< HEAD
+=======
+	snd_seq_oss_drain_write(dp);
+
+>>>>>>> 512ca3c... stock
 	mutex_lock(&register_mutex);
 	snd_seq_oss_release(dp);
 	mutex_unlock(&register_mutex);

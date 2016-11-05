@@ -2,7 +2,10 @@
  * Generic helpers for smp ipi calls
  *
  * (C) Jens Axboe <jens.axboe@oracle.com> 2008
+<<<<<<< HEAD
  * Copyright (c) 2014, NVIDIA CORPORATION.  All rights reserved.
+=======
+>>>>>>> 512ca3c... stock
  */
 #include <linux/rcupdate.h>
 #include <linux/rculist.h>
@@ -13,7 +16,10 @@
 #include <linux/gfp.h>
 #include <linux/smp.h>
 #include <linux/cpu.h>
+<<<<<<< HEAD
 #include <asm/relaxed.h>
+=======
+>>>>>>> 512ca3c... stock
 #define CREATE_TRACE_POINTS
 #include <trace/events/smp.h>
 
@@ -52,6 +58,7 @@ hotplug_cfd(struct notifier_block *nfb, unsigned long action, void *hcpu)
 				cpu_to_node(cpu)))
 			return notifier_from_errno(-ENOMEM);
 		if (!zalloc_cpumask_var_node(&cfd->cpumask_ipi, GFP_KERNEL,
+<<<<<<< HEAD
 				cpu_to_node(cpu))) {
 			free_cpumask_var(cfd->cpumask);
 			return notifier_from_errno(-ENOMEM);
@@ -59,6 +66,12 @@ hotplug_cfd(struct notifier_block *nfb, unsigned long action, void *hcpu)
 		cfd->csd = alloc_percpu(struct call_single_data);
 		if (!cfd->csd) {
 			free_cpumask_var(cfd->cpumask_ipi);
+=======
+				cpu_to_node(cpu)))
+			return notifier_from_errno(-ENOMEM);
+		cfd->csd = alloc_percpu(struct call_single_data);
+		if (!cfd->csd) {
+>>>>>>> 512ca3c... stock
 			free_cpumask_var(cfd->cpumask);
 			return notifier_from_errno(-ENOMEM);
 		}
@@ -109,8 +122,13 @@ void __init call_function_init(void)
  */
 static void csd_lock_wait(struct call_single_data *csd)
 {
+<<<<<<< HEAD
 	while (cpu_relaxed_read_short(&csd->flags) & CSD_FLAG_LOCK)
 		cpu_read_relax();
+=======
+	while (csd->flags & CSD_FLAG_LOCK)
+		cpu_relax();
+>>>>>>> 512ca3c... stock
 }
 
 static void csd_lock(struct call_single_data *csd)

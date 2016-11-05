@@ -428,9 +428,15 @@ int blk_alloc_devt(struct hd_struct *part, dev_t *devt)
 	/* allocate ext devt */
 	idr_preload(GFP_KERNEL);
 
+<<<<<<< HEAD
 	spin_lock_bh(&ext_devt_lock);
 	idx = idr_alloc(&ext_devt_idr, part, 0, NR_EXT_DEVT, GFP_NOWAIT);
 	spin_unlock_bh(&ext_devt_lock);
+=======
+	spin_lock(&ext_devt_lock);
+	idx = idr_alloc(&ext_devt_idr, part, 0, NR_EXT_DEVT, GFP_NOWAIT);
+	spin_unlock(&ext_devt_lock);
+>>>>>>> 512ca3c... stock
 
 	idr_preload_end();
 	if (idx < 0)
@@ -455,9 +461,15 @@ void blk_free_devt(dev_t devt)
 		return;
 
 	if (MAJOR(devt) == BLOCK_EXT_MAJOR) {
+<<<<<<< HEAD
 		spin_lock_bh(&ext_devt_lock);
 		idr_remove(&ext_devt_idr, blk_mangle_minor(MINOR(devt)));
 		spin_unlock_bh(&ext_devt_lock);
+=======
+		spin_lock(&ext_devt_lock);
+		idr_remove(&ext_devt_idr, blk_mangle_minor(MINOR(devt)));
+		spin_unlock(&ext_devt_lock);
+>>>>>>> 512ca3c... stock
 	}
 }
 
@@ -715,13 +727,21 @@ struct gendisk *get_gendisk(dev_t devt, int *partno)
 	} else {
 		struct hd_struct *part;
 
+<<<<<<< HEAD
 		spin_lock_bh(&ext_devt_lock);
+=======
+		spin_lock(&ext_devt_lock);
+>>>>>>> 512ca3c... stock
 		part = idr_find(&ext_devt_idr, blk_mangle_minor(MINOR(devt)));
 		if (part && get_disk(part_to_disk(part))) {
 			*partno = part->partno;
 			disk = part_to_disk(part);
 		}
+<<<<<<< HEAD
 		spin_unlock_bh(&ext_devt_lock);
+=======
+		spin_unlock(&ext_devt_lock);
+>>>>>>> 512ca3c... stock
 	}
 
 	return disk;
@@ -853,7 +873,10 @@ static void disk_seqf_stop(struct seq_file *seqf, void *v)
 	if (iter) {
 		class_dev_iter_exit(iter);
 		kfree(iter);
+<<<<<<< HEAD
 		seqf->private = NULL;
+=======
+>>>>>>> 512ca3c... stock
 	}
 }
 
@@ -1095,6 +1118,7 @@ int disk_expand_part_tbl(struct gendisk *disk, int partno)
 	struct disk_part_tbl *old_ptbl = disk->part_tbl;
 	struct disk_part_tbl *new_ptbl;
 	int len = old_ptbl ? old_ptbl->len : 0;
+<<<<<<< HEAD
 	int i, target;
 	size_t size;
 
@@ -1105,6 +1129,11 @@ int disk_expand_part_tbl(struct gendisk *disk, int partno)
 	target = partno + 1;
 	if (target < 0)
 		return -EINVAL;
+=======
+	int target = partno + 1;
+	size_t size;
+	int i;
+>>>>>>> 512ca3c... stock
 
 	/* disk_max_parts() is zero during initialization, ignore if so */
 	if (disk_max_parts(disk) && target > disk_max_parts(disk))

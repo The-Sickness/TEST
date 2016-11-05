@@ -150,7 +150,11 @@ extern int arch_setup_additional_pages(struct linux_binprm *bprm,
 
 /* 1GB of VA */
 #ifdef CONFIG_COMPAT
+<<<<<<< HEAD
 #define STACK_RND_MASK			(test_thread_flag_relaxed(TIF_32BIT) ? \
+=======
+#define STACK_RND_MASK			(test_thread_flag(TIF_32BIT) ? \
+>>>>>>> 512ca3c... stock
 						0x7ff >> (PAGE_SHIFT - 12) : \
 						0x3ffff >> (PAGE_SHIFT - 12))
 #else

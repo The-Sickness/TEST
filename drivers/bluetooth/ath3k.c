@@ -77,8 +77,11 @@ static struct usb_device_id ath3k_table[] = {
 	{ USB_DEVICE(0x0CF3, 0x3004) },
 	{ USB_DEVICE(0x0CF3, 0x3008) },
 	{ USB_DEVICE(0x0CF3, 0x311D) },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x0CF3, 0x311E) },
 	{ USB_DEVICE(0x0CF3, 0x311F) },
+=======
+>>>>>>> 512ca3c... stock
 	{ USB_DEVICE(0x0CF3, 0x817a) },
 	{ USB_DEVICE(0x13d3, 0x3375) },
 	{ USB_DEVICE(0x04CA, 0x3004) },
@@ -122,8 +125,11 @@ static struct usb_device_id ath3k_blist_tbl[] = {
 	{ USB_DEVICE(0x0cf3, 0x3004), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x0cf3, 0x3008), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x0cf3, 0x311D), .driver_info = BTUSB_ATH3012 },
+<<<<<<< HEAD
 	{ USB_DEVICE(0x0cf3, 0x311E), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x0cf3, 0x311F), .driver_info = BTUSB_ATH3012 },
+=======
+>>>>>>> 512ca3c... stock
 	{ USB_DEVICE(0x0CF3, 0x817a), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x13d3, 0x3375), .driver_info = BTUSB_ATH3012 },
 	{ USB_DEVICE(0x04ca, 0x3004), .driver_info = BTUSB_ATH3012 },
@@ -155,8 +161,11 @@ static struct usb_device_id ath3k_blist_tbl[] = {
 #define USB_REQ_DFU_DNLOAD	1
 #define BULK_SIZE		4096
 #define FW_HDR_SIZE		20
+<<<<<<< HEAD
 #define TIMEGAP_USEC_MIN	50
 #define TIMEGAP_USEC_MAX	100
+=======
+>>>>>>> 512ca3c... stock
 
 static int ath3k_load_firmware(struct usb_device *udev,
 				const struct firmware *firmware)
@@ -187,9 +196,12 @@ static int ath3k_load_firmware(struct usb_device *udev,
 	count -= 20;
 
 	while (count) {
+<<<<<<< HEAD
 		/* workaround the compatibility issue with xHCI controller*/
 		usleep_range(TIMEGAP_USEC_MIN, TIMEGAP_USEC_MAX);
 
+=======
+>>>>>>> 512ca3c... stock
 		size = min_t(uint, count, BULK_SIZE);
 		pipe = usb_sndbulkpipe(udev, 0x02);
 		memcpy(send_buf, firmware->data + sent, size);
@@ -286,9 +298,12 @@ static int ath3k_load_fwfile(struct usb_device *udev,
 	count -= size;
 
 	while (count) {
+<<<<<<< HEAD
 		/* workaround the compatibility issue with xHCI controller*/
 		usleep_range(TIMEGAP_USEC_MIN, TIMEGAP_USEC_MAX);
 
+=======
+>>>>>>> 512ca3c... stock
 		size = min_t(uint, count, BULK_SIZE);
 		pipe = usb_sndbulkpipe(udev, 0x02);
 

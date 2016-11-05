@@ -22,12 +22,16 @@
 #include <linux/devfreq.h>
 #include <linux/workqueue.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/sysfs_helpers.h>
+=======
+>>>>>>> 512ca3c... stock
 #include <linux/list.h>
 #include <linux/printk.h>
 #include <linux/hrtimer.h>
 #include "governor.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_SOC_EXYNOS7420
 #define DF_MAX_VOLT		900000
 #define DF_MIN_VOLT		500000
@@ -36,6 +40,8 @@
 #error "Please define core voltage ranges for current SoC."
 #endif
 
+=======
+>>>>>>> 512ca3c... stock
 static struct class *devfreq_class;
 
 /*
@@ -985,6 +991,7 @@ static ssize_t show_time_in_state(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 
 static ssize_t store_volt_table(struct device *d, struct device_attribute *attr,
 			      const char *buf, size_t count)
@@ -1049,6 +1056,8 @@ static ssize_t show_volt_table(struct device *d, struct device_attribute *attr,
 	return len;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static struct device_attribute devfreq_attrs[] = {
 	__ATTR(governor, S_IRUGO | S_IWUSR, show_governor, store_governor),
 	__ATTR(available_governors, S_IRUGO, show_available_governors, NULL),
@@ -1061,7 +1070,10 @@ static struct device_attribute devfreq_attrs[] = {
 	__ATTR(max_freq, S_IRUGO | S_IWUSR, show_max_freq, store_max_freq),
 	__ATTR(trans_stat, S_IRUGO, show_trans_table, NULL),
 	__ATTR(time_in_state_raw, S_IRUGO, show_time_in_state, NULL),
+<<<<<<< HEAD
 	__ATTR(volt_table, S_IRUGO | S_IWUSR, show_volt_table, store_volt_table),
+=======
+>>>>>>> 512ca3c... stock
 	{ },
 };
 
@@ -1073,10 +1085,14 @@ static int __init devfreq_init(void)
 		return PTR_ERR(devfreq_class);
 	}
 
+<<<<<<< HEAD
 	devfreq_wq =
 	    alloc_workqueue("devfreq_wq",
 			    WQ_HIGHPRI | WQ_UNBOUND | WQ_FREEZABLE |
 			    WQ_MEM_RECLAIM, 0);
+=======
+	devfreq_wq = create_freezable_workqueue("devfreq_wq");
+>>>>>>> 512ca3c... stock
 	if (IS_ERR(devfreq_wq)) {
 		class_destroy(devfreq_class);
 		pr_err("%s: couldn't create workqueue\n", __FILE__);

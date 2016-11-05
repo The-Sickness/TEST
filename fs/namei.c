@@ -1593,8 +1593,12 @@ static inline int walk_component(struct nameidata *nd, struct path *path,
 
 	if (should_follow_link(inode, follow)) {
 		if (nd->flags & LOOKUP_RCU) {
+<<<<<<< HEAD
 			if (unlikely(nd->path.mnt != path->mnt ||
 				     unlazy_walk(nd, path->dentry))) {
+=======
+			if (unlikely(unlazy_walk(nd, path->dentry))) {
+>>>>>>> 512ca3c... stock
 				err = -ECHILD;
 				goto out_err;
 			}
@@ -2003,7 +2007,11 @@ static int path_lookupat(int dfd, const char *name,
 	err = path_init(dfd, name, flags | LOOKUP_PARENT, nd, &base);
 
 	if (unlikely(err))
+<<<<<<< HEAD
 		goto out;
+=======
+		return err;
+>>>>>>> 512ca3c... stock
 
 	current->total_link_count = 0;
 	err = link_path_walk(name, nd);
@@ -2035,7 +2043,10 @@ static int path_lookupat(int dfd, const char *name,
 		}
 	}
 
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> 512ca3c... stock
 	if (base)
 		fput(base);
 
@@ -2877,8 +2888,12 @@ finish_lookup:
 
 	if (should_follow_link(inode, !symlink_ok)) {
 		if (nd->flags & LOOKUP_RCU) {
+<<<<<<< HEAD
 			if (unlikely(nd->path.mnt != path->mnt ||
 				     unlazy_walk(nd, path->dentry))) {
+=======
+			if (unlikely(unlazy_walk(nd, path->dentry))) {
+>>>>>>> 512ca3c... stock
 				error = -ECHILD;
 				goto out;
 			}
@@ -2944,10 +2959,13 @@ opened:
 			goto exit_fput;
 	}
 out:
+<<<<<<< HEAD
 	if (unlikely(error > 0)) {
 		WARN_ON(1);
 		error = -EINVAL;
 	}
+=======
+>>>>>>> 512ca3c... stock
 	if (got_write)
 		mnt_drop_write(nd->path.mnt);
 	path_put(&save_parent);

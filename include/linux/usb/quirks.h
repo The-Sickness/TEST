@@ -36,7 +36,10 @@
 /* device generates spurious wakeup, ignore remote wakeup capability */
 #define USB_QUIRK_IGNORE_REMOTE_WAKEUP	0x00000200
 
+<<<<<<< HEAD
 /* device can't handle Link Power Management */
 #define USB_QUIRK_NO_LPM			BIT(10)
 
+=======
+>>>>>>> 512ca3c... stock
 #endif /* __LINUX_USB_QUIRKS_H */

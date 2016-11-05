@@ -108,7 +108,10 @@ struct vnswap {
 
 extern void vnswap_init_disksize(u64 disksize);
 extern int vnswap_init_backing_storage(void);
+<<<<<<< HEAD
 extern int vnswap_deinit_backing_storage(void);
+=======
+>>>>>>> 512ca3c... stock
 
 extern struct vnswap *vnswap_device;
 extern struct block_device *backing_storage_bdev;

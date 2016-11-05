@@ -248,6 +248,10 @@ static ssize_t set_enable_irq(struct device *dev,
 		return -1;
 
 	pr_info("[SSP] %s - %d start\n", __func__, dTemp);
+<<<<<<< HEAD
+=======
+	mutex_lock(&data->ssp_enable_mutex);
+>>>>>>> 512ca3c... stock
 	if (dTemp) {
 		reset_mcu(data);
 		enable_debug_timer(data);
@@ -256,6 +260,10 @@ static ssize_t set_enable_irq(struct device *dev,
 		ssp_enable(data, 0);
 	} else
 		pr_err("[SSP] %s - invalid value\n", __func__);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&data->ssp_enable_mutex);
+>>>>>>> 512ca3c... stock
 	pr_info("[SSP] %s - %d end\n", __func__, dTemp);
 	return size;
 }

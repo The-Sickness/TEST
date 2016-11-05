@@ -235,6 +235,7 @@ static bool is_internal_level(struct dm_btree_info *info, struct frame *f)
 	return f->level < (info->levels - 1);
 }
 
+<<<<<<< HEAD
 static void unlock_all_frames(struct del_stack *s)
 {
 	struct frame *f;
@@ -245,12 +246,18 @@ static void unlock_all_frames(struct del_stack *s)
 	}
 }
 
+=======
+>>>>>>> 512ca3c... stock
 int dm_btree_del(struct dm_btree_info *info, dm_block_t root)
 {
 	int r;
 	struct del_stack *s;
 
+<<<<<<< HEAD
 	s = kmalloc(sizeof(*s), GFP_NOIO);
+=======
+	s = kmalloc(sizeof(*s), GFP_KERNEL);
+>>>>>>> 512ca3c... stock
 	if (!s)
 		return -ENOMEM;
 	s->tm = info->tm;
@@ -300,6 +307,7 @@ int dm_btree_del(struct dm_btree_info *info, dm_block_t root)
 			f->current_child = f->nr_children;
 		}
 	}
+<<<<<<< HEAD
 out:
 	if (r) {
 		/* cleanup all frames of del_stack */
@@ -307,6 +315,11 @@ out:
 	}
 	kfree(s);
 
+=======
+
+out:
+	kfree(s);
+>>>>>>> 512ca3c... stock
 	return r;
 }
 EXPORT_SYMBOL_GPL(dm_btree_del);
@@ -469,10 +482,15 @@ static int btree_split_sibling(struct shadow_spine *s, dm_block_t root,
 
 	r = insert_at(sizeof(__le64), pn, parent_index + 1,
 		      le64_to_cpu(rn->keys[0]), &location);
+<<<<<<< HEAD
 	if (r) {
 		unlock_block(s->info, right);
 		return r;
 	}
+=======
+	if (r)
+		return r;
+>>>>>>> 512ca3c... stock
 
 	if (key < le64_to_cpu(rn->keys[0])) {
 		unlock_block(s->info, right);
@@ -523,7 +541,11 @@ static int btree_split_beneath(struct shadow_spine *s, uint64_t key)
 
 	r = new_block(s->info, &right);
 	if (r < 0) {
+<<<<<<< HEAD
 		unlock_block(s->info, left);
+=======
+		/* FIXME: put left */
+>>>>>>> 512ca3c... stock
 		return r;
 	}
 
@@ -667,7 +689,16 @@ static int insert(struct dm_btree_info *info, dm_block_t root,
 	struct btree_node *n;
 	struct dm_btree_value_type le64_type;
 
+<<<<<<< HEAD
 	init_le64_type(info->tm, &le64_type);
+=======
+	le64_type.context = NULL;
+	le64_type.size = sizeof(__le64);
+	le64_type.inc = NULL;
+	le64_type.dec = NULL;
+	le64_type.equal = NULL;
+
+>>>>>>> 512ca3c... stock
 	init_shadow_spine(&spine, info);
 
 	for (level = 0; level < (info->levels - 1); level++) {

@@ -5,8 +5,11 @@
  *
  *  Copyright (C) 1991-2002  Linus Torvalds
  *
+<<<<<<< HEAD
  *  Copyright (c) 2014, NVIDIA CORPORATION.  All rights reserved.
  *
+=======
+>>>>>>> 512ca3c... stock
  *  1996-12-23  Modified by Dave Grothe to fix bugs in semaphores and
  *		make semaphores SMP safe
  *  1998-11-19	Implemented schedule_timeout() and related stuff
@@ -304,6 +307,63 @@ int sysctl_sched_rt_runtime = 950000;
 
 
 /*
+<<<<<<< HEAD
+=======
+ * __task_rq_lock - lock the rq @p resides on.
+ */
+static inline struct rq *__task_rq_lock(struct task_struct *p)
+	__acquires(rq->lock)
+{
+	struct rq *rq;
+
+	lockdep_assert_held(&p->pi_lock);
+
+	for (;;) {
+		rq = task_rq(p);
+		raw_spin_lock(&rq->lock);
+		if (likely(rq == task_rq(p)))
+			return rq;
+		raw_spin_unlock(&rq->lock);
+	}
+}
+
+/*
+ * task_rq_lock - lock p->pi_lock and lock the rq @p resides on.
+ */
+static struct rq *task_rq_lock(struct task_struct *p, unsigned long *flags)
+	__acquires(p->pi_lock)
+	__acquires(rq->lock)
+{
+	struct rq *rq;
+
+	for (;;) {
+		raw_spin_lock_irqsave(&p->pi_lock, *flags);
+		rq = task_rq(p);
+		raw_spin_lock(&rq->lock);
+		if (likely(rq == task_rq(p)))
+			return rq;
+		raw_spin_unlock(&rq->lock);
+		raw_spin_unlock_irqrestore(&p->pi_lock, *flags);
+	}
+}
+
+static void __task_rq_unlock(struct rq *rq)
+	__releases(rq->lock)
+{
+	raw_spin_unlock(&rq->lock);
+}
+
+static inline void
+task_rq_unlock(struct rq *rq, struct task_struct *p, unsigned long *flags)
+	__releases(rq->lock)
+	__releases(p->pi_lock)
+{
+	raw_spin_unlock(&rq->lock);
+	raw_spin_unlock_irqrestore(&p->pi_lock, *flags);
+}
+
+/*
+>>>>>>> 512ca3c... stock
  * this_rq_lock - lock this runqueue and disable interrupts.
  */
 static struct rq *this_rq_lock(void)
@@ -455,6 +515,7 @@ static inline void init_hrtick(void)
 }
 #endif	/* CONFIG_SCHED_HRTICK */
 
+<<<<<<< HEAD
 void wake_q_add(struct wake_q_head *head, struct task_struct *task)
 {
 	struct wake_q_node *node = &task->wake_q;
@@ -503,6 +564,10 @@ void wake_up_q(struct wake_q_head *head)
 
 /*
  * resched_curr - mark rq's current task 'to be rescheduled now'.
+=======
+/*
+ * resched_task - mark a task 'to be rescheduled now'.
+>>>>>>> 512ca3c... stock
  *
  * On UP this means the setting of the need_resched flag, on SMP it
  * might also involve a cross-CPU call to trigger the scheduler on
@@ -1076,10 +1141,16 @@ unsigned long wait_task_inactive(struct task_struct *p, long match_state)
 		 * is actually now running somewhere else!
 		 */
 		while (task_running(rq, p)) {
+<<<<<<< HEAD
 			if (match_state && unlikely(cpu_relaxed_read_long
 				(&(p->state)) != match_state))
 				return 0;
 			cpu_read_relax();
+=======
+			if (match_state && unlikely(p->state != match_state))
+				return 0;
+			cpu_relax();
+>>>>>>> 512ca3c... stock
 		}
 
 		/*
@@ -1341,11 +1412,18 @@ ttwu_do_wakeup(struct rq *rq, struct task_struct *p, int wake_flags)
 		u64 delta = rq->clock - rq->idle_stamp;
 		u64 max = 2*sysctl_sched_migration_cost;
 
+<<<<<<< HEAD
 		update_avg(&rq->avg_idle, delta);
 
 		if (rq->avg_idle > max)
 			rq->avg_idle = max;
 		
+=======
+		if (delta > max)
+			rq->avg_idle = max;
+		else
+			update_avg(&rq->avg_idle, delta);
+>>>>>>> 512ca3c... stock
 		rq->idle_stamp = 0;
 	}
 #endif
@@ -1376,8 +1454,11 @@ static int ttwu_remote(struct task_struct *p, int wake_flags)
 
 	rq = __task_rq_lock(p);
 	if (p->on_rq) {
+<<<<<<< HEAD
 		/* check_preempt_curr() may use rq clock */
 		update_rq_clock(rq);
+=======
+>>>>>>> 512ca3c... stock
 		ttwu_do_wakeup(rq, p, wake_flags);
 		ret = 1;
 	}
@@ -1406,7 +1487,11 @@ static void sched_ttwu_pending(void)
 
 void scheduler_ipi(void)
 {
+<<<<<<< HEAD
 	if (llist_empty_relaxed(&this_rq()->wake_list)
+=======
+	if (llist_empty(&this_rq()->wake_list)
+>>>>>>> 512ca3c... stock
 			&& !tick_nohz_full_cpu(smp_processor_id())
 			&& !got_nohz_idle_kick())
 		return;
@@ -1501,6 +1586,7 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 
 #ifdef CONFIG_SMP
 	/*
+<<<<<<< HEAD
 	 * Ensure we load p->on_cpu _after_ p->on_rq, otherwise it would be
 	 * possible to, falsely, observe p->on_cpu == 0.
 	 *
@@ -1525,6 +1611,13 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 	 */
 	while (cpu_relaxed_read(&(p->on_cpu)))
 		cpu_read_relax();
+=======
+	 * If the owning (remote) cpu is still in the middle of schedule() with
+	 * this task as prev, wait until its done referencing the task.
+	 */
+	while (p->on_cpu)
+		cpu_relax();
+>>>>>>> 512ca3c... stock
 	/*
 	 * Pairs with the smp_wmb() in finish_lock_switch().
 	 */
@@ -1601,6 +1694,10 @@ out:
  */
 int wake_up_process(struct task_struct *p)
 {
+<<<<<<< HEAD
+=======
+	WARN_ON(task_is_stopped_or_traced(p));
+>>>>>>> 512ca3c... stock
 	return try_to_wake_up(p, TASK_NORMAL, 0);
 }
 EXPORT_SYMBOL(wake_up_process);
@@ -1636,6 +1733,7 @@ static void __sched_fork(struct task_struct *p)
 #if defined(CONFIG_SMP) && defined(CONFIG_FAIR_GROUP_SCHED)
 	p->se.avg.remainder = 0;
 #ifdef CONFIG_SCHED_HMP
+<<<<<<< HEAD
 	/* keep LOAD_AVG_MAX in sync with fair.c if load avg series is changed */
 #define LOAD_AVG_MAX 47742
 	p->se.avg.hmp_last_up_migration = 0;
@@ -1648,6 +1746,10 @@ static void __sched_fork(struct task_struct *p)
 		p->se.avg.runnable_avg_sum = LOAD_AVG_MAX;
 		p->se.avg.usage_avg_sum = LOAD_AVG_MAX;
 	}
+=======
+	p->se.avg.hmp_last_up_migration = 0;
+	p->se.avg.hmp_last_down_migration = 0;
+>>>>>>> 512ca3c... stock
 #else
 	p->se.avg.runnable_avg_period = 0;
 	p->se.avg.runnable_avg_sum = 0;
@@ -2111,6 +2213,7 @@ unsigned long nr_iowait_cpu(int cpu)
 	return atomic_read(&this->nr_iowait);
 }
 
+<<<<<<< HEAD
 unsigned long avg_nr_running(void)
 {
 	unsigned long i, sum = 0;
@@ -2138,6 +2241,8 @@ unsigned long avg_nr_running(void)
 	return sum;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 unsigned long this_cpu_load(void)
 {
 	struct rq *this = this_rq();
@@ -2808,8 +2913,13 @@ void scheduler_tick(void)
 
 	raw_spin_lock(&rq->lock);
 	update_rq_clock(rq);
+<<<<<<< HEAD
 	curr->sched_class->task_tick(rq, curr, 0);
 	update_cpu_load_active(rq);
+=======
+	update_cpu_load_active(rq);
+	curr->sched_class->task_tick(rq, curr, 0);
+>>>>>>> 512ca3c... stock
 	raw_spin_unlock(&rq->lock);
 
 	perf_event_task_tick();
@@ -3302,7 +3412,11 @@ void __wake_up_sync_key(wait_queue_head_t *q, unsigned int mode,
 	if (unlikely(!q))
 		return;
 
+<<<<<<< HEAD
 	if (unlikely(nr_exclusive != 1))
+=======
+	if (unlikely(!nr_exclusive))
+>>>>>>> 512ca3c... stock
 		wake_flags = 0;
 
 	spin_lock_irqsave(&q->lock, flags);
@@ -3858,7 +3972,11 @@ int idle_cpu(int cpu)
 		return 0;
 
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
 	if (!llist_empty_relaxed(&rq->wake_list))
+=======
+	if (!llist_empty(&rq->wake_list))
+>>>>>>> 512ca3c... stock
 		return 0;
 #endif
 
@@ -4759,7 +4877,11 @@ void show_state_filter(unsigned long state_filter)
 		"  task                        PC stack   pid father\n");
 #endif
 	rcu_read_lock();
+<<<<<<< HEAD
 	for_each_process_thread(g, p) {
+=======
+	do_each_thread(g, p) {
+>>>>>>> 512ca3c... stock
 		/*
 		 * reset the NMI-timeout, listing all files on a slow
 		 * console might take a lot of time:
@@ -4767,7 +4889,11 @@ void show_state_filter(unsigned long state_filter)
 		touch_nmi_watchdog();
 		if (!state_filter || (p->state & state_filter))
 			sched_show_task(p);
+<<<<<<< HEAD
 	}
+=======
+	} while_each_thread(g, p);
+>>>>>>> 512ca3c... stock
 
 	touch_all_softlockup_watchdogs();
 
@@ -5735,10 +5861,16 @@ static void update_top_cache_domain(int cpu)
 {
 	struct sched_domain *sd;
 	int id = cpu;
+<<<<<<< HEAD
 	int size = 1;
 
 	sd = highest_flag_domain(cpu, SD_SHARE_PKG_RESOURCES);
 	if (sd) 
+=======
+
+	sd = highest_flag_domain(cpu, SD_SHARE_PKG_RESOURCES);
+	if (sd)
+>>>>>>> 512ca3c... stock
 		id = cpumask_first(sched_domain_span(sd));
 
 	rcu_assign_pointer(per_cpu(sd_llc, cpu), sd);
@@ -6832,9 +6964,14 @@ match1:
 		;
 	}
 
+<<<<<<< HEAD
 	n = ndoms_cur;
 	if (doms_new == NULL) {
 		n = 0;
+=======
+	if (doms_new == NULL) {
+		ndoms_cur = 0;
+>>>>>>> 512ca3c... stock
 		doms_new = &fallback_doms;
 		cpumask_andnot(doms_new[0], cpu_active_mask, cpu_isolated_map);
 		WARN_ON_ONCE(dattr_new);
@@ -6842,7 +6979,11 @@ match1:
 
 	/* Build new domains */
 	for (i = 0; i < ndoms_new; i++) {
+<<<<<<< HEAD
 		for (j = 0; j < n && !new_topology; j++) {
+=======
+		for (j = 0; j < ndoms_cur && !new_topology; j++) {
+>>>>>>> 512ca3c... stock
 			if (cpumask_equal(doms_new[i], doms_cur[j])
 			    && dattrs_equal(dattr_new, i, dattr_cur, j))
 				goto match2;
@@ -7241,7 +7382,11 @@ void normalize_rt_tasks(void)
 	struct rq *rq;
 
 	read_lock_irqsave(&tasklist_lock, flags);
+<<<<<<< HEAD
 	for_each_process_thread(g, p) {
+=======
+	do_each_thread(g, p) {
+>>>>>>> 512ca3c... stock
 		/*
 		 * Only normalize user tasks:
 		 */
@@ -7272,7 +7417,12 @@ void normalize_rt_tasks(void)
 
 		__task_rq_unlock(rq);
 		raw_spin_unlock(&p->pi_lock);
+<<<<<<< HEAD
 	}
+=======
+	} while_each_thread(g, p);
+
+>>>>>>> 512ca3c... stock
 	read_unlock_irqrestore(&tasklist_lock, flags);
 }
 
@@ -7468,10 +7618,17 @@ static inline int tg_has_rt_tasks(struct task_group *tg)
 {
 	struct task_struct *g, *p;
 
+<<<<<<< HEAD
 	for_each_process_thread(g, p) {
 		if (rt_task(p) && task_rq(p)->rt.tg == tg)
 			return 1;
 	}
+=======
+	do_each_thread(g, p) {
+		if (rt_task(p) && task_rq(p)->rt.tg == tg)
+			return 1;
+	} while_each_thread(g, p);
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }

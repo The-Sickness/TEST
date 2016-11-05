@@ -24,9 +24,15 @@
 #undef SSP_FIRMWARE_REVISION_BCM
 #define SSP_FIRMWARE_REVISION_BCM	15071300
 #elif defined (CONFIG_SENSORS_SSP_MARINELTE)
+<<<<<<< HEAD
 #define SSP_FIRMWARE_REVISION_BCM	15081200
 #else // ZERO
 #define SSP_FIRMWARE_REVISION_BCM	16021800
+=======
+#define SSP_FIRMWARE_REVISION_BCM	16031000
+#else // ZERO
+#define SSP_FIRMWARE_REVISION_BCM	16050600
+>>>>>>> 512ca3c... stock
 #endif
 unsigned int get_module_rev(struct ssp_data *data)
 {

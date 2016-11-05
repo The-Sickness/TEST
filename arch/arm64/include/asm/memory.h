@@ -54,7 +54,11 @@
 
 #ifdef CONFIG_COMPAT
 #define TASK_SIZE_32		UL(0x100000000)
+<<<<<<< HEAD
 #define TASK_SIZE		(test_thread_flag_relaxed(TIF_32BIT) ? \
+=======
+#define TASK_SIZE		(test_thread_flag(TIF_32BIT) ? \
+>>>>>>> 512ca3c... stock
 				TASK_SIZE_32 : TASK_SIZE_64)
 #define TASK_SIZE_OF(tsk)	(test_tsk_thread_flag(tsk, TIF_32BIT) ? \
 				TASK_SIZE_32 : TASK_SIZE_64)

@@ -54,7 +54,11 @@ static inline void syscall_set_return_value(struct task_struct *task,
 					    struct pt_regs *regs,
 					    int error, long val)
 {
+<<<<<<< HEAD
 	regs->gprs[2] = error ? error : val;
+=======
+	regs->gprs[2] = error ? -error : val;
+>>>>>>> 512ca3c... stock
 }
 
 static inline void syscall_get_arguments(struct task_struct *task,

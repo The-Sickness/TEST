@@ -898,6 +898,10 @@ static int scsi_request_sense(struct scsi_cmnd *scmd)
  */
 void scsi_eh_finish_cmd(struct scsi_cmnd *scmd, struct list_head *done_q)
 {
+<<<<<<< HEAD
+=======
+	scmd->device->host->host_failed--;
+>>>>>>> 512ca3c... stock
 	scmd->eh_eflags = 0;
 	list_move_tail(&scmd->eh_entry, done_q);
 }
@@ -1848,6 +1852,7 @@ int scsi_error_handler(void *data)
 	 * We never actually get interrupted because kthread_run
 	 * disables signal delivery for the created thread.
 	 */
+<<<<<<< HEAD
 	while (true) {
 		/*
 		 * The sequence in kthread_stop() sets the stop flag first
@@ -1859,6 +1864,10 @@ int scsi_error_handler(void *data)
 		if (kthread_should_stop())
 			break;
 
+=======
+	while (!kthread_should_stop()) {
+		set_current_state(TASK_INTERRUPTIBLE);
+>>>>>>> 512ca3c... stock
 		if ((shost->host_failed == 0 && shost->host_eh_scheduled == 0) ||
 		    shost->host_failed != shost->host_busy) {
 			SCSI_LOG_ERROR_RECOVERY(1,
@@ -1891,9 +1900,12 @@ int scsi_error_handler(void *data)
 		else
 			scsi_unjam_host(shost);
 
+<<<<<<< HEAD
 		/* All scmds have been handled */
 		shost->host_failed = 0;
 
+=======
+>>>>>>> 512ca3c... stock
 		/*
 		 * Note - if the above fails completely, the action is to take
 		 * individual devices offline and flush the queue of any

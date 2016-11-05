@@ -18,9 +18,12 @@
 #include <mali_kbase.h>
 
 #include <linux/pm_qos.h>
+<<<<<<< HEAD
 #ifdef CONFIG_EXYNOS8890_BTS_OPTIMIZATION
 #include <soc/samsung/bts.h>
 #endif
+=======
+>>>>>>> 512ca3c... stock
 
 #include "mali_kbase_platform.h"
 #include "gpu_dvfs_handler.h"
@@ -41,15 +44,21 @@ struct pm_qos_request proactive_atlas_min_qos;
 
 int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 {
+<<<<<<< HEAD
 	int idx;
 
+=======
+>>>>>>> 512ca3c... stock
 	DVFS_ASSERT(platform);
 
 	if (!platform->devfreq_status)
 		return 0;
 
+<<<<<<< HEAD
 #ifdef CONFIG_MALI_DVFS
 #ifdef CONFIG_PM_DEVFREQ
+=======
+>>>>>>> 512ca3c... stock
 	switch (state) {
 	case GPU_CONTROL_PM_QOS_INIT:
 		pm_qos_add_request(&exynos5_g3d_mif_min_qos, PM_QOS_BUS_THROUGHPUT, 0);
@@ -61,8 +70,11 @@ int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 		pm_qos_add_request(&exynos5_g3d_cpu_cluster1_max_qos, PM_QOS_CLUSTER1_FREQ_MAX, PM_QOS_CLUSTER1_FREQ_MAX_DEFAULT_VALUE);
 		if (platform->boost_egl_min_lock)
 			pm_qos_add_request(&exynos5_g3d_cpu_cluster1_min_qos, PM_QOS_CLUSTER1_FREQ_MIN, 0);
+<<<<<<< HEAD
 		for(idx=0; idx<platform->table_size; idx++)
 			platform->save_cpu_max_freq[idx] = platform->table[idx].cpu_max_freq;
+=======
+>>>>>>> 512ca3c... stock
 		break;
 	case GPU_CONTROL_PM_QOS_DEINIT:
 		pm_qos_remove_request(&exynos5_g3d_mif_min_qos);
@@ -79,6 +91,7 @@ int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 		KBASE_DEBUG_ASSERT(platform->step >= 0);
 		if (platform->perf_gathering_status) {
 			gpu_mif_pmqos(platform, platform->table[platform->step].mem_freq);
+<<<<<<< HEAD
 #ifdef CONFIG_EXYNOS8890_BTS_OPTIMIZATION
 			bts_update_gpu_mif(platform->table[platform->step].mem_freq);
 #endif
@@ -87,6 +100,10 @@ int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 #ifdef CONFIG_EXYNOS8890_BTS_OPTIMIZATION
 			bts_update_gpu_mif(platform->table[platform->step].mem_freq);
 #endif
+=======
+		} else {
+			pm_qos_update_request(&exynos5_g3d_mif_min_qos, platform->table[platform->step].mem_freq);
+>>>>>>> 512ca3c... stock
 			if (platform->pmqos_mif_max_clock &&
 				(platform->table[platform->step].clock >= platform->pmqos_mif_max_clock_base))
 				pm_qos_update_request(&exynos5_g3d_mif_max_qos, platform->pmqos_mif_max_clock);
@@ -94,6 +111,7 @@ int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 		if (!platform->pmqos_int_disable)
 			pm_qos_update_request(&exynos5_g3d_int_qos, platform->table[platform->step].int_freq);
 		pm_qos_update_request(&exynos5_g3d_cpu_cluster0_min_qos, platform->table[platform->step].cpu_freq);
+<<<<<<< HEAD
 		if (!platform->boost_is_enabled) {
 			if (platform->sustainable.low_power_cluster1_clock > 0 &&
 				platform->sustainable.sustainable_gpu_clock == platform->table[platform->step].clock)
@@ -107,6 +125,13 @@ int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 #ifdef CONFIG_EXYNOS8890_BTS_OPTIMIZATION
 		bts_update_gpu_mif(0);
 #endif
+=======
+		if (!platform->boost_is_enabled)
+			pm_qos_update_request(&exynos5_g3d_cpu_cluster1_max_qos, platform->table[platform->step].cpu_max_freq);
+		break;
+	case GPU_CONTROL_PM_QOS_RESET:
+		pm_qos_update_request(&exynos5_g3d_mif_min_qos, 0);
+>>>>>>> 512ca3c... stock
 		if (platform->pmqos_mif_max_clock)
 			pm_qos_update_request(&exynos5_g3d_mif_max_qos, PM_QOS_BUS_THROUGHPUT_MAX_DEFAULT_VALUE);
 		if (!platform->pmqos_int_disable)
@@ -115,6 +140,7 @@ int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 		pm_qos_update_request(&exynos5_g3d_cpu_cluster1_max_qos, PM_QOS_CLUSTER1_FREQ_MAX_DEFAULT_VALUE);
 		break;
 	case GPU_CONTROL_PM_QOS_EGL_SET:
+<<<<<<< HEAD
 		//pm_qos_update_request(&exynos5_g3d_cpu_cluster1_min_qos, platform->boost_egl_min_lock);
 		for(idx=0; idx<platform->table_size; idx++)
 			platform->table[idx].cpu_max_freq = PM_QOS_CLUSTER1_FREQ_MAX_DEFAULT_VALUE;
@@ -123,16 +149,26 @@ int gpu_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 		//pm_qos_update_request(&exynos5_g3d_cpu_cluster1_min_qos, 0);
 		for(idx=0; idx<platform->table_size; idx++)
 			platform->table[idx].cpu_max_freq = platform->save_cpu_max_freq[idx];
+=======
+		pm_qos_update_request(&exynos5_g3d_cpu_cluster1_min_qos, platform->boost_egl_min_lock);
+		break;
+	case GPU_CONTROL_PM_QOS_EGL_RESET:
+		pm_qos_update_request(&exynos5_g3d_cpu_cluster1_min_qos, 0);
+>>>>>>> 512ca3c... stock
 		break;
 	default:
 		break;
 	}
+<<<<<<< HEAD
 #endif
 #endif
+=======
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }
 
+<<<<<<< HEAD
 int gpu_sustainable_pmqos(struct exynos_context *platform, int clock)
 {
 	static int full_util_count = 0;
@@ -167,6 +203,8 @@ int gpu_sustainable_pmqos(struct exynos_context *platform, int clock)
 }
 
 
+=======
+>>>>>>> 512ca3c... stock
 int gpu_mif_pmqos(struct exynos_context *platform, int mem_freq)
 {
 	static int prev_freq;
@@ -181,7 +219,10 @@ int gpu_mif_pmqos(struct exynos_context *platform, int mem_freq)
 
 	return 0;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_MALI_DVFS_USER
 int proactive_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state state)
 {
@@ -197,10 +238,13 @@ int proactive_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state st
 			pm_qos_add_request(&proactive_atlas_min_qos, PM_QOS_CLUSTER1_FREQ_MIN, 0);
 			if (!platform->pmqos_int_disable)
 				pm_qos_add_request(&proactive_int_min_qos, PM_QOS_DEVICE_THROUGHPUT, 0);
+<<<<<<< HEAD
 
 #ifdef CONFIG_PWRCAL
 			update_cal_table();
 #endif
+=======
+>>>>>>> 512ca3c... stock
 			break;
 		case GPU_CONTROL_PM_QOS_DEINIT:
 			pm_qos_remove_request(&proactive_mif_min_qos);
@@ -220,6 +264,7 @@ int proactive_pm_qos_command(struct exynos_context *platform, gpu_pmqos_state st
 	return 0;
 }
 
+<<<<<<< HEAD
 int gpu_mif_min_pmqos(struct exynos_context *platform, int mif_step)
 {
 	DVFS_ASSERT(platform);
@@ -233,38 +278,67 @@ int gpu_mif_min_pmqos(struct exynos_context *platform, int mif_step)
 }
 
 int gpu_int_min_pmqos(struct exynos_context *platform, int int_step)
+=======
+int gpu_int_pmqos(struct exynos_context *platform, int int_freq)
+>>>>>>> 512ca3c... stock
 {
 	DVFS_ASSERT(platform);
 
 	if(!platform->devfreq_status)
 		return 0;
 
+<<<<<<< HEAD
 	pm_qos_update_request_timeout(&proactive_int_min_qos, platform->int_table[int_step], 30000);
+=======
+	pm_qos_update_request(&proactive_int_min_qos, int_freq);
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }
 
+<<<<<<< HEAD
 int gpu_apollo_min_pmqos(struct exynos_context *platform, int apollo_step)
+=======
+int gpu_apollo_pmqos(struct exynos_context *platform, int apollo_freq)
+>>>>>>> 512ca3c... stock
 {
 	DVFS_ASSERT(platform);
 
 	if(!platform->devfreq_status)
 		return 0;
 
+<<<<<<< HEAD
 	pm_qos_update_request_timeout(&proactive_apollo_min_qos, platform->apollo_table[apollo_step], 30000);
+=======
+	//pm_qos_update_request(&proactive_apollo_min_qos, apollo_freq);
+	pm_qos_update_request_timeout(&proactive_apollo_min_qos, apollo_freq, 30000);
+>>>>>>> 512ca3c... stock
 
 	return 0;
 }
 
+<<<<<<< HEAD
 int gpu_atlas_min_pmqos(struct exynos_context *platform, int atlas_step)
+=======
+int gpu_atlas_pmqos(struct exynos_context *platform, int atlas_freq)
+>>>>>>> 512ca3c... stock
 {
 	DVFS_ASSERT(platform);
 
 	if(!platform->devfreq_status)
 		return 0;
 
+<<<<<<< HEAD
 	pm_qos_update_request_timeout(&proactive_atlas_min_qos, platform->atlas_table[atlas_step], 30000);
 
 	return 0;
 }
 #endif
+=======
+	//pm_qos_update_request(&proactive_atlas_min_qos, atlas_freq);
+	pm_qos_update_request_timeout(&proactive_atlas_min_qos, atlas_freq, 30000);
+
+	return 0;
+}
+#endif
+>>>>>>> 512ca3c... stock

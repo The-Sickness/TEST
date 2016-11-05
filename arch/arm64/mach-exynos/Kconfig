@@ -99,6 +99,7 @@ config EXYNOS5_DYNAMIC_CPU_HOTPLUG_SLEEP_PREPARE
           This config set the number of activate cores.
           defaut value is "4" to activate all cores in cluster0.
 
+<<<<<<< HEAD
 config HOTPLUG_THREAD_STOP
 	bool "support to hotplug thread stop when LCD is on"
 	depends on EXYNOS5_DYNAMIC_CPU_HOTPLUG
@@ -107,6 +108,8 @@ config HOTPLUG_THREAD_STOP
 	  the dynamic hotplug not used during LCD on. This config
 	  enables hotplug thread stop feature.
 
+=======
+>>>>>>> 512ca3c... stock
 config EXYNOS_CONTENT_PATH_PROTECTION
 	bool "Exynos Content Path Protection"
 	depends on ARM_TRUSTZONE

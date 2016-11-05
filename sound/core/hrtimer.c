@@ -90,7 +90,11 @@ static int snd_hrtimer_start(struct snd_timer *t)
 	struct snd_hrtimer *stime = t->private_data;
 
 	atomic_set(&stime->running, 0);
+<<<<<<< HEAD
 	hrtimer_try_to_cancel(&stime->hrt);
+=======
+	hrtimer_cancel(&stime->hrt);
+>>>>>>> 512ca3c... stock
 	hrtimer_start(&stime->hrt, ns_to_ktime(t->sticks * resolution),
 		      HRTIMER_MODE_REL);
 	atomic_set(&stime->running, 1);
@@ -101,7 +105,10 @@ static int snd_hrtimer_stop(struct snd_timer *t)
 {
 	struct snd_hrtimer *stime = t->private_data;
 	atomic_set(&stime->running, 0);
+<<<<<<< HEAD
 	hrtimer_try_to_cancel(&stime->hrt);
+=======
+>>>>>>> 512ca3c... stock
 	return 0;
 }
 

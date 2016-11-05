@@ -293,6 +293,7 @@ struct page * lookup_swap_cache(swp_entry_t entry)
 	return page;
 }
 
+<<<<<<< HEAD
 struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 			struct vm_area_struct *vma, unsigned long addr,
 			bool *new_page_allocated)
@@ -301,6 +302,19 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 	struct address_space *swapper_space = swap_address_space(entry);
 	int err;
 	*new_page_allocated = false;
+=======
+/* 
+ * Locate a page of swap in physical memory, reserving swap cache space
+ * and reading the disk if it is not already cached.
+ * A failure return means that either the page allocation failed or that
+ * the swap entry is no longer in use.
+ */
+struct page *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+			struct vm_area_struct *vma, unsigned long addr)
+{
+	struct page *found_page, *new_page = NULL;
+	int err;
+>>>>>>> 512ca3c... stock
 
 	do {
 		/*
@@ -308,7 +322,12 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 		 * called after lookup_swap_cache() failed, re-calling
 		 * that would confuse statistics.
 		 */
+<<<<<<< HEAD
 		found_page = find_get_page(swapper_space, entry.val);
+=======
+		found_page = find_get_page(swap_address_space(entry),
+					entry.val);
+>>>>>>> 512ca3c... stock
 		if (found_page)
 			break;
 
@@ -367,7 +386,11 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 			 * Initiate read into locked page and return.
 			 */
 			lru_cache_add_anon(new_page);
+<<<<<<< HEAD
 			*new_page_allocated = true;
+=======
+			swap_readpage(new_page);
+>>>>>>> 512ca3c... stock
 			return new_page;
 		}
 		radix_tree_preload_end();
@@ -385,6 +408,7 @@ struct page *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 	return found_page;
 }
 
+<<<<<<< HEAD
 /*
  * Locate a page of swap in physical memory, reserving swap cache space
  * and reading the disk if it is not already cached.
@@ -404,6 +428,8 @@ struct page *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
 	return retpage;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 /**
  * swapin_readahead - swap in pages in hope we need them soon
  * @entry: swap entry of this memory

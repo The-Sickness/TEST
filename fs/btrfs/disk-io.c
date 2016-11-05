@@ -2437,7 +2437,10 @@ int open_ctree(struct super_block *sb,
 		       "unsupported option features (%Lx).\n",
 		       (unsigned long long)features);
 		err = -EINVAL;
+<<<<<<< HEAD
 		brelse(bh);
+=======
+>>>>>>> 512ca3c... stock
 		goto fail_alloc;
 	}
 
@@ -3858,6 +3861,15 @@ again:
 		if (ret)
 			break;
 
+<<<<<<< HEAD
+=======
+		/* opt_discard */
+		if (btrfs_test_opt(root, DISCARD))
+			ret = btrfs_error_discard_extent(root, start,
+							 end + 1 - start,
+							 NULL);
+
+>>>>>>> 512ca3c... stock
 		clear_extent_dirty(unpin, start, end, GFP_NOFS);
 		btrfs_error_unpin_extent_range(root, start, end);
 		cond_resched();

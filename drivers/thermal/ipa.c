@@ -1050,15 +1050,20 @@ static void setup_sysfs(struct arbiter_data *arb)
 	}
 }
 
+<<<<<<< HEAD
 static struct cpu_cluster_efficiency *c_eff = NULL;
 
 static void ipa_setup_power_tables(void)
+=======
+static void setup_power_tables(void)
+>>>>>>> 512ca3c... stock
 {
 	struct cpu_power_info t;
 	int i;
 
 	t.load[0] = 100; t.load[1] = t.load[2] = t.load[3] = 0;
 	t.cluster = CL_ZERO;
+<<<<<<< HEAD
 	
 	if (c_eff == NULL) {
 		c_eff = kzalloc(sizeof(struct cpu_cluster_efficiency) * (CL_ONE + 1), GFP_KERNEL);
@@ -1095,6 +1100,20 @@ static void ipa_setup_power_tables(void)
 	
 	sched_update_cpu_efficiency_table(&c_eff[CL_ZERO], CL_ZERO);
 	sched_update_cpu_efficiency_table(&c_eff[CL_ONE], CL_ONE);
+=======
+	for (i = 0; i < nr_little_coeffs; i++) {
+		t.freq = MHZ_TO_KHZ(little_cpu_coeffs[i].frequency);
+		little_cpu_coeffs[i].power = get_power_value(&t);
+		pr_info("cluster: %d freq: %d power=%d\n", CL_ZERO, t.freq, little_cpu_coeffs[i].power);
+	}
+
+	t.cluster = CL_ONE;
+	for (i = 0; i < nr_big_coeffs; i++) {
+		t.freq = MHZ_TO_KHZ(big_cpu_coeffs[i].frequency);
+		big_cpu_coeffs[i].power = get_power_value(&t);
+		pr_info("cluster: %d freq: %d power=%d\n", CL_ONE, t.freq, big_cpu_coeffs[i].power);
+	}
+>>>>>>> 512ca3c... stock
 }
 
 static int setup_cpufreq_tables(int cl_idx)
@@ -1116,6 +1135,7 @@ static int setup_cpufreq_tables(int cl_idx)
 	return cnt;
 }
 
+<<<<<<< HEAD
 static void ipa_setup_max_limits(void)
 {
 	int i;
@@ -1145,6 +1165,8 @@ static void ipa_setup_max_limits(void)
 	arbiter_data.config.soc_max_power += arbiter_data.config.ros_power;
 }
 
+=======
+>>>>>>> 512ca3c... stock
 static int __maybe_unused read_soc_temperature(void)
 {
 	void *pdata = arbiter_data.sensor->private_data;
@@ -1509,6 +1531,7 @@ int thermal_unregister_notifier(struct notifier_block *nb)
 extern bool exynos_cpufreq_init_done;
 static struct delayed_work init_work;
 
+<<<<<<< HEAD
 void ipa_update(void)
 {
 	ipa_setup_power_tables();
@@ -1516,6 +1539,12 @@ void ipa_update(void)
 
 static void arbiter_init(struct work_struct *work)
 {
+=======
+static void arbiter_init(struct work_struct *work)
+{
+	int i;
+
+>>>>>>> 512ca3c... stock
 	if (!exynos_cpufreq_init_done) {
 		pr_info("exynos_cpufreq not initialized. Deferring again...\n");
 		queue_delayed_work(system_freezable_wq, &init_work,
@@ -1523,17 +1552,50 @@ static void arbiter_init(struct work_struct *work)
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	arbiter_data.gpu_freq_limit = get_ipa_dvfs_max_freq();
+	arbiter_data.cpu_freq_limits[CL_ONE] = get_real_max_freq(CL_ONE);
+	arbiter_data.cpu_freq_limits[CL_ZERO] = get_real_max_freq(CL_ZERO);
+	for (i = 0; i < NR_CPUS; i++) {
+		arbiter_data.cpu_freqs[CL_ONE][i] = get_real_max_freq(CL_ONE);
+		arbiter_data.cpu_freqs[CL_ZERO][i] = get_real_max_freq(CL_ZERO);
+	}
+
+>>>>>>> 512ca3c... stock
 	setup_cpusmasks(arbiter_data.cl_stats);
 
 	reset_arbiter_configuration(&arbiter_data.config);
 	arbiter_data.debugfs_root = setup_debugfs(&arbiter_data.config);
 	setup_sysfs(&arbiter_data);
+<<<<<<< HEAD
 
 	nr_little_coeffs = setup_cpufreq_tables(CL_ZERO);
 	nr_big_coeffs = setup_cpufreq_tables(CL_ONE);
 
 	ipa_setup_power_tables();
 	ipa_setup_max_limits();
+=======
+	nr_little_coeffs = setup_cpufreq_tables(CL_ZERO);
+	nr_big_coeffs = setup_cpufreq_tables(CL_ONE);
+	setup_power_tables();
+
+	/* reconfigure max */
+	arbiter_data.config.little_max_power = freq_to_power(KHZ_TO_MHZ(arbiter_data.cpu_freq_limits[CL_ZERO]),
+							nr_little_coeffs, little_cpu_coeffs) * cpumask_weight(arbiter_data.cl_stats[CL_ZERO].mask);
+
+	arbiter_data.config.big_max_power = freq_to_power(KHZ_TO_MHZ(arbiter_data.cpu_freq_limits[CL_ONE]),
+							nr_big_coeffs, big_cpu_coeffs) * cpumask_weight(arbiter_data.cl_stats[CL_ONE].mask);
+
+	arbiter_data.config.gpu_max_power = kbase_platform_dvfs_freq_to_power(arbiter_data.gpu_freq_limit);
+
+	arbiter_data.config.soc_max_power = arbiter_data.config.gpu_max_power +
+		arbiter_data.config.big_max_power +
+		arbiter_data.config.gpu_max_power;
+	/* TODO when we introduce dynamic RoS power we need
+	   to add a ros_max_power !! */
+	arbiter_data.config.soc_max_power += arbiter_data.config.ros_power;
+>>>>>>> 512ca3c... stock
 
 	INIT_DELAYED_WORK(&arbiter_data.work, arbiter_poll);
 

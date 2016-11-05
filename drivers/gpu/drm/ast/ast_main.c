@@ -124,7 +124,11 @@ static int ast_get_dram_info(struct drm_device *dev)
 	} while (ast_read32(ast, 0x10000) != 0x01);
 	data = ast_read32(ast, 0x10004);
 
+<<<<<<< HEAD
 	if (data & 0x40)
+=======
+	if (data & 0x400)
+>>>>>>> 512ca3c... stock
 		ast->dram_bus_width = 16;
 	else
 		ast->dram_bus_width = 32;
@@ -359,7 +363,10 @@ int ast_driver_load(struct drm_device *dev, unsigned long flags)
 	dev->mode_config.min_height = 0;
 	dev->mode_config.preferred_depth = 24;
 	dev->mode_config.prefer_shadow = 1;
+<<<<<<< HEAD
 	dev->mode_config.fb_base = pci_resource_start(ast->dev->pdev, 0);
+=======
+>>>>>>> 512ca3c... stock
 
 	if (ast->chip == AST2100 ||
 	    ast->chip == AST2200 ||

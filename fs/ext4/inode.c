@@ -206,9 +206,15 @@ void ext4_evict_inode(struct inode *inode)
 		 * Note that directories do not have this problem because they
 		 * don't use page cache.
 		 */
+<<<<<<< HEAD
 		if (inode->i_ino != EXT4_JOURNAL_INO &&
 		    ext4_should_journal_data(inode) &&
 		    (S_ISLNK(inode->i_mode) || S_ISREG(inode->i_mode))) {
+=======
+		if (ext4_should_journal_data(inode) &&
+		    (S_ISLNK(inode->i_mode) || S_ISREG(inode->i_mode)) &&
+		    inode->i_ino != EXT4_JOURNAL_INO) {
+>>>>>>> 512ca3c... stock
 			journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
 			tid_t commit_tid = EXT4_I(inode)->i_datasync_tid;
 
@@ -631,7 +637,10 @@ int ext4_map_blocks(handle_t *handle, struct inode *inode,
 		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
 		if (!(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE) &&
+<<<<<<< HEAD
 		    !(status & EXTENT_STATUS_WRITTEN) &&
+=======
+>>>>>>> 512ca3c... stock
 		    ext4_find_delalloc_range(inode, map->m_lblk,
 					     map->m_lblk + map->m_len - 1))
 			status |= EXTENT_STATUS_DELAYED;
@@ -742,7 +751,10 @@ found:
 		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
 		if (!(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE) &&
+<<<<<<< HEAD
 		    !(status & EXTENT_STATUS_WRITTEN) &&
+=======
+>>>>>>> 512ca3c... stock
 		    ext4_find_delalloc_range(inode, map->m_lblk,
 					     map->m_lblk + map->m_len - 1))
 			status |= EXTENT_STATUS_DELAYED;
@@ -1417,7 +1429,11 @@ static void ext4_da_release_space(struct inode *inode, int to_free)
 static void ext4_da_page_release_reservation(struct page *page,
 					     unsigned long offset)
 {
+<<<<<<< HEAD
 	int to_release = 0, contiguous_blks = 0;
+=======
+	int to_release = 0;
+>>>>>>> 512ca3c... stock
 	struct buffer_head *head, *bh;
 	unsigned int curr_off = 0;
 	struct inode *inode = page->mapping->host;
@@ -1432,6 +1448,7 @@ static void ext4_da_page_release_reservation(struct page *page,
 
 		if ((offset <= curr_off) && (buffer_delay(bh))) {
 			to_release++;
+<<<<<<< HEAD
 			contiguous_blks++;
 			clear_buffer_delay(bh);
 		} else if (contiguous_blks) {
@@ -1441,14 +1458,23 @@ static void ext4_da_page_release_reservation(struct page *page,
 				contiguous_blks;
 			ext4_es_remove_extent(inode, lblk, contiguous_blks);
 			contiguous_blks = 0;
+=======
+			clear_buffer_delay(bh);
+>>>>>>> 512ca3c... stock
 		}
 		curr_off = next_off;
 	} while ((bh = bh->b_this_page) != head);
 
+<<<<<<< HEAD
 	if (contiguous_blks) {
 		lblk = page->index << (PAGE_CACHE_SHIFT - inode->i_blkbits);
 		lblk += (curr_off >> inode->i_blkbits) - contiguous_blks;
 		ext4_es_remove_extent(inode, lblk, contiguous_blks);
+=======
+	if (to_release) {
+		lblk = page->index << (PAGE_CACHE_SHIFT - inode->i_blkbits);
+		ext4_es_remove_extent(inode, lblk, to_release);
+>>>>>>> 512ca3c... stock
 	}
 
 	/* If we have released all the blocks belonging to a cluster, then we
@@ -2113,18 +2139,24 @@ static int __ext4_journalled_writepage(struct page *page,
 		ext4_walk_page_buffers(handle, page_bufs, 0, len,
 				       NULL, bget_one);
 	}
+<<<<<<< HEAD
 	/*
 	 * We need to release the page lock before we start the
 	 * journal, so grab a reference so the page won't disappear
 	 * out from under us.
 	 */
 	get_page(page);
+=======
+	/* As soon as we unlock the page, it can go away, but we have
+	 * references to buffers so we are safe */
+>>>>>>> 512ca3c... stock
 	unlock_page(page);
 
 	handle = ext4_journal_start(inode, EXT4_HT_WRITE_PAGE,
 				    ext4_writepage_trans_blocks(inode));
 	if (IS_ERR(handle)) {
 		ret = PTR_ERR(handle);
+<<<<<<< HEAD
 		put_page(page);
 		goto out_no_pagelock;
 	}
@@ -2139,6 +2171,13 @@ static int __ext4_journalled_writepage(struct page *page,
 		goto out;
 	}
 
+=======
+		goto out;
+	}
+
+	BUG_ON(!ext4_handle_valid(handle));
+
+>>>>>>> 512ca3c... stock
 	if (inline_data) {
 		ret = ext4_journal_get_write_access(handle, inode_bh);
 
@@ -2163,8 +2202,11 @@ static int __ext4_journalled_writepage(struct page *page,
 				       NULL, bput_one);
 	ext4_set_inode_state(inode, EXT4_STATE_JDATA);
 out:
+<<<<<<< HEAD
 	unlock_page(page);
 out_no_pagelock:
+=======
+>>>>>>> 512ca3c... stock
 	brelse(inode_bh);
 	return ret;
 }

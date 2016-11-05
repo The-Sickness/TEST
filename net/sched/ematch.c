@@ -227,7 +227,10 @@ static int tcf_em_validate(struct tcf_proto *tp,
 				 * to replay the request.
 				 */
 				module_put(em->ops->owner);
+<<<<<<< HEAD
 				em->ops = NULL;
+=======
+>>>>>>> 512ca3c... stock
 				err = -EAGAIN;
 			}
 #endif

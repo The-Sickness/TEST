@@ -163,6 +163,7 @@ asmlinkage void __cpuinit secondary_start_kernel(void)
 	/*
 	 * Enable GIC and timers.
 	 */
+<<<<<<< HEAD
 
 	smp_store_cpu_info(cpu);
 
@@ -172,6 +173,11 @@ asmlinkage void __cpuinit secondary_start_kernel(void)
 	 * Log the CPU info before it is marked online and might get read.
 	 */
 	cpuinfo_store_cpu();
+=======
+	notify_cpu_starting(cpu);
+
+	smp_store_cpu_info(cpu);
+>>>>>>> 512ca3c... stock
 
 	/*
 	 * OK, now it's safe to let the boot CPU continue.  Wait for

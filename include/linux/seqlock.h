@@ -29,7 +29,10 @@
 #include <linux/spinlock.h>
 #include <linux/preempt.h>
 #include <asm/processor.h>
+<<<<<<< HEAD
 #include <asm/relaxed.h>
+=======
+>>>>>>> 512ca3c... stock
 
 /*
  * Version using sequence counter only.
@@ -62,9 +65,15 @@ static inline unsigned __read_seqcount_begin(const seqcount_t *s)
 	unsigned ret;
 
 repeat:
+<<<<<<< HEAD
 	ret = cpu_relaxed_read((volatile u32 *)&s->sequence);
 	if (unlikely(ret & 1)) {
 		cpu_read_relax();
+=======
+	ret = ACCESS_ONCE(s->sequence);
+	if (unlikely(ret & 1)) {
+		cpu_relax();
+>>>>>>> 512ca3c... stock
 		goto repeat;
 	}
 	return ret;

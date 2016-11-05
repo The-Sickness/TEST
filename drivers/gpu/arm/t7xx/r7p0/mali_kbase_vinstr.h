@@ -113,7 +113,11 @@ struct kbase_vinstr_client *kbasep_vinstr_attach_client_sec(
 		struct kbase_vinstr_context *vinstr_ctx, u32 buffer_count,
 		u32 bitmap[4], void *argp);
 void kbasep_vinstr_detach_client_sec(struct kbase_vinstr_client *cli);
+<<<<<<< HEAD
 void kbase_vinstr_enable(struct kbase_vinstr_context *ctx);
+=======
+int kbase_vinstr_enable(struct kbase_vinstr_context *ctx);
+>>>>>>> 512ca3c... stock
 void kbase_vinstr_disable(struct kbase_vinstr_context *ctx);
 void *kbase_vinstr_get_addr(struct kbase_device *kbdev);
 #endif

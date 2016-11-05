@@ -48,6 +48,7 @@
 #include <mach/exynos-pm.h>
 #include "cal_tmu7420.h"
 
+<<<<<<< HEAD
 static unsigned int HOT_NORMAL_TEMP = 95;
 static unsigned int HOT_CRITICAL_TEMP = 110;
 
@@ -84,6 +85,8 @@ module_param_named(tmu_isp_temp3, ISP_TH_TEMP3, uint, S_IWUSR | S_IRUGO);
 module_param_named(tmu_isp_temp4, ISP_TH_TEMP4, uint, S_IWUSR | S_IRUGO);
 module_param_named(tmu_isp_temp5, ISP_TH_TEMP5, uint, S_IWUSR | S_IRUGO);
 
+=======
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_ARM_EXYNOS_MP_CPUFREQ
 static struct cpumask mp_cluster_cpus[CL_END];
 #endif

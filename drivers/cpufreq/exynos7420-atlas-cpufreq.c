@@ -16,7 +16,10 @@
 #include <linux/slab.h>
 #include <linux/cpufreq.h>
 #include <linux/clk-private.h>
+<<<<<<< HEAD
 #include <linux/clocker.h>
+=======
+>>>>>>> 512ca3c... stock
 
 #include <mach/map.h>
 #include <mach/regs-clock.h>
@@ -99,8 +102,13 @@ static struct apll_freq exynos7420_apll_freq_CA57[] = {
 	 * PLL M, P, S values are NOT used, Instead CCF clk_set_rate is used
 	 */
 	APLL_ATLAS_FREQ(2496, 0, 0, 2, 6, 6, 6, 1, 5, 6, 208, 2, 0),    /* ARM L0: 2.5GHz  */
+<<<<<<< HEAD
 	APLL_ATLAS_FREQ(2400, 0, 0, 2, 6, 6, 6, 1, 5, 6, 200, 2, 0),    /* ARM L1: 2.4GHz */
 	APLL_ATLAS_FREQ(2304, 0, 0, 2, 6, 6, 6, 1, 5, 6, 192, 2, 0),    /* ARM L2: 2.3GHz */
+=======
+	APLL_ATLAS_FREQ(2400, 0, 0, 2, 6, 6, 6, 1, 5, 6, 200, 2, 0),    /* ARM L1: 2.4GMHz */
+	APLL_ATLAS_FREQ(2304, 0, 0, 2, 6, 6, 6, 1, 5, 6, 192, 2, 0),    /* ARM L2: 2.3GMHz */
+>>>>>>> 512ca3c... stock
 	APLL_ATLAS_FREQ(2200, 0, 0, 2, 6, 6, 6, 1, 5, 6, 275, 3, 0),    /* ARM L3: 2.2GHz  */
 	APLL_ATLAS_FREQ(2100, 0, 0, 2, 6, 6, 6, 1, 5, 6, 175, 2, 0),    /* ARM L4: 2.1GHz  */
 	APLL_ATLAS_FREQ(2000, 0, 0, 2, 6, 6, 6, 1, 5, 6, 250, 3, 0),    /* ARM L5: 2.0GHz  */
@@ -385,13 +393,21 @@ static void __init set_volt_table_CA57(void)
 	case 5 :
 		max_support_idx_CA57 = L10; break;	/* 1.5GHz */
 	default :
+<<<<<<< HEAD
 		max_support_idx_CA57 = EXYNOS7420_CPU_MAX_FREQ_BIG;
+=======
+		max_support_idx_CA57 = L4;		/* 2.1GHz */
+>>>>>>> 512ca3c... stock
 	}
 #else
 	max_support_idx_CA57 = L13;	/* 1.2 GHz */
 #endif
 
+<<<<<<< HEAD
 	min_support_idx_CA57 = EXYNOS7420_CPU_MIN_FREQ_BIG;		
+=======
+	min_support_idx_CA57 = L17;	/* 800 MHz */
+>>>>>>> 512ca3c... stock
 
 	pr_info("CPUFREQ of CA57 max_freq : L%d %u khz\n", max_support_idx_CA57,
 		exynos7420_freq_table_CA57[max_support_idx_CA57].frequency);
@@ -458,6 +474,7 @@ int __init exynos_cpufreq_cluster1_init(struct exynos_dvfs_info *info)
 	info->max_support_idx = max_support_idx_CA57;
 	info->min_support_idx = min_support_idx_CA57;
 
+<<<<<<< HEAD
 	/* booting frequency */
 	#ifdef EXYNOS7420_CPU_OVERCLOCK
 		/* booting frequency is 1.7GHz */
@@ -468,6 +485,11 @@ int __init exynos_cpufreq_cluster1_init(struct exynos_dvfs_info *info)
 		info->boot_cpu_min_qos = exynos7420_freq_table_CA57[L8].frequency;
 		info->boot_cpu_max_qos = exynos7420_freq_table_CA57[L8].frequency;		
 	#endif
+=======
+	/* booting frequency is 1.7GHz */
+	info->boot_cpu_min_qos = exynos7420_freq_table_CA57[L8].frequency;
+	info->boot_cpu_max_qos = exynos7420_freq_table_CA57[L8].frequency;
+>>>>>>> 512ca3c... stock
 #ifdef CONFIG_SEC_PM
 	/* booting max frequency is 1.5GHz when JIG cable is attached */
 	info->jig_boot_cpu_max_qos = exynos7420_freq_table_CA57[L10].frequency;

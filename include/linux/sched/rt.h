@@ -36,7 +36,10 @@ static inline int rt_task(struct task_struct *p)
 extern int rt_mutex_getprio(struct task_struct *p);
 extern void rt_mutex_setprio(struct task_struct *p, int prio);
 extern void rt_mutex_adjust_pi(struct task_struct *p);
+<<<<<<< HEAD
 extern int rt_mutex_check_prio(struct task_struct *task, int newprio);
+=======
+>>>>>>> 512ca3c... stock
 static inline bool tsk_is_pi_blocked(struct task_struct *tsk)
 {
 	return tsk->pi_blocked_on != NULL;
@@ -51,10 +54,13 @@ static inline bool tsk_is_pi_blocked(struct task_struct *tsk)
 {
 	return false;
 }
+<<<<<<< HEAD
 static inline int rt_mutex_check_prio(struct task_struct *task, int newprio)
 {
 	return 0;
 }
+=======
+>>>>>>> 512ca3c... stock
 #endif
 
 extern void normalize_rt_tasks(void);

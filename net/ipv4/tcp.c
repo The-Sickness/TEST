@@ -3775,14 +3775,23 @@ restart:
 			sock_hold(sk);
 			spin_unlock_bh(lock);
 
+<<<<<<< HEAD
 			// TODO:
 			// Check for SOCK_DEAD again, it could have changed.
 			// Add a write barrier, see tcp_reset().
 			local_bh_disable();
+=======
+			local_bh_disable();
+			bh_lock_sock(sk);
+>>>>>>> 512ca3c... stock
 			sk->sk_err = ETIMEDOUT;
 			sk->sk_error_report(sk);
 
 			tcp_done(sk);
+<<<<<<< HEAD
+=======
+			bh_unlock_sock(sk);
+>>>>>>> 512ca3c... stock
 			local_bh_enable();
 			sock_put(sk);
 

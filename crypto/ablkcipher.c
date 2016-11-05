@@ -715,7 +715,11 @@ struct crypto_ablkcipher *crypto_alloc_ablkcipher(const char *alg_name,
 err:
 		if (err != -EAGAIN)
 			break;
+<<<<<<< HEAD
 		if (fatal_signal_pending(current)) {
+=======
+		if (signal_pending(current)) {
+>>>>>>> 512ca3c... stock
 			err = -EINTR;
 			break;
 		}

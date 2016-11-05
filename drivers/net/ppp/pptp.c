@@ -512,9 +512,13 @@ static int pptp_getname(struct socket *sock, struct sockaddr *uaddr,
 	int len = sizeof(struct sockaddr_pppox);
 	struct sockaddr_pppox sp;
 
+<<<<<<< HEAD
 	memset(&sp.sa_addr, 0, sizeof(sp.sa_addr));
 
 	sp.sa_family    = AF_PPPOX;
+=======
+	sp.sa_family	  = AF_PPPOX;
+>>>>>>> 512ca3c... stock
 	sp.sa_protocol  = PX_PROTO_PPTP;
 	sp.sa_addr.pptp = pppox_sk(sock->sk)->proto.pptp.src_addr;
 

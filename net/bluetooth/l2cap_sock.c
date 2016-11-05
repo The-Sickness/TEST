@@ -725,7 +725,11 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
 			break;
 		}
 
+<<<<<<< HEAD
 		if (get_user(opt, (u16 __user *) optval)) {
+=======
+		if (get_user(opt, (u32 __user *) optval)) {
+>>>>>>> 512ca3c... stock
 			err = -EFAULT;
 			break;
 		}
